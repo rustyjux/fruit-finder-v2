@@ -1,8 +1,8 @@
+// NOT CURRENTLY IN USE
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import './App.css';
-import { db } from "./utils/firebase"
+import { db } from "../utils/firebase"
 import { onValue, ref } from "firebase/database";
-import treeData from "./test-data/tree-data.json";
+import treeData from "../test-data/tree-data.json";
 
 function Trees() {
 

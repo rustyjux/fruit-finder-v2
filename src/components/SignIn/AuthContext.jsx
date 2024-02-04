@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { Cookies } from "react-cookie";
-import { auth, provider } from "../utils/firebase.js";
+import { auth, provider } from "../../utils/firebase.js";
 import { signInWithPopup } from "firebase/auth";
 
 const cookies = new Cookies();

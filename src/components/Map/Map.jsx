@@ -1,5 +1,6 @@
+import './Map.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import treeData from "../test-data/tree-data.json";
+import treeData from "../../test-data/tree-data.json";
 import { appleLIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 

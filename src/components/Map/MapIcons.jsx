@@ -1,7 +1,7 @@
 //NOT CURRENTLY USED
 
 import L from 'leaflet';
-import appleIcon from '../assets/react.svg'
+import appleIcon from '../../assets/react.svg'
 
 const appleLIcon = new L.Icon({
     iconUrl: appleIcon,

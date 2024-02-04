@@ -9,14 +9,9 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': process.env
-  }
+  },
+  // to access from local network
+  //   server: {
+  //   host: '0.0.0.0',
+  // },
 })
-
-
-// // https://vitejs.dev/config/
-// export default defineConfig({
-//   plugins: [react()],
-//   server: {
-//     host: '0.0.0.0',
-//   },
-// })

@@ -1,8 +1,8 @@
 import './App.css';
-import AddTree from "./components/AddTree"
-import Auth from "./components/Auth"
-import Map from "./components/Map"
-import { useAuth } from './components/AuthContext';
+import AddTree from "../AddTree"
+import Auth from "../SignIn/Auth"
+import Map from "../Map/Map"
+import { useAuth } from '../SignIn/AuthContext';
 
 function App() {
   const { isAuth } = useAuth();

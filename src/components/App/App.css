@@ -30,12 +30,6 @@
   display: flex;
 }
 
-.leaflet-container {
-  /* position: relative; */
-  width: 100vw;
-  height: 100vh;
-}
-
 .add-tree-menu {
   padding: 1.5em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow for a visual effect */
