@@ -3,7 +3,6 @@ import React from 'react';
 import { CircleMarker, Popup } from 'react-leaflet';
 
 const TreeMarker = ({ tree }) => {
-  console.log(tree)
   // Mapping of tree types to colors
   const typeColorMapping = {
     apple: 'green',
