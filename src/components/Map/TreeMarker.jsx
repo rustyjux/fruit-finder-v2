@@ -1,8 +1,9 @@
-// TreeMarker.jsx
-import React from 'react';
+import { useState, useRef } from "react";
 import { CircleMarker, Popup } from 'react-leaflet';
 
-const TreeMarker = ({ tree }) => {
+export default function TreeMarker ({ tree, makeActiveTree }) {
+  const [activeTree, setActiveTree] = useState()
+  
   // Mapping of tree types to colors
   const typeColorMapping = {
     apple: 'green',
@@ -18,6 +19,12 @@ const TreeMarker = ({ tree }) => {
       center={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
       radius={8} // Adjust the radius of the circle marker
       color={color} // Set the color based on the mapping
+      eventHandlers={{
+        click: (e) => {
+          console.log('marker clicked', e)
+          makeActiveTree(tree.id)
+        },
+      }}
     >
       <Popup position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}>
         <div>
@@ -29,5 +36,3 @@ const TreeMarker = ({ tree }) => {
     </CircleMarker>
   );
 };
-
-export default TreeMarker;
