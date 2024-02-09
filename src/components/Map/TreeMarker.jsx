@@ -1,8 +1,6 @@
-import { useState, useRef } from "react";
 import { CircleMarker, Popup } from 'react-leaflet';
 
 export default function TreeMarker ({ tree, makeActiveTree }) {
-  const [activeTree, setActiveTree] = useState()
   
   // Mapping of tree types to colors
   const typeColorMapping = {
@@ -22,7 +20,7 @@ export default function TreeMarker ({ tree, makeActiveTree }) {
       eventHandlers={{
         click: (e) => {
           console.log('marker clicked', e)
-          makeActiveTree(tree.id)
+          makeActiveTree(tree)
         },
       }}
     >

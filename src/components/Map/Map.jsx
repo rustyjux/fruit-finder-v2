@@ -11,7 +11,7 @@ import TreeMarker from './TreeMarker';
 // Get only actual tree points, not comments
 const treeItems = treeData.features.filter(tree => tree.geometry);
 
-export default function Map({ makeActiveTree }) {  
+export default function Map({ makeActiveTree, zoomSetting, mapCenter }) {  
   const [map, setMap] = useState(null);
   // console.log(map)
   // useEffect(() => {
@@ -21,7 +21,6 @@ export default function Map({ makeActiveTree }) {
   //     map.setZoom(17);
   //   }
   // }, [map]);
-
   console.log('map renders')
   const [trees, setTrees] = useState([])
   const treesCollectionRef = collection(db, "tree-features");
@@ -43,7 +42,11 @@ export default function Map({ makeActiveTree }) {
   }, [])
 
     return (
-        <MapContainer center={[49.076,-117.8023979]} zoom={15} scrollWheelZoom={true} ref={setMap}>
+        <MapContainer 
+          center={mapCenter} 
+          zoom={zoomSetting} 
+          scrollWheelZoom={true} 
+          ref={setMap}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         //   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

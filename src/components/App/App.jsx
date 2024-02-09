@@ -8,22 +8,32 @@ import { useAuth } from '../SignIn/AuthContext';
 
 function App() {
   const { isAuth } = useAuth();
-  const [activeTreeId, setActiveTreeId] = useState("ACTIVE_TREE_ID");
+  const [activeTree, setactiveTree] = useState(null);
 
   const makeActiveTree = (activeTree) => {
-    setActiveTreeId(activeTree);
+    setactiveTree(activeTree);
   }
-  console.log(activeTreeId);
+  console.log('APP: Active tree is: ', activeTree);
 
   return (
     <div className="app-container">
       {isAuth ? 
         (<>
-          {/* <AddTree /> */}
-          <EditTree 
-          activeTreeId={activeTreeId} 
-          />
-          <Map makeActiveTree={makeActiveTree} />
+          
+          {activeTree ? (
+            <div className='edit-tree-container'>
+              <EditTree 
+              activeTree={activeTree} 
+              />
+            </div>
+            ) : null}
+          <div className='main-map-container'>
+            <Map 
+              makeActiveTree={makeActiveTree} 
+              zoomSetting={15}
+              mapCenter={[49.076,-117.8023979]} 
+            />
+          </div>
          </>
         ) :
         (

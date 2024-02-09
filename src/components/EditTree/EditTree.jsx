@@ -1,9 +1,10 @@
 import { useState, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
+import Map from "../Map/Map";
 
-export default function EditTree({ activeTreeId }) {
-    console.log(activeTreeId)
+export default function EditTree({ activeTree }) {
+    console.log('EditTree: Active tree is: ', activeTree);
     const [newTree, setNewTree] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
@@ -30,10 +31,15 @@ export default function EditTree({ activeTreeId }) {
         setLatitude("");
         setLongitude("");
     };
+    console.log(activeTree)
 
     return (
         <div className="add-tree-menu">
-            <h3>Active tree id: {activeTreeId}</h3>
+            <Map 
+                zoomSetting={18} 
+                mapCenter={[activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]]}
+            />
+            <h3>Active tree id: {activeTree.id}</h3>
             <h3>Enter new tree info:</h3>
 
             <form onSubmit={handleSubmit} className="new-tree-form">
