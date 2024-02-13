@@ -8,17 +8,15 @@ import { getFirestore } from "firebase/firestore"
 // TODO: Add more SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseApiKey = process.env.FIREBASE_API_KEY;
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: firebaseApiKey,
-  authDomain: "fruitfinder-fd94b.firebaseapp.com",
-  databaseURL: "https://fruitfinder-fd94b-default-rtdb.firebaseio.com",
-  projectId: "fruitfinder-fd94b",
-  storageBucket: "fruitfinder-fd94b.appspot.com",
-  messagingSenderId: "116443698159",
-  appId: "1:116443698159:web:8fae52a3e5d601f1159c1a"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MSG_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
 };
 
 // Initialize Firebase
