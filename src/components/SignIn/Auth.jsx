@@ -3,7 +3,9 @@ import React from "react";
 import { useAuth } from "./AuthContext.jsx";
 
 export default function Auth() {
-//   const [cookies, setCookie] = useCookies(['name']);
+  // const [cookies, setCookie] = useCookies(['name']);
+  
+  // this works but need to avoid 3rd party cookies
   const { isAuth, signInWithGoogle } = useAuth();
 
   return (
