@@ -2,12 +2,13 @@ import { useState } from 'react';
 import './App.css';
 import AddTree from "../AddTree"
 import EditTree from '../EditTree/EditTree';
-import Auth from "../SignIn/Auth"
+import SignIn from "../SignIn/SignIn"
 import Map from "../Map/Map"
-import { useAuth } from '../SignIn/AuthContext';
+// import { useAuth } from '../SignIn/AuthContext';
+import UserIcon from '../UserIcon/UserIcon';
 
 function App() {
-  const { isAuth } = useAuth();
+  // const { isAuth } = useAuth();
   const [activeTree, setactiveTree] = useState(null);
 
   const makeActiveTree = (activeTree) => {
@@ -17,9 +18,7 @@ function App() {
 
   return (
     <div className="app-container">
-      {isAuth ? 
-        (<>
-          
+        <>
           {activeTree ? (
             <div className='edit-tree-container'>
               <EditTree 
@@ -27,20 +26,16 @@ function App() {
               />
             </div>
             ) : null}
-          <div className='main-map-container'>
+          <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
             <Map 
               makeActiveTree={makeActiveTree} 
               zoomSetting={15}
               mapCenter={[49.076,-117.8023979]} 
             />
+            <UserIcon />
+            <SignIn />
           </div>
          </>
-        ) :
-        (
-          <>
-            <Auth />
-          </>
-        )}
     </div>
   );
 }

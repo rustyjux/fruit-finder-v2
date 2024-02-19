@@ -1,0 +1,16 @@
+.sign-in-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgb(53, 53, 53);
+    border-radius: 10%;
+    width: 400px;
+    height: 400px;
+    padding: 20px;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 1001; 
+  }
+  
