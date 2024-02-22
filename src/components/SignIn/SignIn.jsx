@@ -7,12 +7,13 @@ import { auth, signOutUser } from "../../utils/firebase"
 
 
 export default function SignIn() {
-  const redirectUrl = "http://localhost:5173"
+  // const redirectUrl = "http://localhost:5173"
+  const redirectUrl = "https://fruitfinder-fd94b.web.app/"
   const UIConfig = {
     continueUrl: redirectUrl,
     // requireVerifyEmail: true,
     callbacks: {
-      signInSuccessWithAuthResult: function (user, redirectUrl) {
+      signInSuccessWithAuthResult: function (user) {
         console.log("successfully authenticated", user);
       },
       signInFailure: function (error) {
@@ -29,7 +30,7 @@ export default function SignIn() {
       {
         provider: "google.com",
         customParameters: { prompt: "select_account" },
-        signInFlow: "popup"
+        signInFlow: "redirect"
       },
       "phonenumber",
       {
@@ -40,7 +41,8 @@ export default function SignIn() {
 
     // formButtonStyles: { backgroundColor: "red" },
     // formDisabledStyles: { backgroundColor: "yellow" },
-    formInputStyles: { backgroundColor: "#ebebeb" }
+    formInputStyles: { backgroundColor: "#ebebeb" },
+    containerStyles: { width: "250px" }
 
   };
   
