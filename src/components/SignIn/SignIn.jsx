@@ -32,7 +32,7 @@ export default function SignIn() {
         customParameters: { prompt: "select_account" },
         signInFlow: "redirect"
       },
-      "phonenumber",
+      // "phonenumber",
       {
         provider: "emaillink",
       },
