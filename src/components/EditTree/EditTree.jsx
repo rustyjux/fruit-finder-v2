@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 import Map from "../Map/Map";
+import './EditTree.css'
 
 export default function EditTree({ activeTree }) {
     console.log('EditTree: Active tree is: ', activeTree);

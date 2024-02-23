@@ -22,6 +22,7 @@ export default function Map({ makeActiveTree, zoomSetting, mapCenter }) {
   //   }
   // }, [map]);
   console.log('map renders')
+  console.log(process.env.FIREBASE_REDIRECT_URL)
   const [trees, setTrees] = useState([])
   const treesCollectionRef = collection(db, "tree-features");
 

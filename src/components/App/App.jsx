@@ -26,11 +26,9 @@ function App() {
     <div className="app-container">
         <>
           {activeTree ? (
-            <div className='edit-tree-container'>
               <EditTree 
-              activeTree={activeTree} 
+                activeTree={activeTree} 
               />
-            </div>
             ) : null}
           <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
             <Map 

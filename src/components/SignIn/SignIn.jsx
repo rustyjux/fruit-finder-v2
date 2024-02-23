@@ -21,8 +21,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
     };
   }, [isSignInVisible, setIsSignInVisible]);
   
-  // const redirectUrl = "http://localhost:5173"
-  const redirectUrl = "https://fruitfinder-fd94b.web.app/"
+  const redirectUrl = process.env.FIREBASE_REDIRECT_URL
   const UIConfig = {
     continueUrl: redirectUrl,
     // requireVerifyEmail: true,

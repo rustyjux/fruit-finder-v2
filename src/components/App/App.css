@@ -31,19 +31,9 @@
   overflow: hidden;
 }
 
-.add-tree-menu {
-  padding: 1.5em;
-  background-color: rgb(65, 65, 65);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow for a visual effect */
-  z-index: 1; /* Ensure the menu is above the map */
-}
-
-.edit-tree-container {
-  /* position: absolute; */
-  z-index: 1;
-}
-
 .main-map-container {
   position: relative;
+  /* width: 100vh;
+  height: 100vh; */
   z-index: 0;
 }
