@@ -28,6 +28,7 @@
 
 .app-container {
   display: flex;
+  overflow: hidden;
 }
 
 .add-tree-menu {

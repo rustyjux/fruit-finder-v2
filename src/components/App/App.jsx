@@ -9,6 +9,12 @@ import UserIcon from '../UserIcon/UserIcon';
 
 function App() {
   // const { isAuth } = useAuth();
+  const [isSignInVisible, setIsSignInVisible] = useState(true);
+  const showSignIn = (event) => {
+    event.stopPropagation()
+    setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
+  };
+
   const [activeTree, setactiveTree] = useState(null);
 
   const makeActiveTree = (activeTree) => {
@@ -32,8 +38,11 @@ function App() {
               zoomSetting={15}
               mapCenter={[49.076,-117.8023979]} 
             />
-            <UserIcon />
-            <SignIn />
+            <UserIcon onClick={(event) => showSignIn(event)} />
+            <SignIn 
+              isSignInVisible={isSignInVisible} 
+              setIsSignInVisible={setIsSignInVisible} 
+            />
           </div>
          </>
     </div>

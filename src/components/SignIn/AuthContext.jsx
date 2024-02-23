@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Cookies } from "react-cookie";
+// import { Cookies } from "react-cookie";
 import { auth, provider } from "../../utils/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
