@@ -31,7 +31,7 @@ export default function EditTree({ activeTree }) {
         setLatitude("");
         setLongitude("");
     };
-    console.log(activeTree)
+    // console.log(activeTree)
 
     return (
         <div className="add-tree-menu">

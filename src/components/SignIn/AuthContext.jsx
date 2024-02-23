@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from "react";
-import { Cookies } from "react-cookie";
-import { auth, provider } from "../../utils/firebase.js";
-import { signInWithPopup } from "firebase/auth";
+import React, { createContext, useContext, useState, useEffect } from "react";
+// import { Cookies } from "react-cookie";
+import { auth, provider } from "../../utils/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
-const cookies = new Cookies();
+
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -12,29 +12,19 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
+  
+  const [user, setUser] = useState(null);
 
-  async function signInWithGoogle() {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      setAuthStatus(result.user.refreshToken);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
 
-  function setAuthStatus(token) {
-    setIsAuth(token);
-    cookies.set("auth-token", token, { sameSite: "lax" });
-  }
-
-  const authContextValue = {
-    isAuth,
-    signInWithGoogle,
-  };
+    return () => unsubscribe();
+  }, [auth]);
 
   return (
-    <AuthContext.Provider value={authContextValue}>
+    <AuthContext.Provider value={{ user }}>
       {children}
     </AuthContext.Provider>
   );
