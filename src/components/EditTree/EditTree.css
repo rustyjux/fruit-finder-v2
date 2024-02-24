@@ -1,8 +1,0 @@
-.edit-tree-container {
-    padding: 1.5em;
-    height: 50vh;
-    background-color: rgb(65, 65, 65);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow for a visual effect */
-    z-index: 1; /* Ensure the menu is above the map */
-  }
-  

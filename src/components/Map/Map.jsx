@@ -11,7 +11,7 @@ import TreeMarker from './TreeMarker';
 // Get only actual tree points, not comments
 const treeItems = treeData.features.filter(tree => tree.geometry);
 
-export default function Map({ makeActiveTree, zoomSetting, mapCenter }) {  
+export default function Map({ makeActiveTree, zoomSetting, mapCenter, mapSize }) {  
   const [map, setMap] = useState(null);
   // console.log(map)
   // useEffect(() => {
@@ -22,7 +22,6 @@ export default function Map({ makeActiveTree, zoomSetting, mapCenter }) {
   //   }
   // }, [map]);
   console.log('map renders')
-  console.log(process.env.FIREBASE_REDIRECT_URL)
   const [trees, setTrees] = useState([])
   const treesCollectionRef = collection(db, "tree-features");
 
@@ -43,6 +42,7 @@ export default function Map({ makeActiveTree, zoomSetting, mapCenter }) {
   }, [])
 
     return (
+      <div className={`map-container map-container--${mapSize}`}>
         <MapContainer 
           center={mapCenter} 
           zoom={zoomSetting} 
@@ -59,5 +59,6 @@ export default function Map({ makeActiveTree, zoomSetting, mapCenter }) {
         ))}      
 
         </MapContainer>
+      </div>
     )
 }

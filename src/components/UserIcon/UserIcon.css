@@ -13,7 +13,7 @@
   color: white;
   z-index: 1001; 
   overflow: hidden;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
   outline: 3px solid white;
   outline-offset: -1px;
 }

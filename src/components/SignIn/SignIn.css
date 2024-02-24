@@ -1,20 +1,21 @@
 .sign-in-container {
-  position: fixed;
+  position: absolute;
   top: 58px;
   right: 15px;
   /* transform: translate(-50%, -50%); Center the container both horizontally and vertically */
-  background-color: rgb(53, 53, 53);
-  border-radius: 5px;
-  padding: 20px;
+  background-color: var(--color-background);
+  border-radius: 10px;
+  /* border: 1px solid var(--color-accent-grey); */
+  padding: 10px;
   display: flex;
-  flex-direction: column; /* Change the direction of flex items to column */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
+  /* color: white; */
   z-index: 1001;
   overflow: hidden;
   /* overflow: auto; */
-  transition: width 0.3s, height 0.3s, opacity 0.3s, top 0.3s, right 0.3s; /* Add transition for smooth animation */
+  transition: width 0.3s, height 0.3s, opacity 0.3s, top 0.3s, right 0.3s;
 }
 
 .sign-in-container--active {
@@ -22,15 +23,12 @@
   height: 20vh;
   max-width: 400px;
   max-height: 500px;
-  padding: 20px;
   opacity: 1; /* Show with full opacity */
-  z-index: 1001;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
 }
 
 .sign-in-container--hidden {
   width: 0;
   height: 0;
-  padding: 20px;
   opacity: 0;
-  z-index: 1001;
 }

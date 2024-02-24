@@ -1,0 +1,43 @@
+/* .tree-info-drawer{
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px; 
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  transition: transform 0.3s ease-out;
+  transform: translateY(100%);
+}
+
+.tree-info-drawer--show {
+  transform: translateY(0);
+} */
+
+.tree-info-drawer{
+  position: absolute;
+  justify-self: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--color-background);
+  border-radius: 10px;
+  z-index: 1001;
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s ease-out;
+  transform: translateY(100%);
+  touch-action: pan-x pan-y;
+}
+
+.tree-info-drawer--show{
+  transform: translateY(0);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}
+
+.tree-info-drawer__content{
+  padding: 20px;
+}

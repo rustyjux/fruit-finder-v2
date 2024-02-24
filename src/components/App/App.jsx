@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import AddTree from "../AddTree"
-import EditTree from '../EditTree/EditTree';
+import TreeInfo from '../TreeInfo/TreeInfo';
 import SignIn from "../SignIn/SignIn"
 import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
@@ -15,31 +15,37 @@ function App() {
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
   };
 
-  const [activeTree, setactiveTree] = useState(null);
+  const [activeTree, setActiveTree] = useState(null);
 
   const makeActiveTree = (activeTree) => {
-    setactiveTree(activeTree);
+    setActiveTree(activeTree);
+  }
+
+  const removeActiveTree = () => {
+    setActiveTree(null);
   }
   console.log('APP: Active tree is: ', activeTree);
 
   return (
     <div className="app-container">
+        <UserIcon onClick={(event) => showSignIn(event)} />
+        <SignIn 
+          isSignInVisible={isSignInVisible} 
+          setIsSignInVisible={setIsSignInVisible} 
+        />
         <>
           {activeTree ? (
-              <EditTree 
-                activeTree={activeTree} 
+              <TreeInfo 
+                activeTree={activeTree}
+                removeActiveTree={removeActiveTree} 
               />
             ) : null}
           <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
             <Map 
+              mapSize='main'
               makeActiveTree={makeActiveTree} 
               zoomSetting={15}
               mapCenter={[49.076,-117.8023979]} 
-            />
-            <UserIcon onClick={(event) => showSignIn(event)} />
-            <SignIn 
-              isSignInVisible={isSignInVisible} 
-              setIsSignInVisible={setIsSignInVisible} 
             />
           </div>
          </>

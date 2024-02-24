@@ -3,9 +3,13 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  --color-fore: rgba(0, 0, 0, 0.87);
+  --color-background: #ffffff;
+  --color-accent-blue: #240986;
+  --color-accent-grey: #bebbc9;
+  color: var(--color-fore);
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -38,12 +42,13 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border: 1px solid var(--color-accent-grey);
+  padding: 0.1em 0.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-background);
+  color: var(--color-accent-blue);
   cursor: pointer;
   transition: border-color 0.25s;
 }
