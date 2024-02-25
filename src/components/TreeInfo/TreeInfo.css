@@ -30,7 +30,7 @@
   overflow-x: hidden;
   transition: transform 0.3s ease-out;
   transform: translateY(100%);
-  touch-action: pan-x pan-y;
+  touch-action: pan-y;
 }
 
 .tree-info-drawer--show{
@@ -39,5 +39,17 @@
 }
 
 .tree-info-drawer__content{
-  padding: 20px;
+  padding: 0em 0.8em 0.8em;
+}
+
+.ctrl-button-row{
+  display: flex;
+  gap: 0.6em;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
+.ctrl-button-row__btn{
+  padding-right: 0.5em;
 }

@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from "../utils/firebase";
+import { auth, db } from "../../utils/firebase";
 
 export default function AddTree() {
     const [newTree, setNewTree] = useState("");
@@ -32,6 +32,12 @@ export default function AddTree() {
 
     return (
         <div className="add-tree-menu">
+            {/* <Map 
+                mapSize='mini'
+                zoomSetting={18} 
+                mapCenter={[activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]]}
+            /> */}
+            
             <h3>Enter new tree info:</h3>
 
             <form onSubmit={handleSubmit} className="new-tree-form">

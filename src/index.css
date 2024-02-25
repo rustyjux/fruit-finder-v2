@@ -1,12 +1,12 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: Monaco, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* line-height: 1.5; */
   font-weight: 400;
 
   color-scheme: light;
   --color-fore: rgba(0, 0, 0, 0.87);
   --color-background: #ffffff;
-  --color-accent-blue: #240986;
+  --color-accent-blue: #1360c4;
   --color-accent-grey: #bebbc9;
   color: var(--color-fore);
   background-color: var(--color-background);
@@ -41,9 +41,13 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
+  display: inline-flex;
+  justify-content: center; /* center the content horizontally */
+  align-items: center; /* center the content vertically */
+  gap: 0.3em;
+  border-radius: 999px;
   border: 1px solid var(--color-accent-grey);
-  padding: 0.1em 0.2em;
+  padding: 0.2em 0.5em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -58,6 +62,12 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.btn--emphasis{
+  background-color: var(--color-accent-blue);
+  color: var(--color-background);
+  border: none;
 }
 
 @media (prefers-color-scheme: light) {

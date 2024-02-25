@@ -60,7 +60,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
 
   return (
     <div ref={ref} className={`sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
-      <p>{user && `Signed in as ${user.email}` }</p>
+      <p>{user && `Current user ${user.email}` }</p>
       {user && <button onClick={signOutUser}>Sign out</button>}
       {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
     </div>

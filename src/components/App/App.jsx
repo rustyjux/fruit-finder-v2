@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-import AddTree from "../AddTree"
 import TreeInfo from '../TreeInfo/TreeInfo';
 import SignIn from "../SignIn/SignIn"
 import Map from "../Map/Map"
@@ -34,12 +33,11 @@ function App() {
           setIsSignInVisible={setIsSignInVisible} 
         />
         <>
-          {activeTree ? (
               <TreeInfo 
                 activeTree={activeTree}
                 removeActiveTree={removeActiveTree} 
               />
-            ) : null}
+            
           <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
             <Map 
               mapSize='main'

@@ -1,4 +1,4 @@
-import { CircleMarker, Popup } from 'react-leaflet';
+import { CircleMarker } from 'react-leaflet';
 
 export default function TreeMarker ({ tree, makeActiveTree }) {
   
@@ -24,13 +24,13 @@ export default function TreeMarker ({ tree, makeActiveTree }) {
         },
       }}
     >
-      <Popup position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}>
+      {/* <Popup position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}>
         <div>
           <h2>{"Tree type: " + tree.properties.Type}</h2>
           <div>{"ID: " + tree.id}</div>
           <button onClick={null} className='change-tree-type'>Make it a banana!</button>
         </div>
-      </Popup>
+      </Popup> */}
     </CircleMarker>
   );
 };
