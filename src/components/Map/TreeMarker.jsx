@@ -1,6 +1,6 @@
 import { CircleMarker } from 'react-leaflet';
 
-export default function TreeMarker ({ tree, makeActiveTree }) {
+export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
   
   // Mapping of tree types to colors
   const typeColorMapping = {
@@ -12,11 +12,13 @@ export default function TreeMarker ({ tree, makeActiveTree }) {
   const type = tree.properties.Type.toLowerCase();
   const color = typeColorMapping[type] || 'blue'; // Default to blue if no mapping found
 
+  const isActive = activeTree && activeTree.id === tree.id;
+
   return (
     <CircleMarker 
       center={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
-      radius={8} // Adjust the radius of the circle marker
-      color={color} // Set the color based on the mapping
+      radius={isActive ? 10 : 8}
+      color={color}
       eventHandlers={{
         click: (e) => {
           console.log('marker clicked', e)

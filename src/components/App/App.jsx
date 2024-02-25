@@ -42,6 +42,7 @@ function App() {
             <Map 
               mapSize='main'
               makeActiveTree={makeActiveTree} 
+              activeTree={activeTree}
               zoomSetting={15}
               mapCenter={[49.076,-117.8023979]} 
             />
