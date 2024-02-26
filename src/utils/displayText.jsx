@@ -4,7 +4,17 @@ export const getDisplayText = (value, map) => {
     return map[value] || 'UNKNOWN VALUE'; // Default if the value is not found in the map
 };
 
-const accessMap = {
+export const treeTypes = {
+    apple: { color: 'red' },
+    plum: { color: 'purple' },
+    cherry: { color: 'pink' },
+    pear: { color: 'green' },
+    crabapple: { color: 'orange' },
+    walnut: { color: 'brown' },
+    other: { color: 'gray' }
+  };
+
+export const accessMap = {
     unknown: { text: 'Unknown', icon: FaUserSecret },
     public: { text: 'Public', icon: FaTree },
     'private-shared': { text: 'Private (Shared)', icon: FaBuilding },

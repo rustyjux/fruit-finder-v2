@@ -4,7 +4,8 @@ import TreeInfo from '../TreeInfo/TreeInfo';
 import SignIn from "../SignIn/SignIn"
 import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
-import UserIcon from '../UserIcon/UserIcon';
+import UserIcon from './UserIcon';
+import AddTreeButton from './AddTreeButton'
 
 function App() {
   // const { isAuth } = useAuth();
@@ -13,13 +14,17 @@ function App() {
     event.stopPropagation()
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
   };
+ 
+  const [isAddTreeVisible, setIsAddTreeVisible] = useState(true);
+  const showAddTree = (event) => {
+    event.stopPropagation()
+    setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+  };
 
   const [activeTree, setActiveTree] = useState(null);
-
   const makeActiveTree = (activeTree) => {
     setActiveTree(activeTree);
   }
-
   const removeActiveTree = () => {
     setActiveTree(null);
   }
@@ -32,22 +37,21 @@ function App() {
           isSignInVisible={isSignInVisible} 
           setIsSignInVisible={setIsSignInVisible} 
         />
-        <>
-              <TreeInfo 
-                activeTree={activeTree}
-                removeActiveTree={removeActiveTree} 
-              />
-            
-          <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
-            <Map 
-              mapSize='main'
-              makeActiveTree={makeActiveTree} 
-              activeTree={activeTree}
-              zoomSetting={15}
-              mapCenter={[49.076,-117.8023979]} 
-            />
-          </div>
-         </>
+        <AddTreeButton onClick={(event) => showAddTree(event)} />
+        <TreeInfo 
+          activeTree={activeTree}
+          removeActiveTree={removeActiveTree}
+          isAddTreeVisible={isAddTreeVisible} 
+        />
+        <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
+          <Map 
+            mapSize='main'
+            makeActiveTree={makeActiveTree} 
+            activeTree={activeTree}
+            zoomSetting={15}
+            mapCenter={[49.076,-117.8023979]} 
+          />
+        </div>
     </div>
   );
 }

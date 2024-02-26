@@ -1,11 +1,8 @@
-import './UserIcon.css';
 import { FaUserCheck, FaUserPlus } from 'react-icons/fa6';
 import { useAuth } from '../SignIn/AuthContext'
 
-
 export default function UserIcon({ onClick }) {
-    const { user } = useAuth()
-//   console.log(user)
+  const { user } = useAuth()
   return (
     <div className="user-icon" onClick={onClick}>
         {user ? 

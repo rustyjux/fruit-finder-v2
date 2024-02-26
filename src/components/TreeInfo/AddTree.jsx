@@ -1,18 +1,28 @@
 import { useState, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
+import * as displayText from "../../utils/displayText";
+import './TreeInfo.css'
+
 
 export default function AddTree() {
-    const [newTree, setNewTree] = useState("");
+    const treeTypes = displayText.treeTypes
+    const accessMap = displayText.accessMap
+    
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
+    const [treeType, setTreeType] = useState('apple');
+    const [numTrees, setNumTrees] = useState(1);
+    const [access, setAccess] = useState('unknown');
+    const [notes, setNotes] = useState('');
+
     const treeInputRef = useRef(null);
     
     const treesCollectionRef = collection(db, "trees");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (newTree === "" || latitude === "" || longitude === "") return;
+        if (latitude === "" || longitude === "") return;
 
         await addDoc(treesCollectionRef, {
             description: newTree,
@@ -37,31 +47,46 @@ export default function AddTree() {
                 zoomSetting={18} 
                 mapCenter={[activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]]}
             /> */}
-            
-            <h3>Enter new tree info:</h3>
 
+            <p><b>New tree</b></p>
             <form onSubmit={handleSubmit} className="new-tree-form">
-                <input 
-                    className="new-tree-input"
-                    placeholder="Add tree details here"
-                    onChange={(e) => setNewTree(e.target.value)}
-                    value={newTree}
-                /><br/>
-                <input 
-                    className="latitude-input"
-                    placeholder="Latitude"
-                    onChange={(e) => setLatitude(e.target.value)}
-                    value={latitude}
-                /><br/>
-                <input 
-                    className="longitude-input"
-                    placeholder="Longitude"
-                    onChange={(e) => setLongitude(e.target.value)}
-                    value={longitude}
-                /><br/>
-                <button type="submit" className="submit-button">
-                    Submit
-                </button>
+                <div>
+                    <label>Latitude: </label>
+                    <input type="number" value={latitude} onChange={(e) => setLatitude(e.target.value)} />
+                </div>
+                <div>
+                    <label>Longitude: </label>
+                    <input type="number" value={longitude} onChange={(e) => setLongitude(e.target.value)} />
+                </div>
+                <div>
+                    <label>Type: </label>
+                    <select value={treeType} onChange={(e) => setTreeType(e.target.value)}>
+                    {Object.keys(treeTypes).map((type) => (
+                        <option key={type} value={type}>
+                        {type}
+                        </option>
+                    ))}
+                    </select>
+                </div>
+                <div>
+                    <label>Number of trees: </label>
+                    <input type="number" value={numTrees} onChange={(e) => setNumTrees(e.target.value)} />
+                </div>
+                <div>
+                    <label>Access: </label>
+                    <select value={access} onChange={(e) => setAccess(e.target.value)}>
+                    {Object.keys(accessMap).map((key) => (
+                        <option key={key} value={key}>
+                        {accessMap[key].text}
+                        </option>
+                    ))}
+                    </select>
+                </div>
+                <div>
+                    <label>Notes: </label>
+                    <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Location details, tasting notes, access concerns" />
+                </div>
+                <button type="submit">Submit</button>
             </form>
         </div>
     );
