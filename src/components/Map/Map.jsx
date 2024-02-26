@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { MapContainer, TileLayer, LayersControl, Marker, Popup, useMap } from 'react-leaflet';
 import { collection, onSnapshot, query, limit } from 'firebase/firestore';
 import { db } from "../../utils/firebase";
@@ -14,11 +14,12 @@ const treeItems = treeData.features.filter(tree => tree.geometry);
 
 const { BaseLayer } = LayersControl
 
-export default function Map({ activeTree, makeActiveTree, zoomSetting, mapCenter, mapSize }) {  
+export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMapCenter, mapSize, setMapCenter }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
   const treesCollectionRef = collection(db, "tree-features");
-
+  
+  // console.log(map.getCenter())
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(treesCollectionRef, limit(10));
@@ -46,10 +47,28 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, mapCenter
   //   }
   // }, [map]);
 
+  useEffect(() => {
+    const onMove = () => {
+      if (map) {
+        const center = map.getCenter();
+        setMapCenter({ latitude: center.lat, longitude: center.lng });
+      }
+    };
+
+    if (map) {
+      map.on('move', onMove);
+    }
+    return () => {
+      if (map) {
+        map.off('move', onMove);
+      }
+    }
+  }, [map, setMapCenter])
+
   return (
     <div className={`map-container map-container--${mapSize}`}>
       <MapContainer 
-        center={mapCenter} 
+        center={initialMapCenter} 
         zoom={zoomSetting} 
         scrollWheelZoom={true} 
         ref={setMap}>
@@ -74,8 +93,13 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, mapCenter
       {trees.map(tree => (
         <TreeMarker key={tree.id} tree={tree} makeActiveTree={makeActiveTree} activeTree={activeTree} />
       ))}      
-
       </MapContainer>
+
+      {/* <div className="display-position" style={{zIndex: 1001}}>
+        HELLO
+        {map ? <DisplayPosition map={map} /> : null}
+      </div> */}
+      
     </div>
   )
 }

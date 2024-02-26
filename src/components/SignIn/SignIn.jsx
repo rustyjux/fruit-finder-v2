@@ -50,7 +50,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
     // formButtonStyles: { backgroundColor: "red" },
     // formDisabledStyles: { backgroundColor: "yellow" },
     formInputStyles: { backgroundColor: "#ebebeb" },
-    containerStyles: { width: "25vw" },
+    containerStyles: { width: "45vw" },
     language: "en",
 
   };
@@ -60,7 +60,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
 
   return (
     <div ref={ref} className={`sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
-      <p>{user && `Current user ${user.email}` }</p>
+      {user && <p>Current user {user.email}</p>}
       {user && <button onClick={signOutUser}>Sign out</button>}
       {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
     </div>

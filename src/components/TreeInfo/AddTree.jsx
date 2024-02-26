@@ -4,19 +4,17 @@ import { auth, db } from "../../utils/firebase";
 import * as displayText from "../../utils/displayText";
 import './TreeInfo.css'
 
-
-export default function AddTree() {
+export default function AddTree({ mapCenter }) {
+    console.log(mapCenter)
     const treeTypes = displayText.treeTypes
     const accessMap = displayText.accessMap
     
-    const [latitude, setLatitude] = useState("");
-    const [longitude, setLongitude] = useState("");
+    const [latitude, setLatitude] = useState(mapCenter.latitude);
+    const [longitude, setLongitude] = useState(mapCenter.longitude);
     const [treeType, setTreeType] = useState('apple');
     const [numTrees, setNumTrees] = useState(1);
     const [access, setAccess] = useState('unknown');
     const [notes, setNotes] = useState('');
-
-    const treeInputRef = useRef(null);
     
     const treesCollectionRef = collection(db, "trees");
 

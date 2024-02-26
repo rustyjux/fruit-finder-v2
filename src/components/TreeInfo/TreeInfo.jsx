@@ -5,7 +5,7 @@ import CurrentTree from "./CurrentTree";
 import AddTree from "./AddTree";
 import './TreeInfo.css'
 
-export default function TreeInfo({ activeTree, removeActiveTree, isAddTreeVisible }) {
+export default function TreeInfo({ activeTree, removeActiveTree, isAddTreeVisible, mapCenter }) {
     const ref = useRef(null);
     useEffect(() => {
       const handleClickOutside = (event) => 
@@ -26,7 +26,7 @@ export default function TreeInfo({ activeTree, removeActiveTree, isAddTreeVisibl
         <div ref={ref} className={`tree-info-drawer ${activeTree || isAddTreeVisible ? 'tree-info-drawer--show' : ''}`}>
             <div className="tree-info-drawer__content">
                 {activeTree && <CurrentTree activeTree={activeTree}/>}
-                {isAddTreeVisible && <AddTree />}
+                {isAddTreeVisible && <AddTree mapCenter={mapCenter} />}
             </div>
         </div>
     );

@@ -15,7 +15,7 @@ function App() {
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
   };
  
-  const [isAddTreeVisible, setIsAddTreeVisible] = useState(true);
+  const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
   const showAddTree = (event) => {
     event.stopPropagation()
     setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
@@ -30,6 +30,8 @@ function App() {
   }
   console.log('APP: Active tree is: ', activeTree);
 
+  const [mapCenter, setMapCenter] = useState({ latitude: 0, longitude: 0 });
+
   return (
     <div className="app-container">
         <UserIcon onClick={(event) => showSignIn(event)} />
@@ -41,7 +43,8 @@ function App() {
         <TreeInfo 
           activeTree={activeTree}
           removeActiveTree={removeActiveTree}
-          isAddTreeVisible={isAddTreeVisible} 
+          isAddTreeVisible={isAddTreeVisible}
+          mapCenter={mapCenter} 
         />
         <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
           <Map 
@@ -49,7 +52,8 @@ function App() {
             makeActiveTree={makeActiveTree} 
             activeTree={activeTree}
             zoomSetting={15}
-            mapCenter={[49.076,-117.8023979]} 
+            initialMapCenter={[49.076,-117.8023979]} 
+            setMapCenter={setMapCenter}
           />
         </div>
     </div>
