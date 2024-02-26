@@ -17,8 +17,9 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
   return (
     <CircleMarker 
       center={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
-      radius={isActive ? 10 : 8}
-      color={color}
+      radius={isActive ? 12 : 8}
+      // color={color}
+      pathOptions={{ color: isActive ? 'yellow' : color }}
       eventHandlers={{
         click: (e) => {
           console.log('marker clicked', e)
