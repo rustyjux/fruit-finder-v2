@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "../ui/button.jsx";
 // import { useCookies } from "react-cookie";
 import { useAuth } from "./AuthContext.jsx";
 import './SignIn.css';
@@ -60,6 +61,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
 
   return (
     <div ref={ref} className={`sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
+      <Button>Hello ShadCN</Button>
       {user && <p>Current user {user.email}</p>}
       {user && <button onClick={signOutUser}>Sign out</button>}
       {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
