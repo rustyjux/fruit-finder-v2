@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button } from "../ui/button.jsx";
 // import { useCookies } from "react-cookie";
 import { useAuth } from "./AuthContext.jsx";
 import './SignIn.css';
@@ -51,7 +50,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
     // formButtonStyles: { backgroundColor: "red" },
     // formDisabledStyles: { backgroundColor: "yellow" },
     formInputStyles: { backgroundColor: "#ebebeb" },
-    containerStyles: { width: "45vw" },
+    // containerStyles: { width: "100%" },
     language: "en",
 
   };
@@ -60,8 +59,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
   const [showFirebaseUI, setShowFirebaseUI] = useState(!user);
 
   return (
-    <div ref={ref} className={`sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
-      <Button>Hello ShadCN</Button>
+    <div ref={ref} className={`bg-background sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
       {user && <p>Current user {user.email}</p>}
       {user && <button onClick={signOutUser}>Sign out</button>}
       {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     

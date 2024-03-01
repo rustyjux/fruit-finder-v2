@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Toaster } from "../ui/toaster";
 import './App.css';
 import TreeInfo from '../TreeInfo/TreeInfo';
 import SignIn from "../SignIn/SignIn"
@@ -18,8 +19,13 @@ function App() {
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
   const showAddTree = (event) => {
     event.stopPropagation()
-    setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    // setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    // setIsAddTreeVisible(true)
+    setActiveTree("new-tree")
   };
+  const removeAddTree = () => {
+    setIsAddTreeVisible(null);
+  }
 
   const [activeTree, setActiveTree] = useState(null);
   const makeActiveTree = (activeTree) => {
@@ -30,6 +36,8 @@ function App() {
   }
   console.log('APP: Active tree is: ', activeTree);
 
+  // TODO: define const for initial map center
+  // TODO: set default mapCenter to the initialMapCenter
   const [mapCenter, setMapCenter] = useState({ latitude: 0, longitude: 0 });
 
   return (
@@ -44,6 +52,7 @@ function App() {
           activeTree={activeTree}
           removeActiveTree={removeActiveTree}
           isAddTreeVisible={isAddTreeVisible}
+          removeAddTree={removeAddTree}
           mapCenter={mapCenter} 
         />
         <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
@@ -56,6 +65,8 @@ function App() {
             setMapCenter={setMapCenter}
           />
         </div>
+        {/* <Toaster /> */}
+        {/* <Toaster className="z-3000" /> */}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useAuth } from '../SignIn/AuthContext'
 export default function AddTreeButton({ onClick }) {
   const { user } = useAuth()
   return (
-    <div className="add-tree-btn" onClick={onClick}>
+    <div className="bg-primary add-tree-btn" onClick={onClick}>
       <FaPlus />
     </div>
   );

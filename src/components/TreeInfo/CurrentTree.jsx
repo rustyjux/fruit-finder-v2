@@ -1,16 +1,22 @@
+import { useToast } from "../ui/use-toast";
 import { toTitleCase } from "../../utils/helpers";
 import * as displayText from "../../utils/displayText";
 import { FaHandSparkles, FaPencil, FaHeart, FaShareNodes } from 'react-icons/fa6'; // Import icons
 import './TreeInfo.css'
 
 export default function CurrentTree({ activeTree }) {
+    const { toast } = useToast()
+
     // Function to handle button clicks
     const handleButtonClick = (action) => {
         // Perform action based on button clicked
         switch (action) {
             case 'Pick':
-                // Handle Pick action
-                break;
+                console.log('pick!')
+                toast({
+                    title: "Scheduled: Catch up",
+                    description: "Friday, February 10, 2023 at 5:57 PM",
+                  });
             case 'Edit':
                 // Handle Edit action
                 break;
