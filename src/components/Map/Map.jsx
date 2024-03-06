@@ -51,18 +51,18 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
     const onMove = () => {
       if (map) {
         const center = map.getCenter();
-        setMapCenter({ latitude: center.lat, longitude: center.lng });
+        setMapCenter({ latitude: center.lat.toFixed(5), longitude: center.lng.toFixed(5) });
       }
     };
 
     if (map) {
-      map.on('move', onMove);
+      map.on('moveend', onMove);
     }
-    return () => {
-      if (map) {
-        map.off('move', onMove);
-      }
-    }
+    // return () => {
+    //   if (map) {
+    //     map.off('movestart', onMove);
+    //   }
+    // }
   }, [map, setMapCenter])
 
   return (

@@ -7,6 +7,7 @@ import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
 import UserIcon from './UserIcon';
 import AddTreeButton from './AddTreeButton'
+import AddTreeNew from '../TreeInfo/AddTreeNew';
 
 function App() {
   // const { isAuth } = useAuth();
@@ -19,7 +20,7 @@ function App() {
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
   const showAddTree = (event) => {
     event.stopPropagation()
-    // setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
     // setIsAddTreeVisible(true)
     setActiveTree("new-tree")
   };
@@ -36,9 +37,8 @@ function App() {
   }
   console.log('APP: Active tree is: ', activeTree);
 
-  // TODO: define const for initial map center
-  // TODO: set default mapCenter to the initialMapCenter
-  const [mapCenter, setMapCenter] = useState({ latitude: 0, longitude: 0 });
+  const initialMapCenter = [49.076,-117.802]
+  const [mapCenter, setMapCenter] = useState({ latitude: initialMapCenter[0], longitude: initialMapCenter[1] });
 
   return (
     <div className="app-container">
@@ -48,23 +48,28 @@ function App() {
           setIsSignInVisible={setIsSignInVisible} 
         />
         <AddTreeButton onClick={(event) => showAddTree(event)} />
-        <TreeInfo 
+        {/* <TreeInfo 
           activeTree={activeTree}
           removeActiveTree={removeActiveTree}
           isAddTreeVisible={isAddTreeVisible}
           removeAddTree={removeAddTree}
           mapCenter={mapCenter} 
-        />
+        /> */}
         <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
           <Map 
             mapSize='main'
             makeActiveTree={makeActiveTree} 
             activeTree={activeTree}
             zoomSetting={15}
-            initialMapCenter={[49.076,-117.8023979]} 
+            initialMapCenter={initialMapCenter} 
             setMapCenter={setMapCenter}
           />
         </div>
+        <AddTreeNew 
+          isAddTreeVisible={isAddTreeVisible}
+          setIsAddTreeVisible={setIsAddTreeVisible}
+          mapCenter={mapCenter}
+        />
         {/* <Toaster /> */}
         {/* <Toaster className="z-3000" /> */}
     </div>
