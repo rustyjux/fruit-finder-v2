@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { MapContainer, TileLayer, LayersControl, Marker, Popup, useMap } from 'react-leaflet';
-import { collection, onSnapshot, query, limit } from 'firebase/firestore';
+import { collection, onSnapshot, query, limit, where } from 'firebase/firestore';
 import { db } from "../../utils/firebase";
 
 import './Map.css';
@@ -22,7 +22,11 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
   // console.log(map.getCenter())
   // Retrieve trees from Firestore
   useEffect(() => {
-    const queryTrees = query(treesCollectionRef, limit(10));
+    const queryTrees = query(
+      treesCollectionRef,
+      where("new", "==", true),
+      limit(10)
+      );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {
       let firestoreTrees = [];
@@ -36,6 +40,8 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
 
     return () => unsubscribe();
   }, [])
+
+  console.log('trees', trees)
 
   // Zoom to current location
   // useEffect(() => {
@@ -93,6 +99,7 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
       {trees.map(tree => (
         <TreeMarker key={tree.id} tree={tree} makeActiveTree={makeActiveTree} activeTree={activeTree} />
       ))}      
+      {activeTree=="new-tree" ? <Marker position={map.getCenter()}/> : null}
       </MapContainer>
 
       {/* <div className="display-position" style={{zIndex: 1001}}>

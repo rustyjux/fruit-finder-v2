@@ -58,13 +58,32 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
   console.log("issubmit", isSubmitting)
   console.log("issubmit successfull", isSubmitSuccessful)
 
+  const treesCollectionRef = collection(db, "tree-features");
+
   const onSubmit = async (data) => {
     console.log('submitted!')
-    console.log(form)
-    console.log(data)
+
+    await addDoc(treesCollectionRef, {
+      location: {
+        // latitude: parseFloat(data.latitude),
+        // longitude: parseFloat(data.longitude),
+        latitude: data.latitude,
+        longitude: data.longitude,
+      },
+      type: data.type,
+      treeCount: data.treeCount,
+      access: data.access,
+      notes: data.notes,
+      createdAt: serverTimestamp(),
+      userDisplayName: auth.currentUser ? auth.currentUser.displayName : "no username",
+      userEmail: auth.currentUser ? auth.currentUser.email : null,
+      new: true
+  });
+
     await new Promise((resolve) => setTimeout(resolve, 1000))
+
     // TODO: if isSubmitSuccessful is true:
-    // reset form, hide drawer, display toast 
+    // hide drawer, display toast 
 
     // toast({
     //   title: "You submitted the following values:",
@@ -93,7 +112,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
   return (
     <TreeActionDrawer
     title="Add a new tree"
-    // label="describe this form"
+    label="Move the map to adjust tree location"
     open={isAddTreeVisible}
     setOpen={setIsAddTreeVisible}
     >
@@ -112,7 +131,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
             control={form.control}
             name="latitude"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="hidden">
                 <FormLabel>Latitude</FormLabel>
                 <FormControl>
                   <Input {...field} type="number" placeholder="" />
@@ -125,7 +144,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
             control={form.control}
             name="longitude"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="hidden">
                 <FormLabel>Longitude</FormLabel>
                 <FormControl>
                   <Input {...field} type="number" placeholder="" />

@@ -9,14 +9,14 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
     // Add more tree types and colors as needed
   };
 
-  const type = tree.properties.Type.toLowerCase();
+  const type = tree.type.toLowerCase();
   const color = typeColorMapping[type] || 'blue'; // Default to blue if no mapping found
 
   const isActive = activeTree && activeTree.id === tree.id;
 
   return (
     <CircleMarker 
-      center={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
+      center={[tree.location.latitude, tree.location.longitude]}
       radius={isActive ? 12 : 8}
       // color={color}
       pathOptions={{ color: isActive ? 'yellow' : color }}
