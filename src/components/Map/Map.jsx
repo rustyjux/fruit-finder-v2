@@ -7,6 +7,7 @@ import './Map.css';
 import treeData from "../../test-data/tree-data.json";
 import { appleLIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
+import DraggableMarker from "./DraggableMarker";
 
 const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN
 // Get only actual tree points, not comments
@@ -14,12 +15,20 @@ const treeItems = treeData.features.filter(tree => tree.geometry);
 
 const { BaseLayer } = LayersControl
 
-export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMapCenter, mapSize, setMapCenter }) {  
+export default function Map({ 
+  activeTree, 
+  makeActiveTree, 
+  zoomSetting, 
+  initialMapCenter, 
+  mapSize, 
+  setMapCenter,
+  draggablePosition,
+  setDraggablePosition
+  }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
   const treesCollectionRef = collection(db, "tree-features");
   
-  // console.log(map.getCenter())
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(
@@ -41,8 +50,6 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
     return () => unsubscribe();
   }, [])
 
-  console.log('trees', trees)
-
   // Zoom to current location
   // useEffect(() => {
   //   if (map) {
@@ -57,7 +64,10 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
     const onMove = () => {
       if (map) {
         const center = map.getCenter();
-        setMapCenter({ latitude: center.lat.toFixed(5), longitude: center.lng.toFixed(5) });
+        setMapCenter({
+          lat: Math.round(center.lat * 100000) / 100000,
+          lng: Math.round(center.lng * 100000) / 100000
+        })
       }
     };
 
@@ -99,7 +109,13 @@ export default function Map({ activeTree, makeActiveTree, zoomSetting, initialMa
       {trees.map(tree => (
         <TreeMarker key={tree.id} tree={tree} makeActiveTree={makeActiveTree} activeTree={activeTree} />
       ))}      
-      {activeTree=="new-tree" ? <Marker position={map.getCenter()}/> : null}
+      {/* {activeTree=="new-tree" ? <Marker position={map.getCenter()}/> : null} */}
+      {activeTree=="new-tree" ? 
+        <DraggableMarker 
+          startPosition={map.getCenter()}
+          draggablePosition={draggablePosition}
+          setDraggablePosition={setDraggablePosition}
+        /> : null}
       </MapContainer>
 
       {/* <div className="display-position" style={{zIndex: 1001}}>

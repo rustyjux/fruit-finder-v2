@@ -20,6 +20,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 
 import TreeActionDrawer from "./TreeActionDrawer";
@@ -31,14 +38,14 @@ import { auth, db } from "../../utils/firebase";
 import * as displayText from "../../utils/displayText";
 import './TreeInfo.css'
 
-export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapCenter }) {
+export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition }) {
   const [key, setKey] = useState(+new Date())
 
   const form = useForm({
     resolver: zodResolver(NewTreeSchema),
     defaultValues: {
-      latitude: mapCenter.latitude,
-      longitude: mapCenter.longitude,
+      latitude: draggablePosition.lat,
+      longitude: draggablePosition.lng,
       type: "apple",
       treeCount: 1,
       access: "unknown",
@@ -65,8 +72,6 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
 
     await addDoc(treesCollectionRef, {
       location: {
-        // latitude: parseFloat(data.latitude),
-        // longitude: parseFloat(data.longitude),
         latitude: data.latitude,
         longitude: data.longitude,
       },
@@ -83,7 +88,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     // TODO: if isSubmitSuccessful is true:
-    // hide drawer, display toast 
+    // hide drawer, display toast, remove active tree 
 
     // toast({
     //   title: "You submitted the following values:",
@@ -96,10 +101,10 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
   }
 
   useEffect(() => {
-    // Watch for changes in mapCenter and update form values accordingly
-    setValue('latitude', mapCenter.latitude);
-    setValue('longitude', mapCenter.longitude);
-  }, [mapCenter, setValue]);
+    // Watch for changes in draggablePosition and update form values accordingly
+    setValue('latitude', draggablePosition.lat);
+    setValue('longitude', draggablePosition.lng);
+  }, [draggablePosition, setValue]);
 
   // reset form after submission
   useEffect(() => {
@@ -112,21 +117,13 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
   return (
     <TreeActionDrawer
     title="Add a new tree"
-    label="Move the map to adjust tree location"
+    label="Drag the marker to adjust tree location"
     open={isAddTreeVisible}
     setOpen={setIsAddTreeVisible}
     >
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-0">
-        <div className="space-y-0">
-        <Button 
-        onClick={(e) => {
-          e.stopPropagation()
-          setKey(+new Date())
-          reset(undefined)
-        }}
-          >
-            Reset</Button>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-0 pt-0">
+        <div className="space-y-2">
         <FormField
             control={form.control}
             name="latitude"
@@ -157,7 +154,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
             control={form.control}
             name="type"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-1">
                 <FormLabel>Type</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value} key={key}>
                 <FormControl>
@@ -184,7 +181,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
             control={form.control}
             name="treeCount"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-1">
                 <FormLabel>Number of trees</FormLabel>
                 <FormControl>
                   <Input {...field} type="number" placeholder="" />
@@ -199,7 +196,7 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
             control={form.control}
             name="access"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-1">
                 <FormLabel>Access</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value} key={key}>
                 <FormControl>
@@ -222,21 +219,34 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, mapC
             control={form.control}
             name="notes"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Notes</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Location details, tasting notes, access concerns..." />
-                </FormControl>
-                <FormMessage />
-              <FormDescription>
-              </FormDescription>
+              <FormItem className="space-y-1">
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="item-1">
+                  <FormLabel><AccordionTrigger>Notes</AccordionTrigger></FormLabel>
+                    <AccordionContent>
+                      <FormControl>
+                        <Textarea {...field} className="resize-none" placeholder="Location details, tasting notes, access concerns..." />
+                      </FormControl>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </FormItem>
             )}
           />
         </div>
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Submit"}
-        </Button>
+        <div className="button-row flex space-x-4">
+          <Button variant="outline" className="w-full"
+          onClick={(e) => {
+            e.preventDefault();
+            setKey(+new Date())
+            reset(undefined)
+          }}
+            >
+              Reset</Button>
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
+        </div>
       </form>
     </Form>
     </TreeActionDrawer>

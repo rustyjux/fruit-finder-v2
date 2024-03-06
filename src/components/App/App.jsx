@@ -35,10 +35,12 @@ function App() {
   const removeActiveTree = () => {
     setActiveTree(null);
   }
-  console.log('APP: Active tree is: ', activeTree);
+  // console.log('APP: Active tree is: ', activeTree);
 
   const initialMapCenter = [49.076,-117.802]
-  const [mapCenter, setMapCenter] = useState({ latitude: initialMapCenter[0], longitude: initialMapCenter[1] });
+  const [mapCenter, setMapCenter] = useState({ lat: initialMapCenter[0], lng: initialMapCenter[1] });
+
+  const [draggablePosition, setDraggablePosition] = useState(mapCenter)
 
   return (
     <div className="app-container">
@@ -63,12 +65,14 @@ function App() {
             zoomSetting={15}
             initialMapCenter={initialMapCenter} 
             setMapCenter={setMapCenter}
+            draggablePosition={draggablePosition}
+            setDraggablePosition={setDraggablePosition}
           />
         </div>
         <AddTreeNew 
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
-          mapCenter={mapCenter}
+          draggablePosition={draggablePosition}
         />
         {/* <Toaster /> */}
         {/* <Toaster className="z-3000" /> */}
