@@ -27,7 +27,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
 
 import TreeDrawer from "./TreeDrawer";
 import { NewTreeSchema } from "@/schema";
@@ -35,10 +34,8 @@ import { NewTreeSchema } from "@/schema";
 import { useState, useEffect, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
-import * as displayText from "../../utils/displayText";
-import './TreeInfo.css'
 
-export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition }) {
+export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition }) {
   const [key, setKey] = useState(+new Date())
 
   const form = useForm({
@@ -62,8 +59,8 @@ export default function AddTreeNew({ isAddTreeVisible, setIsAddTreeVisible, drag
     formState: { isSubmitting, isSubmitSuccessful }
   } = form;
 
-  console.log("issubmit", isSubmitting)
-  console.log("issubmit successfull", isSubmitSuccessful)
+  // console.log("issubmit", isSubmitting)
+  // console.log("issubmit successfull", isSubmitSuccessful)
 
   const treesCollectionRef = collection(db, "tree-features");
 

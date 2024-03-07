@@ -8,6 +8,7 @@ import Map from "../Map/Map"
 import UserIcon from './UserIcon';
 import AddTreeButton from './AddTreeButton'
 import AddTree from '../TreeInfo/AddTree';
+import ViewEditTree from '../TreeInfo/ViewEditTree';
 
 function App() {
   // const { isAuth } = useAuth();
@@ -24,13 +25,27 @@ function App() {
     // setIsAddTreeVisible(true)
     setActiveTree("new-tree")
   };
-  const removeAddTree = () => {
+  const cancelAddTree = () => {
     setIsAddTreeVisible(null);
     setActiveTree(null)
   }
 
+  const [isViewEditVisible, setIsViewEditVisible] = useState(false);
+  // const showViewEdit = (event) => {
+  //   event.stopPropagation()
+  //   setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+  //   // setIsAddTreeVisible(true)
+  //   setActiveTree("new-tree")
+  // };
+  // const removeAddTree = () => {
+  //   setIsAddTreeVisible(null);
+  //   setActiveTree(null)
+  // }
+
   const [activeTree, setActiveTree] = useState(null);
+  // used only to add tree off of map
   const makeActiveTree = (activeTree) => {
+    setIsViewEditVisible(true)
     setActiveTree(activeTree);
   }
   const removeActiveTree = () => {
@@ -50,13 +65,6 @@ function App() {
           isSignInVisible={isSignInVisible} 
           setIsSignInVisible={setIsSignInVisible} 
         />
-        <TreeInfo 
-          activeTree={activeTree}
-          removeActiveTree={removeActiveTree}
-          isAddTreeVisible={isAddTreeVisible}
-          removeAddTree={removeAddTree}
-          mapCenter={mapCenter} 
-        />
         <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
           <Map 
             mapSize='main'
@@ -69,6 +77,12 @@ function App() {
             setDraggablePosition={setDraggablePosition}
           />
         </div>
+        <ViewEditTree 
+          activeTree={activeTree}
+          removeActiveTree={removeActiveTree}
+          isViewEditVisible={isViewEditVisible}
+          setIsViewEditVisible={setIsViewEditVisible}
+        />
         <AddTreeButton onClick={(event) => showAddTree(event)} />
         <AddTree 
           isAddTreeVisible={isAddTreeVisible}

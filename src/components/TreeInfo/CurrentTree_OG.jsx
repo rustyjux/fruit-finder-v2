@@ -4,7 +4,7 @@ import * as displayText from "../../utils/displayText";
 import { FaHandSparkles, FaPencil, FaHeart, FaShareNodes } from 'react-icons/fa6'; // Import icons
 import './TreeInfo.css'
 
-export default function CurrentTree({ activeTree }) {
+export default function CurrentTreeOG({ activeTree }) {
     const { toast } = useToast()
 
     // Function to handle button clicks
@@ -34,10 +34,11 @@ export default function CurrentTree({ activeTree }) {
     return (
         <>
             <h3></h3>
+            {/* TODO Rename NumTrees to TreeCount */}
             <p>
-                <b>{toTitleCase(activeTree.type)}</b>
-                {` · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · `}
-                {displayText.getAccessDisplayText(activeTree.access, true)}
+                <b>{toTitleCase(activeTree.properties.Type)}</b>
+                {` · ${activeTree.properties.NumTrees && activeTree.properties.NumTrees !== 1 ? activeTree.properties.NumTrees + ' trees' : '1 tree'} · `}
+                {displayText.getAccessDisplayText(activeTree.properties.Access, true)}
             </p>
 
             {/* BUTTONS */}
@@ -56,7 +57,7 @@ export default function CurrentTree({ activeTree }) {
                 </button>
             </div>
 
-            {activeTree.notes && (<p>{activeTree.notes}</p>)}
+            {activeTree.properties.Notes && (<p>{activeTree.properties.Notes}</p>)}
         </>
     );
 };
