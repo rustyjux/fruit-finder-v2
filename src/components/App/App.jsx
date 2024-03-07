@@ -7,11 +7,11 @@ import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
 import UserIcon from './UserIcon';
 import AddTreeButton from './AddTreeButton'
-import AddTreeNew from '../TreeInfo/AddTreeNew';
+import AddTree from '../TreeInfo/AddTree';
 
 function App() {
   // const { isAuth } = useAuth();
-  const [isSignInVisible, setIsSignInVisible] = useState(true);
+  const [isSignInVisible, setIsSignInVisible] = useState(false);
   const showSignIn = (event) => {
     event.stopPropagation()
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
@@ -26,6 +26,7 @@ function App() {
   };
   const removeAddTree = () => {
     setIsAddTreeVisible(null);
+    setActiveTree(null)
   }
 
   const [activeTree, setActiveTree] = useState(null);
@@ -49,14 +50,13 @@ function App() {
           isSignInVisible={isSignInVisible} 
           setIsSignInVisible={setIsSignInVisible} 
         />
-        <AddTreeButton onClick={(event) => showAddTree(event)} />
-        {/* <TreeInfo 
+        <TreeInfo 
           activeTree={activeTree}
           removeActiveTree={removeActiveTree}
           isAddTreeVisible={isAddTreeVisible}
           removeAddTree={removeAddTree}
           mapCenter={mapCenter} 
-        /> */}
+        />
         <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
           <Map 
             mapSize='main'
@@ -69,7 +69,8 @@ function App() {
             setDraggablePosition={setDraggablePosition}
           />
         </div>
-        <AddTreeNew 
+        <AddTreeButton onClick={(event) => showAddTree(event)} />
+        <AddTree 
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}

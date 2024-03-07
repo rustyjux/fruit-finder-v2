@@ -58,7 +58,7 @@ export default function TreeInfo({ activeTree, removeActiveTree, isAddTreeVisibl
             <DrawerDescription>This action cannot be undone.</DrawerDescription>
           </DrawerHeader>
           {activeTree && activeTree!=='new-tree' && <CurrentTree activeTree={activeTree}/>}
-          {activeTree=='new-tree' && <AddTree mapCenter={mapCenter} />}
+          {/* {activeTree=='new-tree' && <AddTree mapCenter={mapCenter} />} */}
           <DrawerFooter>
             {/* <Button>Submit</Button> */}
             <DrawerClose>

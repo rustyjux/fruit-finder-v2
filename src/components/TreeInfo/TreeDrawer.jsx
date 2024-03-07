@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/drawer"
 import React, { Children, useState } from 'react'
 
-function TreeActionDrawer({ label, title, open, setOpen, children }) {
+function TreeDrawer({ label, title, open, setOpen, children }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen} 
@@ -34,4 +34,4 @@ function TreeActionDrawer({ label, title, open, setOpen, children }) {
   )
 }
 
-export default TreeActionDrawer
+export default TreeDrawer
