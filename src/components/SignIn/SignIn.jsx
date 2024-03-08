@@ -1,26 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
-// import { useCookies } from "react-cookie";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import React, { useState } from "react";
 import { useAuth } from "./AuthContext.jsx";
-import './SignIn.css';
 import FirebaseUI from 'firebaseui-react'
 import { auth, signOutUser } from "../../utils/firebase"
 
-
 export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const handleClickOutside = (event) => 
-    {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setIsSignInVisible(false); // Hide the sign-in container
-      }
-    };
-    document.addEventListener('click', handleClickOutside, true);
-    return () => {
-      document.removeEventListener('click', handleClickOutside, true);
-    };
-  }, [isSignInVisible, setIsSignInVisible]);
-  
+
   const redirectUrl = process.env.FIREBASE_REDIRECT_URL
   const UIConfig = {
     continueUrl: redirectUrl,
@@ -50,7 +43,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
     // formButtonStyles: { backgroundColor: "red" },
     // formDisabledStyles: { backgroundColor: "yellow" },
     formInputStyles: { backgroundColor: "#ebebeb" },
-    containerStyles: { width: "45vw" },
+    // containerStyles: { width: "100%" },
     language: "en",
 
   };
@@ -59,10 +52,20 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
   const [showFirebaseUI, setShowFirebaseUI] = useState(!user);
 
   return (
-    <div ref={ref} className={`sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
-      {user && <p>Current user {user.email}</p>}
-      {user && <button onClick={signOutUser}>Sign out</button>}
-      {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
-    </div>
+    <Dialog open={isSignInVisible} onOpenChange={setIsSignInVisible} modal={true}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Account</DialogTitle>
+          <DialogDescription>
+            {user && <p>Current user {user.email}</p>}
+            {user && <button onClick={signOutUser}>Sign out</button>}
+            {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
+            Redirect URL: {redirectUrl}
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+    // <div ref={ref} className={`bg-background sign-in-container sign-in-container--${isSignInVisible ? 'active' : 'hidden'}`}>
+    // </div>
   );
 }

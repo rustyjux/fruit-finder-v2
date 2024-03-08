@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Toaster } from "../ui/toaster";
 import './App.css';
 import TreeInfo from '../TreeInfo/TreeInfo';
 import SignIn from "../SignIn/SignIn"
@@ -6,10 +7,12 @@ import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
 import UserIcon from './UserIcon';
 import AddTreeButton from './AddTreeButton'
+import AddTree from '../TreeInfo/AddTree';
+import ViewEditTree from '../TreeInfo/ViewEditTree';
 
 function App() {
   // const { isAuth } = useAuth();
-  const [isSignInVisible, setIsSignInVisible] = useState(true);
+  const [isSignInVisible, setIsSignInVisible] = useState(false);
   const showSignIn = (event) => {
     event.stopPropagation()
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
@@ -19,18 +22,41 @@ function App() {
   const showAddTree = (event) => {
     event.stopPropagation()
     setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    // setIsAddTreeVisible(true)
+    setActiveTree("new-tree")
   };
+  const cancelAddTree = () => {
+    setIsAddTreeVisible(null);
+    setActiveTree(null)
+  }
+
+  const [isViewEditVisible, setIsViewEditVisible] = useState(false);
+  // const showViewEdit = (event) => {
+  //   event.stopPropagation()
+  //   setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+  //   // setIsAddTreeVisible(true)
+  //   setActiveTree("new-tree")
+  // };
+  // const removeAddTree = () => {
+  //   setIsAddTreeVisible(null);
+  //   setActiveTree(null)
+  // }
 
   const [activeTree, setActiveTree] = useState(null);
+  // used only to add tree off of map
   const makeActiveTree = (activeTree) => {
+    setIsViewEditVisible(true)
     setActiveTree(activeTree);
   }
   const removeActiveTree = () => {
     setActiveTree(null);
   }
-  console.log('APP: Active tree is: ', activeTree);
+  // console.log('APP: Active tree is: ', activeTree);
 
-  const [mapCenter, setMapCenter] = useState({ latitude: 0, longitude: 0 });
+  const initialMapCenter = [49.076,-117.802]
+  const [mapCenter, setMapCenter] = useState({ lat: initialMapCenter[0], lng: initialMapCenter[1] });
+
+  const [draggablePosition, setDraggablePosition] = useState(mapCenter)
 
   return (
     <div className="app-container">
@@ -39,23 +65,34 @@ function App() {
           isSignInVisible={isSignInVisible} 
           setIsSignInVisible={setIsSignInVisible} 
         />
-        <AddTreeButton onClick={(event) => showAddTree(event)} />
-        <TreeInfo 
-          activeTree={activeTree}
-          removeActiveTree={removeActiveTree}
-          isAddTreeVisible={isAddTreeVisible}
-          mapCenter={mapCenter} 
-        />
         <div className='main-map-container' style={{position: 'relative', zIndex: '1'}}>
           <Map 
             mapSize='main'
             makeActiveTree={makeActiveTree} 
             activeTree={activeTree}
             zoomSetting={15}
-            initialMapCenter={[49.076,-117.8023979]} 
+            initialMapCenter={initialMapCenter} 
             setMapCenter={setMapCenter}
+            draggablePosition={draggablePosition}
+            setDraggablePosition={setDraggablePosition}
           />
         </div>
+        {activeTree && (
+          <ViewEditTree 
+            activeTree={activeTree}
+            removeActiveTree={removeActiveTree}
+            isViewEditVisible={isViewEditVisible}
+            setIsViewEditVisible={setIsViewEditVisible}
+          />
+        )}
+        <AddTreeButton onClick={(event) => showAddTree(event)} />
+        <AddTree 
+          isAddTreeVisible={isAddTreeVisible}
+          setIsAddTreeVisible={setIsAddTreeVisible}
+          draggablePosition={draggablePosition}
+        />
+        <Toaster />
+        {/* <Toaster className="z-3000" /> */}
     </div>
   );
 }

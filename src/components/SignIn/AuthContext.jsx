@@ -6,9 +6,19 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const AuthContext = createContext();
 
+// export function useAuth() {
+//   // Return AuthContext OR an empty object if context is undefined
+//   return useContext(AuthContext) || {};
+// }
+
 export function useAuth() {
-  // Return AuthContext OR an empty object if context is undefined
-  return useContext(AuthContext) || {};
+  const authContext = useContext(AuthContext);
+  
+  if (!authContext) {
+    console.error("useAuth must be used within an AuthProvider");
+  }
+
+  return authContext;
 }
 
 export function AuthProvider({ children }) {
