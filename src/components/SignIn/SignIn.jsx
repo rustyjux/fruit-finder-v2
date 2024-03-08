@@ -15,6 +15,7 @@ import { auth, signOutUser } from "../../utils/firebase"
 export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
 
   const redirectUrl = process.env.FIREBASE_REDIRECT_URL
+  const firebaseCollection = process.env.FIREBASE_COLLECTION
   const UIConfig = {
     continueUrl: redirectUrl,
     // requireVerifyEmail: true,
@@ -60,7 +61,8 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
             {user && <p>Current user {user.email}</p>}
             {user && <button onClick={signOutUser}>Sign out</button>}
             {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
-            Redirect URL: {redirectUrl}
+            <br/>Redirect URL: {redirectUrl}
+            <br/>Firebase Collection: {firebaseCollection}
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

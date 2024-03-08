@@ -27,7 +27,8 @@ export default function Map({
   }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
-  const treesCollectionRef = collection(db, "tree-features");
+  const firebaseCollection = process.env.FIREBASE_COLLECTION
+  const treesCollectionRef = collection(db, firebaseCollection);
   
   // Retrieve trees from Firestore
   useEffect(() => {
@@ -87,7 +88,8 @@ export default function Map({
         center={initialMapCenter} 
         zoom={zoomSetting} 
         scrollWheelZoom={true} 
-        ref={setMap}>
+        ref={setMap}
+      >
       <LayersControl position="topleft">
         <BaseLayer checked name="Streets">
           <TileLayer

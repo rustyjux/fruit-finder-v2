@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from "../ui/toaster";
 import './App.css';
 import TreeInfo from '../TreeInfo/TreeInfo';
@@ -19,39 +19,40 @@ function App() {
   };
  
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
-  const showAddTree = (event) => {
-    event.stopPropagation()
+  const [addTreeEnded, setAddTreeEnded] = useState('initial');
+  const showAddTree = () => {
     setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
-    // setIsAddTreeVisible(true)
     setActiveTree("new-tree")
+    if (addTreeEnded === true || addTreeEnded === 'initial') {
+      setDraggablePosition(mapCenter);
+    }
+    setAddTreeEnded(false)
   };
-  const cancelAddTree = () => {
-    setIsAddTreeVisible(null);
+  const endAddTree = () => {
+    setIsAddTreeVisible(false);
     setActiveTree(null)
+    setAddTreeEnded(true)
   }
-
+  
   const [isViewEditVisible, setIsViewEditVisible] = useState(false);
-  // const showViewEdit = (event) => {
-  //   event.stopPropagation()
-  //   setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
-  //   // setIsAddTreeVisible(true)
-  //   setActiveTree("new-tree")
-  // };
-  // const removeAddTree = () => {
-  //   setIsAddTreeVisible(null);
-  //   setActiveTree(null)
-  // }
 
   const [activeTree, setActiveTree] = useState(null);
-  // used only to add tree off of map
+
+  // Use for setting active tree from Map/TreeMarker
   const makeActiveTree = (activeTree) => {
     setIsViewEditVisible(true)
     setActiveTree(activeTree);
   }
+  
   const removeActiveTree = () => {
     setActiveTree(null);
   }
-  // console.log('APP: Active tree is: ', activeTree);
+
+  useEffect(() => {
+    if (!isViewEditVisible) {
+      removeActiveTree();
+    }
+  }, [isViewEditVisible]);
 
   const initialMapCenter = [49.076,-117.802]
   const [mapCenter, setMapCenter] = useState({ lat: initialMapCenter[0], lng: initialMapCenter[1] });
@@ -77,7 +78,7 @@ function App() {
             setDraggablePosition={setDraggablePosition}
           />
         </div>
-        {activeTree && (
+        {activeTree && activeTree!=='new-tree' && (
           <ViewEditTree 
             activeTree={activeTree}
             removeActiveTree={removeActiveTree}
@@ -90,9 +91,9 @@ function App() {
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}
+          endAddTree={endAddTree}
         />
         <Toaster />
-        {/* <Toaster className="z-3000" /> */}
     </div>
   );
 }
