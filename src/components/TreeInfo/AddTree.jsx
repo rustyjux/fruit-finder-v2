@@ -27,6 +27,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
+import { useToast } from "../ui/use-toast";
+
 
 import TreeDrawer from "./TreeDrawer";
 import { NewTreeSchema } from "@/schema";
@@ -34,16 +37,18 @@ import { NewTreeSchema } from "@/schema";
 import { useState, useEffect, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
+import { isDirective } from "@babel/types";
 
-export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition }) {
+export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition, endAddTree }) {
   const [key, setKey] = useState(+new Date())
+  const { toast } = useToast()
 
   const form = useForm({
     resolver: zodResolver(NewTreeSchema),
     defaultValues: {
       latitude: draggablePosition.lat,
       longitude: draggablePosition.lng,
-      type: "apple",
+      // type: null,
       treeCount: 1,
       access: "unknown",
       notes: ""
@@ -56,18 +61,18 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     setValue,
     reset,
     formState,
-    formState: { isSubmitting, isSubmitSuccessful }
+    formState: { isDirty, dirtyFields, isSubmitting, isSubmitSuccessful }
   } = form;
 
-  // console.log("issubmit", isSubmitting)
-  // console.log("issubmit successfull", isSubmitSuccessful)
+  // console.log('is dirty', isDirty)
+  // console.log('touched fields', touchedFields)
 
   const firebaseCollection = process.env.FIREBASE_COLLECTION
   const treesCollectionRef = collection(db, firebaseCollection);
 
   const onSubmit = async (data) => {
     console.log('submitted!')
-
+    
     await addDoc(treesCollectionRef, {
       location: {
         latitude: data.latitude,
@@ -81,22 +86,33 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
       userDisplayName: auth.currentUser ? auth.currentUser.displayName : "no username",
       userEmail: auth.currentUser ? auth.currentUser.email : null,
       new: true
-  });
+    });
+    
+    endAddTree()
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    toast({
+      className: cn(
+          "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
+      title: "New tree added",
+      // description: "Friday, February 10, 2023 at 5:57 PM",
+    });
 
     // TODO: if isSubmitSuccessful is true:
-    // hide drawer, display toast, remove active tree 
-
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // })
+    // set active tree to newly submitted tree
   }
+  var activeSnapPoint = null
+  const snapPoints = [0.6,1];
+  const [snap, setSnap] = useState(0.6);
+
+  // TODO: open the full drawer when user interacts with form
+  useEffect(() => {
+    if ('type' in dirtyFields) {
+      console.log('dirty now')
+      // setIsAddTreeVisible(true)
+      setSnap(1)
+    }
+  }, [formState]);
 
   useEffect(() => {
     // Watch for changes in draggablePosition and update form values accordingly
@@ -112,16 +128,27 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     }
   }, [formState, reset]);
 
+  async function cancelAddTree(e) {
+    e.preventDefault();
+    setKey(+new Date())
+    reset(undefined)
+    endAddTree()
+    setSnap(null)
+  }
+
   return (
     <TreeDrawer
     title="Add a new tree"
     label="Drag the marker to adjust tree location"
     open={isAddTreeVisible}
     onOpenChange={setIsAddTreeVisible}
-    snapPoints={[0.6,1]}
+    snapPoints={snapPoints}
+    activeSnapPoint={snap}
+    setActiveSnapPoint={setSnap}
+    closeButtonAction={cancelAddTree}
     >
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-0 pt-0">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-4 pt-0">
         <div className="space-y-2">
         <FormField
             control={form.control}
@@ -235,13 +262,9 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
         </div>
         <div className="button-row flex space-x-4">
           <Button variant="outline" className="w-full"
-          onClick={(e) => {
-            e.preventDefault();
-            setKey(+new Date())
-            reset(undefined)
-          }}
+          onClick={cancelAddTree}
             >
-              Reset</Button>
+              Cancel</Button>
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>

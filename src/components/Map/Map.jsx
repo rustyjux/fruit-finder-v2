@@ -88,7 +88,8 @@ export default function Map({
         center={initialMapCenter} 
         zoom={zoomSetting} 
         scrollWheelZoom={true} 
-        ref={setMap}>
+        ref={setMap}
+      >
       <LayersControl position="topleft">
         <BaseLayer checked name="Streets">
           <TileLayer

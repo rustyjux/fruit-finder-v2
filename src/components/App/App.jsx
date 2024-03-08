@@ -19,25 +19,31 @@ function App() {
   };
  
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
-  const showAddTree = (event) => {
-    event.stopPropagation()
+  const [addTreeEnded, setAddTreeEnded] = useState('initial');
+  const showAddTree = () => {
     setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
-    // setIsAddTreeVisible(true)
     setActiveTree("new-tree")
+    if (addTreeEnded === true || addTreeEnded === 'initial') {
+      setDraggablePosition(mapCenter);
+    }
+    setAddTreeEnded(false)
   };
-  const cancelAddTree = () => {
-    setIsAddTreeVisible(null);
+  const endAddTree = () => {
+    setIsAddTreeVisible(false);
     setActiveTree(null)
+    setAddTreeEnded(true)
   }
-
+  
   const [isViewEditVisible, setIsViewEditVisible] = useState(false);
 
   const [activeTree, setActiveTree] = useState(null);
+
   // Use for setting active tree from Map/TreeMarker
   const makeActiveTree = (activeTree) => {
     setIsViewEditVisible(true)
     setActiveTree(activeTree);
   }
+  
   const removeActiveTree = () => {
     setActiveTree(null);
   }
@@ -85,9 +91,9 @@ function App() {
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}
+          endAddTree={endAddTree}
         />
         <Toaster />
-        {/* <Toaster className="z-3000" /> */}
     </div>
   );
 }

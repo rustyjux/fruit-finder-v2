@@ -18,8 +18,8 @@ export default function CurrentTree({ activeTree }) {
                 console.log('pick!')
                 toast({
                     className: cn(
-                        "fixed top-0 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
-                    title: "Tree marked as picked!",
+                        "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
+                    title: "Tree marked as picked",
                     // description: "Friday, February 10, 2023 at 5:57 PM",
                   });
             case 'Edit':

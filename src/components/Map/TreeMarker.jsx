@@ -22,18 +22,11 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
       pathOptions={{ color: isActive ? 'yellow' : color }}
       eventHandlers={{
         click: (e) => {
-          console.log('marker clicked', e)
+          // console.log('marker clicked', e)
           makeActiveTree(tree)
         },
       }}
     >
-      {/* <Popup position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}>
-        <div>
-          <h2>{"Tree type: " + tree.properties.Type}</h2>
-          <div>{"ID: " + tree.id}</div>
-          <button onClick={null} className='change-tree-type'>Make it a banana!</button>
-        </div>
-      </Popup> */}
     </CircleMarker>
   );
 };
