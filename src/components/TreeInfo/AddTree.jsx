@@ -116,7 +116,8 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     title="Add a new tree"
     label="Drag the marker to adjust tree location"
     open={isAddTreeVisible}
-    setOpen={setIsAddTreeVisible}
+    onOpenChange={setIsAddTreeVisible}
+    snapPoints={[0.6,1]}
     >
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-0 pt-0">

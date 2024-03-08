@@ -77,19 +77,21 @@ function App() {
             setDraggablePosition={setDraggablePosition}
           />
         </div>
-        <ViewEditTree 
-          activeTree={activeTree}
-          removeActiveTree={removeActiveTree}
-          isViewEditVisible={isViewEditVisible}
-          setIsViewEditVisible={setIsViewEditVisible}
-        />
+        {activeTree && (
+          <ViewEditTree 
+            activeTree={activeTree}
+            removeActiveTree={removeActiveTree}
+            isViewEditVisible={isViewEditVisible}
+            setIsViewEditVisible={setIsViewEditVisible}
+          />
+        )}
         <AddTreeButton onClick={(event) => showAddTree(event)} />
         <AddTree 
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}
         />
-        {/* <Toaster /> */}
+        <Toaster />
         {/* <Toaster className="z-3000" /> */}
     </div>
   );

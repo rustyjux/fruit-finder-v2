@@ -14,7 +14,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 import CurrentTree from "./CurrentTree";
 import AddTree from "./AddTree";
-import './TreeInfo.css'
+// import './TreeInfo.css'
 
 export default function TreeInfo({ activeTree, removeActiveTree, isAddTreeVisible, removeAddTree, mapCenter }) {
     const ref = useRef(null);
@@ -58,7 +58,7 @@ export default function TreeInfo({ activeTree, removeActiveTree, isAddTreeVisibl
             <DrawerDescription>This action cannot be undone.</DrawerDescription>
           </DrawerHeader>
           {activeTree && activeTree!=='new-tree' && <CurrentTree activeTree={activeTree}/>}
-          {/* {activeTree=='new-tree' && <AddTree mapCenter={mapCenter} />} */}
+          {/* {activeTree && EDITCONDITION && <EditTree mapCenter={mapCenter} />} */}
           <DrawerFooter>
             {/* <Button>Submit</Button> */}
             <DrawerClose>
