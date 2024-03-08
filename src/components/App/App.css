@@ -66,7 +66,7 @@
   object-fit: cover; /* Cover the entire area */
 }
   
-.add-tree-btn{
+/* .add-tree-btn{
   cursor: pointer;
   position: absolute;
   top: 70px;
@@ -84,4 +84,3 @@
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
   /* outline: 3px solid white; */
   /* outline-offset: -1px; */
-}
