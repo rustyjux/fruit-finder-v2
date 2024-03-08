@@ -62,7 +62,8 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   // console.log("issubmit", isSubmitting)
   // console.log("issubmit successfull", isSubmitSuccessful)
 
-  const treesCollectionRef = collection(db, "tree-features");
+  const firebaseCollection = process.env.FIREBASE_COLLECTION
+  const treesCollectionRef = collection(db, firebaseCollection);
 
   const onSubmit = async (data) => {
     console.log('submitted!')
