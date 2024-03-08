@@ -60,6 +60,7 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
             {user && <p>Current user {user.email}</p>}
             {user && <button onClick={signOutUser}>Sign out</button>}
             {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
+            Redirect URL: {redirectUrl}
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
