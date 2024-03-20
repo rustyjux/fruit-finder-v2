@@ -27,6 +27,8 @@ export default function DraggableMarker({ draggablePosition, setDraggablePositio
     return (
         <Marker
         draggable={draggable}
+        autoPan={true}
+        autoPanSpeed={3}
         eventHandlers={eventHandlers}
         position={draggablePosition}
         ref={markerRef}>

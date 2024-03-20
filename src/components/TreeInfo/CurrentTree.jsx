@@ -45,7 +45,7 @@ export default function CurrentTree({ activeTree }) {
             {/* <div className="p-2 grid grid-cols-4 gap-x-3"> */}
             <div className="p-2 space-x-2 overflow-x-auto whitespace-nowrap">
                 <Button variant="" size="sm" onClick={() => handleButtonClick('Pick')}>
-                    <FaHandSparkles className="mr-2 h-4 w-4"/> Pick
+                    <FaHandSparkles className="mr-2 h-4 w-4"/> Picked
                 </Button>
                 <Button size="sm" onClick={() => handleButtonClick('Edit')}>
                     <FaPencil className="mr-2 h-4 w-4"/> Edit

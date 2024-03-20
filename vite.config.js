@@ -17,7 +17,7 @@ export default defineConfig({
     },
   },
   // to access from local network
-  //   server: {
-  //   host: '0.0.0.0',
-  // },
+    server: {
+    host: '0.0.0.0',
+  },
 })

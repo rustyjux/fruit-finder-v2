@@ -6,7 +6,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-
+import { Button } from "@/components/ui/button"
+import ExportGeoJSON from "../Admin/ExportData.jsx";
 import React, { useState } from "react";
 import { useAuth } from "./AuthContext.jsx";
 import FirebaseUI from 'firebaseui-react'
@@ -59,10 +60,10 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
           <DialogTitle>Account</DialogTitle>
           <DialogDescription>
             {user && <p>Current user {user.email}</p>}
-            {user && <button onClick={signOutUser}>Sign out</button>}
+            {user && <Button onClick={signOutUser}>Sign out</Button>}
             {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
-            <br/>Redirect URL: {redirectUrl}
-            <br/>Firebase Collection: {firebaseCollection}
+            {/* <br/>Redirect URL: {redirectUrl} */}
+            {/* <br/>Firebase Collection: {firebaseCollection} */}
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

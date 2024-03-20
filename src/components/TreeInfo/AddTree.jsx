@@ -102,7 +102,7 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     // set active tree to newly submitted tree
   }
   var activeSnapPoint = null
-  const snapPoints = [0.6,1];
+  const snapPoints = [0.65,1];
   const [snap, setSnap] = useState(0.6);
 
   // TODO: open the full drawer when user interacts with form

@@ -30,6 +30,8 @@ export default function Map({
   const firebaseCollection = process.env.FIREBASE_COLLECTION
   const treesCollectionRef = collection(db, firebaseCollection);
   
+  const canvasRenderer = L.canvas({ tolerance: 5 })
+
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(
@@ -85,6 +87,8 @@ export default function Map({
   return (
     <div className={`map-container map-container--${mapSize}`}>
       <MapContainer 
+        renderer={canvasRenderer}
+        preferCanvas={true}
         center={initialMapCenter} 
         zoom={zoomSetting} 
         scrollWheelZoom={true} 
