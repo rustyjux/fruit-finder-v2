@@ -19,7 +19,10 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
       center={[tree.location.latitude, tree.location.longitude]}
       radius={isActive ? 12 : 8}
       // color={color}
-      pathOptions={{ color: isActive ? 'yellow' : color }}
+      pathOptions={{ 
+        color: isActive ? 'yellow' : color,
+        fillOpacity: tree.picked ? 0 : (tree.ripe ? 0.7 : 0.3)
+      }}
       eventHandlers={{
         click: (e) => {
           // console.log('marker clicked', e)

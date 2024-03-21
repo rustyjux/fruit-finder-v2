@@ -37,7 +37,6 @@ import { NewTreeSchema } from "@/schema";
 import { useState, useEffect, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
-import { isDirective } from "@babel/types";
 
 export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition, endAddTree }) {
   const [key, setKey] = useState(+new Date())

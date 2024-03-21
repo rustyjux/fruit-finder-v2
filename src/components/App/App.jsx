@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Toaster } from "../ui/toaster";
 import './App.css';
-import TreeInfo from '../TreeInfo/TreeInfo';
 import SignIn from "../SignIn/SignIn"
 import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
