@@ -1,5 +1,5 @@
 import { Marker, CircleMarker } from 'react-leaflet';
-import { appleLIcon, lockedLIcon, multipleLIcon } from './MapIcons';
+import { appleLIcon, lockedLIcon, multipleLIcon, barLIcon } from './MapIcons';
 import { treeTypes } from '@/utils/displayText';
 
 export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
@@ -33,10 +33,12 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
         radius={isActive ? 12 : 8}
         // color={color}
         pathOptions={{ 
-          color: isActive ? 'yellow' : color,
+          color: tree.ripe ? 'yellow' : color,
+          // color: isActive ? 'yellow' : (tree.ripe ? 'yellow' : color),
           // fillOpacity: tree.picked ? 0 : 0.4
-          fillOpacity: tree.picked ? 0 : (tree.ripe ? 1 : 0.4),
-          fillColor: tree.ripe ? 'tomato' : color
+          fillOpacity: tree.picked ? 0.4 : (tree.ripe ? 1 : 0.4),
+          // fillColor: tree.ripe ? 'tomato' : color
+          fillColor: tree.picked ? 'white' : color
         }}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
 
@@ -64,7 +66,7 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
       {tree.access === 'private' && (
         <Marker 
         position={[tree.location.latitude, tree.location.longitude]} 
-        icon={lockedLIcon}
+        icon={barLIcon}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >
         </Marker>

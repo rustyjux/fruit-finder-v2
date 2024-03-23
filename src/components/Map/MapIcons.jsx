@@ -33,3 +33,8 @@ export const lockedLIcon = new  L.Icon({
     iconSize: [20, 20],
     iconAnchor: [10, 10],
 });
+export const barLIcon = new  L.Icon({
+    iconUrl: '/assets/bar.svg',
+    iconSize: [14, 20],
+    iconAnchor: [7, 10],
+});
