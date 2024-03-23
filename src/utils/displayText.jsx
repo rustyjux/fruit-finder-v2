@@ -6,13 +6,12 @@ export const getDisplayText = (value, map) => {
 };
 
 export const treeTypes = {
-    apple: { color: 'red' },
+    apple: { color: 'green' },
     plum: { color: 'purple' },
     cherry: { color: 'pink' },
-    pear: { color: 'green' },
+    pear: { color: 'teal' },
     crabapple: { color: 'orange' },
-    walnut: { color: 'brown' },
-    other: { color: 'gray' }
+    other: { color: 'brown' }
   };
 
 export const accessMap = {

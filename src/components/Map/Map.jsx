@@ -37,7 +37,7 @@ export default function Map({
     const queryTrees = query(
       treesCollectionRef,
       where("new", "==", true),
-      limit(10)
+      limit(50)
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {
@@ -97,9 +97,10 @@ export default function Map({
       <LayersControl position="topleft">
         <BaseLayer checked name="Streets">
           <TileLayer
+          // zoomOffset={1}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          //   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          url={`https://api.mapbox.com/styles/v1/rustyjux/clny3ijlz003j01mvbr8xeqrc/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
+            // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url={`https://api.mapbox.com/styles/v1/rustyjux/clny3ijlz003j01mvbr8xeqrc/tiles/256/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
           // url={`https://api.mapbox.com/styles/v1/rustyjux/clt24k95b007101ragek5gbkb/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
           />
         </BaseLayer>

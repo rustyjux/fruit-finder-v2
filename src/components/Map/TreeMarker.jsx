@@ -1,4 +1,6 @@
 import { Marker, CircleMarker } from 'react-leaflet';
+import { appleLIcon, lockedLIcon, multipleLIcon } from './MapIcons';
+import { treeTypes } from '@/utils/displayText';
 
 export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
   
@@ -10,15 +12,19 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
   };
 
   const type = tree.type.toLowerCase();
-  const color = typeColorMapping[type] || 'blue'; // Default to blue if no mapping found
+  const color = treeTypes[type]?.color || treeTypes['other'].color; // Default to blue if no mapping found
 
   const isActive = activeTree && activeTree.id === tree.id;
 
-  const appleIcon = new  L.Icon({
-    iconUrl: 'src/assets/red-apple.svg', // Replace 'path/to/star-icon.svg' with the actual path to your SVG file
-    iconSize: [20, 20], // Adjust the size of the icon as needed
-    iconAnchor: [16, 16], // Position the icon anchor at the center
-  });
+  // check if picked in last year
+  
+  const lastPickedTime = tree?.lastPickedTime;
+  if (lastPickedTime) {
+    const currentDate = new Date();
+    const janFirst = new Date(currentDate.getFullYear(), 0, 1);
+    const lastPickedTimeDt = lastPickedTime.toDate();
+    tree.picked = lastPickedTimeDt > janFirst;
+  }
 
   return (
     <>
@@ -28,29 +34,41 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
         // color={color}
         pathOptions={{ 
           color: isActive ? 'yellow' : color,
-          fillOpacity: tree.picked ? 0 : 0.4
-          // fillOpacity: tree.picked ? 0 : (tree.ripe ? 0.7 : 0.3)
+          // fillOpacity: tree.picked ? 0 : 0.4
+          fillOpacity: tree.picked ? 0 : (tree.ripe ? 1 : 0.4),
+          fillColor: tree.ripe ? 'tomato' : color
         }}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
 
         >
       </CircleMarker>
-      {tree.ripe && (
+      
+      {/* apple marker for ripe tree */}
+      {/* {tree.ripe && (
         <Marker 
         position={[tree.location.latitude, tree.location.longitude]} 
-        icon={appleIcon}
-        eventHandlers={{ click: (e) => makeActiveTree(tree) }}
-        >
-        </Marker>
-      )}
-      {/* {tree.treeCount > 1 && (
-        <Marker 
-        position={[tree.location.latitude, tree.location.longitude]} 
-        icon={appleIcon}
+        icon={appleLIcon}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >
         </Marker>
       )} */}
+      
+      {tree.treeCount > 1 && (
+        <Marker 
+        position={[tree.location.latitude, tree.location.longitude]} 
+        icon={multipleLIcon}
+        eventHandlers={{ click: (e) => makeActiveTree(tree) }}
+        >
+        </Marker>
+      )}
+      {tree.access === 'private' && (
+        <Marker 
+        position={[tree.location.latitude, tree.location.longitude]} 
+        icon={lockedLIcon}
+        eventHandlers={{ click: (e) => makeActiveTree(tree) }}
+        >
+        </Marker>
+      )}
     </>
   );
 };

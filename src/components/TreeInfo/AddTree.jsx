@@ -82,8 +82,8 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
       access: data.access,
       notes: data.notes,
       createdAt: serverTimestamp(),
-      userDisplayName: auth.currentUser ? auth.currentUser.displayName : "no username",
-      userEmail: auth.currentUser ? auth.currentUser.email : null,
+      createByName: auth.currentUser ? auth.currentUser.displayName : null,
+      createdByEmail: auth.currentUser ? auth.currentUser.email : null,
       new: true
     });
     
@@ -107,7 +107,7 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   // TODO: open the full drawer when user interacts with form
   useEffect(() => {
     if ('type' in dirtyFields) {
-      console.log('dirty now')
+      // console.log('dirty now')
       // setIsAddTreeVisible(true)
       setSnap(1)
     }
@@ -189,12 +189,11 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="fruit">Mixed</SelectItem>
                   <SelectItem value="plum">Plum</SelectItem>
                   <SelectItem value="cherry">Cherry</SelectItem>
                   <SelectItem value="pear">Pear</SelectItem>
                   <SelectItem value="crabapple">Crabapple</SelectItem>
-                  <SelectItem value="walnut">Walnut</SelectItem>
+                  {/* <SelectItem value="fruit">Mixed</SelectItem> */}
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useToast } from "../ui/use-toast";
 import { toTitleCase } from "../../utils/helpers";
@@ -11,24 +12,50 @@ import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 
 export default function CurrentTree({ activeTree }) {
-    console.log('render current tree!')
     const { toast } = useToast()
     const firebaseCollection = process.env.FIREBASE_COLLECTION
     const treeId = activeTree.id
     const docRef = doc(db, firebaseCollection, treeId)
 
-    const onPick = async () => {
-        const newPickedValue = !activeTree.picked;
+    // check if picked in last year
+    const [pickedThisYear, setPickedThisYear] = useState(false)
+    const [dateString, setDateString] = useState("");
     
-        await updateDoc(docRef, {
-            picked: newPickedValue,
-            ripe: false
-        });
+    useEffect(() => {
+        const lastPickedTime = activeTree?.lastPickedTime;
+        const currentDate = new Date();
+        const janFirst = new Date(currentDate.getFullYear(), 0, 1);
+        
+        if (lastPickedTime) {
+            const lastPickedTimeDt = lastPickedTime.toDate();
+            const newDateString = lastPickedTimeDt.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            setDateString(newDateString); // Update dateString state
+            setPickedThisYear(lastPickedTimeDt > janFirst);
+        } else {
+            setPickedThisYear(false);
+        }
+    }, [activeTree]); 
+
+    const onPick = async () => {
+        let pickToastMsg = "Tree already marked picked"
+        if (!pickedThisYear) {
+            await updateDoc(docRef, {
+                lastPickedTime: serverTimestamp(),
+                lastPickedByName: auth.currentUser ? auth.currentUser.displayName : null,
+                lastPickedByEmail: auth.currentUser ? auth.currentUser.email : null,
+                ripe: false
+            });
+            pickToastMsg = "Tree marked as picked"
+        }
     
         toast({
             className: cn(
                 "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
-            title: `Tree marked as ${newPickedValue ? 'picked' : 'not picked'}`, // Display appropriate message based on the new value
+            title: pickToastMsg,
         });  
     };
 
@@ -37,7 +64,7 @@ export default function CurrentTree({ activeTree }) {
     
         await updateDoc(docRef, {
             ripe: newRipeValue,
-            picked: false
+            lastPickedTime: null
         });
     
         toast({
@@ -69,9 +96,9 @@ export default function CurrentTree({ activeTree }) {
     return (
         <>
             <div className="space-y-0 p-2 pb-0 pt-0 flex flex-wrap items-start">
-                {activeTree.ripe && (<p>Tree is {activeTree.ripe ? 'ripe' : 'not ripe'}</p>)}
-                {activeTree.picked && (<p>Tree is {activeTree.picked ? 'picked' : 'not picked'}</p>)}
-                {activeTree.notes && (<p>{activeTree.notes}</p>)}
+                {activeTree.ripe && <Badge variant="secondary" className="mb-2">Ripe</Badge>}
+                {pickedThisYear && <Badge variant="secondary" className="mb-2">Picked - {dateString}</Badge>}
+                {activeTree.notes && (<div className="w-full">{activeTree.notes}</div>)}
             </div>
             {/* BUTTONS */}
             {/* <div className="p-2 grid grid-cols-4 gap-x-3"> */}
