@@ -98,7 +98,9 @@ export default function CurrentTree({ activeTree }) {
             <div className="space-y-0 p-2 pb-0 pt-0 flex flex-wrap items-start">
                 {activeTree.ripe && <Badge variant="outline" className="mb-2"><FaRegStar className="mr-2 h-3 w-3"/> Ripe</Badge>}
                 {pickedThisYear && <Badge variant="outline" className="mb-2">Picked - {dateString}</Badge>}
-                {activeTree.notes && (<div className="w-full">{activeTree.notes}</div>)}
+                {activeTree.notes && (
+                    <div className="w-full" dangerouslySetInnerHTML={{ __html: activeTree.notes.replace(/\n/g, "<br>") }} />
+                )}
             </div>
             {/* BUTTONS */}
             {/* <div className="p-2 grid grid-cols-4 gap-x-3"> */}
