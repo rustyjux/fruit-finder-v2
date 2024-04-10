@@ -28,7 +28,9 @@ export default function Map({
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
   const firebaseCollection = process.env.FIREBASE_COLLECTION
-  const treesCollectionRef = collection(db, firebaseCollection);
+  // const treesCollectionRef = collection(db, firebaseCollection);
+  // TODO: restore to line above after loading data into dev and test envs
+  const treesCollectionRef = collection(db, 'tree-features');
   
   const canvasRenderer = L.canvas({ tolerance: 5 })
 
@@ -36,7 +38,7 @@ export default function Map({
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
-      limit(50)
+      // limit(50)
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {

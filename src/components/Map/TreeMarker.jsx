@@ -11,34 +11,34 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
     // Add more tree types and colors as needed
   };
 
-  const type = tree.type.toLowerCase();
+  const type = tree.properties.type.toLowerCase();
   const color = treeTypes[type]?.color || treeTypes['other'].color; // Default to blue if no mapping found
 
   const isActive = activeTree && activeTree.id === tree.id;
 
   // check if picked in last year
   
-  const lastPickedTime = tree?.lastPickedTime;
+  const lastPickedTime = tree.properties?.lastPickedTime;
   if (lastPickedTime) {
     const currentDate = new Date();
     const janFirst = new Date(currentDate.getFullYear(), 0, 1);
     const lastPickedTimeDt = lastPickedTime.toDate();
-    tree.picked = lastPickedTimeDt > janFirst;
+    tree.properties.picked = lastPickedTimeDt > janFirst;
   }
 
   return (
     <>
       <CircleMarker 
-        center={[tree.location.latitude, tree.location.longitude]}
+        center={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
         radius={isActive ? 12 : 8}
         // color={color}
         pathOptions={{ 
-          color: tree.ripe ? 'yellow' : color,
-          // color: isActive ? 'yellow' : (tree.ripe ? 'yellow' : color),
-          // fillOpacity: tree.picked ? 0 : 0.4
-          fillOpacity: tree.picked ? 0.4 : (tree.ripe ? 1 : 0.4),
-          // fillColor: tree.ripe ? 'tomato' : color
-          fillColor: tree.picked ? 'white' : color
+          color: tree.properties.ripe ? 'yellow' : color,
+          // color: isActive ? 'yellow' : (tree.properties.ripe ? 'yellow' : color),
+          // fillOpacity: tree.properties.picked ? 0 : 0.4
+          fillOpacity: tree.properties.picked ? 0.4 : (tree.properties.ripe ? 1 : 0.4),
+          // fillColor: tree.properties.ripe ? 'tomato' : color
+          fillColor: tree.properties.picked ? 'white' : color
         }}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
 
@@ -55,9 +55,9 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
         </Marker>
       )} */}
       
-      {tree.treeCount > 1 && (
+      {tree.properties.treeCount > 1 && (
         <Marker 
-        position={[tree.location.latitude, tree.location.longitude]} 
+        position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]} 
         icon={multipleLIcon}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >
@@ -65,7 +65,7 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
       )}
       {tree.access === 'private' && (
         <Marker 
-        position={[tree.location.latitude, tree.location.longitude]} 
+        position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]} 
         icon={barLIcon}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >
