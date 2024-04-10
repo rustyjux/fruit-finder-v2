@@ -36,7 +36,6 @@ export default function Map({
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
-      where("new", "==", true),
       limit(50)
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));

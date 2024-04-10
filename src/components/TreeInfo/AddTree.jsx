@@ -70,8 +70,6 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   const treesCollectionRef = collection(db, firebaseCollection);
 
   const onSubmit = async (data) => {
-    console.log('submitted!')
-    
     await addDoc(treesCollectionRef, {
       location: {
         latitude: data.latitude,
@@ -81,10 +79,9 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
       treeCount: data.treeCount,
       access: data.access,
       notes: data.notes,
-      createdAt: serverTimestamp(),
+      createdDate: serverTimestamp(),
       createByName: auth.currentUser ? auth.currentUser.displayName : null,
-      createdByEmail: auth.currentUser ? auth.currentUser.email : null,
-      new: true
+      createdByEmail: auth.currentUser ? auth.currentUser.email : null
     });
     
     endAddTree()

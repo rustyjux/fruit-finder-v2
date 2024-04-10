@@ -44,7 +44,7 @@ export default function CurrentTree({ activeTree }) {
         let pickToastMsg = "Tree already marked picked"
         if (!pickedThisYear) {
             await updateDoc(docRef, {
-                lastPickedTime: serverTimestamp(),
+                lastPickedDate: serverTimestamp(),
                 lastPickedByName: auth.currentUser ? auth.currentUser.displayName : null,
                 lastPickedByEmail: auth.currentUser ? auth.currentUser.email : null,
                 ripe: false
