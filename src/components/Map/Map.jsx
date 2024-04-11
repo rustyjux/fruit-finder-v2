@@ -1,17 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { MapContainer, TileLayer, LayersControl, Marker, Popup, useMap } from 'react-leaflet';
-import { collection, onSnapshot, query, limit, where } from 'firebase/firestore';
+import { collection, onSnapshot, query, limit, where, FieldPath } from 'firebase/firestore';
 import { db } from "../../utils/firebase";
 
 import './Map.css';
-import treeData from "../../test-data/tree-data.json";
 import { appleLIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 import DraggableMarker from "./DraggableMarker";
 
 const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN
-// Get only actual tree points, not comments
-const treeItems = treeData.features.filter(tree => tree.geometry);
 
 const { BaseLayer } = LayersControl
 
@@ -28,9 +25,7 @@ export default function Map({
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
   const firebaseCollection = process.env.FIREBASE_COLLECTION
-  // const treesCollectionRef = collection(db, firebaseCollection);
-  // TODO: restore to line above after loading data into dev and test envs
-  const treesCollectionRef = collection(db, 'tree-features');
+  const treesCollectionRef = collection(db, firebaseCollection);
   
   const canvasRenderer = L.canvas({ tolerance: 5 })
 
