@@ -1,5 +1,3 @@
-//NOT CURRENTLY USED
-
 import L from 'leaflet';
 // import appleIcon from '/assets/red-apple.svg'
 

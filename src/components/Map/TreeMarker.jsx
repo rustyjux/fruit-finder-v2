@@ -17,7 +17,6 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
   const isActive = activeTree && activeTree.id === tree.id;
 
   // check if picked in last year
-  
   const lastPickedDate = tree.lastPickedDate;
   if (lastPickedDate) {
     const currentDate = new Date();
@@ -25,6 +24,24 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
     const lastPickedDateDt = lastPickedDate.toDate();
     tree.picked = lastPickedDateDt > janFirst;
   }
+
+  const getCounterIcon = (count) => {
+    if (count > 1 && count <= 4) {
+      return L.icon({
+        iconUrl: `/assets/counters/counter-${count}.png`,
+        iconSize: [15, 15], 
+        iconAnchor: [0, 12],
+      });
+    } else {
+      // Fallback icon
+      return L.icon({
+        iconUrl: `/assets/counters/counter-4.png`,
+        iconSize: [15, 15], 
+        iconAnchor: [0, 12],
+      });
+    }
+  }
+  
 
   return (
     <>
@@ -55,11 +72,12 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
         </Marker>
       )} */}
       
+      {/* USE DIVICON HERE */}
       {tree.treeCount > 1 && (
         <Marker 
-        position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]} 
-        icon={multipleLIcon}
-        eventHandlers={{ click: (e) => makeActiveTree(tree) }}
+          position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
+          icon={getCounterIcon(tree.treeCount)}
+          eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >
         </Marker>
       )}
