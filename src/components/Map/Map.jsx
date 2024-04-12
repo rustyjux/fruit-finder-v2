@@ -28,7 +28,7 @@ export default function Map({
   const treesCollectionRef = collection(db, firebaseCollection);
   
   const canvasRenderer = L.canvas({ tolerance: 5 })
-
+console.log('activeTree:',activeTree)
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(

@@ -38,18 +38,27 @@ function App() {
   const [activeTree, setActiveTree] = useState(null);
 
   // Use for setting active tree from Map/TreeMarker
-  const makeActiveTree = (activeTree) => {
-    setIsViewEditVisible(true)
-    setActiveTree(activeTree);
+  const makeActiveTree = (activeTreeToBe) => {
+    console.log('makeActiveTree - activeTree:', activeTree)
+    if (activeTree != 'new-tree'){
+      console.log('setActiveTree')
+      setIsViewEditVisible(true)
+      setActiveTree(activeTreeToBe);
+    } else {
+      console.log('active tree is new tree - will not setActiveTree')
+    }
   }
   
   const removeActiveTree = () => {
+    console.log('remove active')
     setActiveTree(null);
   }
 
   useEffect(() => {
-    if (!isViewEditVisible) {
-      removeActiveTree();
+    if (!isViewEditVisible && activeTree != 'new-tree') {
+    // if (!isViewEditVisible) {
+      console.log('remove active via effect')
+      // removeActiveTree();
     }
   }, [isViewEditVisible]);
 
@@ -85,7 +94,10 @@ function App() {
             setIsViewEditVisible={setIsViewEditVisible}
           />
         )}
-        <AddTreeButton onClick={(event) => showAddTree(event)} />
+        <AddTreeButton 
+          activeTree={activeTree} 
+          onClick={(event) => showAddTree(event)} 
+        />
         <AddTree 
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}

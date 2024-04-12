@@ -16,6 +16,7 @@ export default function TreeDrawer({ label, title, open, onOpenChange, snapPoint
   return (
     <Drawer open={open} onOpenChange={onOpenChange} 
     modal={false} 
+    // disablePreventScroll={true}
     snapPoints={snapPoints ? snapPoints : [1]}
     activeSnapPoint={activeSnapPoint}
     setActiveSnapPoint={setActiveSnapPoint}

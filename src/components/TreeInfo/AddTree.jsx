@@ -104,7 +104,7 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   const snapPoints = [0.65,1];
   const [snap, setSnap] = useState(0.6);
 
-  // TODO: open the full drawer when user interacts with form
+  // open the full drawer when user interacts with form
   useEffect(() => {
     if ('type' in dirtyFields) {
       // console.log('dirty now')
@@ -175,13 +175,14 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
               </FormItem>
             )}
           />
-          <FormField
+          <div onClick={(e) => e.stopPropagation()}>
+            <FormField
             control={form.control}
             name="treeType"
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel>Type</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} key={key}>
+                <Select onValueChange={field.onChange} defaultValue={field.value} key={key} >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a type of tree" />
@@ -201,6 +202,7 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
               </FormItem>
             )}
           />
+          </div>
           <FormField
             control={form.control}
             name="treeCount"
