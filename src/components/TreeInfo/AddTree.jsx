@@ -70,19 +70,22 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   const treesCollectionRef = collection(db, firebaseCollection);
 
   const onSubmit = async (data) => {
-    await addDoc(treesCollectionRef, {
-      location: {
-        latitude: data.latitude,
-        longitude: data.longitude,
+    const docRef = await addDoc(treesCollectionRef, {
+      geometry: {
+        type: "Point",
+        coordinates: [data.longitude, data.latitude]
       },
-      type: data.type,
+      treeType: data.treeType,
       treeCount: data.treeCount,
       access: data.access,
       notes: data.notes,
       createdDate: serverTimestamp(),
       createByName: auth.currentUser ? auth.currentUser.displayName : null,
-      createdByEmail: auth.currentUser ? auth.currentUser.email : null
+      createdByEmail: auth.currentUser ? auth.currentUser.email : null,
+      type: "Feature"
     });
+
+    console.log("Document written with ID: ", docRef.id);
     
     endAddTree()
     // await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -174,7 +177,7 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
           />
           <FormField
             control={form.control}
-            name="type"
+            name="treeType"
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel>Type</FormLabel>

@@ -15,14 +15,14 @@ export const treeTypes = {
   };
 
 export const accessMap = {
-    unknown: { text: 'Unknown access', icon: FaUserSecret },
-    public: { text: 'Public', icon: PiTree },
+    'unknown': { text: 'Unknown access', icon: FaUserSecret },
+    'public': { text: 'Public', icon: PiTree },
     'private-shared': { text: 'Private (Shared)', icon: FaBuilding },
-    private: { text: 'Private', icon: FaUserLock }
+    'private': { text: 'Private', icon: FaUserLock }
   };
   
 export function getAccessDisplayText(accessValue, withIcon = false) {
-    const { text, icon: Icon } = accessMap[accessValue] || { text: 'UNKNOWN VALUE', icon: null };
+    const { text, icon: Icon } = accessMap[accessValue] || { text: 'Unknown access', icon: FaUserSecret };
 
     if (withIcon && Icon) {
         return (

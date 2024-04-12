@@ -1,17 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { MapContainer, TileLayer, LayersControl, Marker, Popup, useMap } from 'react-leaflet';
-import { collection, onSnapshot, query, limit, where } from 'firebase/firestore';
+import { collection, onSnapshot, query, limit, where, FieldPath } from 'firebase/firestore';
 import { db } from "../../utils/firebase";
 
 import './Map.css';
-import treeData from "../../test-data/tree-data.json";
 import { appleLIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 import DraggableMarker from "./DraggableMarker";
 
 const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN
-// Get only actual tree points, not comments
-const treeItems = treeData.features.filter(tree => tree.geometry);
 
 const { BaseLayer } = LayersControl
 
@@ -36,7 +33,7 @@ export default function Map({
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
-      limit(50)
+      // limit(50)
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {

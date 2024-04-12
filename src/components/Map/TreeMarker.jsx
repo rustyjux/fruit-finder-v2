@@ -11,25 +11,25 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
     // Add more tree types and colors as needed
   };
 
-  const type = tree.type.toLowerCase();
+  const type = tree.treeType.toLowerCase();
   const color = treeTypes[type]?.color || treeTypes['other'].color; // Default to blue if no mapping found
 
   const isActive = activeTree && activeTree.id === tree.id;
 
   // check if picked in last year
   
-  const lastPickedTime = tree?.lastPickedTime;
-  if (lastPickedTime) {
+  const lastPickedDate = tree.lastPickedDate;
+  if (lastPickedDate) {
     const currentDate = new Date();
     const janFirst = new Date(currentDate.getFullYear(), 0, 1);
-    const lastPickedTimeDt = lastPickedTime.toDate();
-    tree.picked = lastPickedTimeDt > janFirst;
+    const lastPickedDateDt = lastPickedDate.toDate();
+    tree.picked = lastPickedDateDt > janFirst;
   }
 
   return (
     <>
       <CircleMarker 
-        center={[tree.location.latitude, tree.location.longitude]}
+        center={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]}
         radius={isActive ? 12 : 8}
         // color={color}
         pathOptions={{ 
@@ -57,7 +57,7 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
       
       {tree.treeCount > 1 && (
         <Marker 
-        position={[tree.location.latitude, tree.location.longitude]} 
+        position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]} 
         icon={multipleLIcon}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >
@@ -65,7 +65,7 @@ export default function TreeMarker ({ tree, activeTree, makeActiveTree }) {
       )}
       {tree.access === 'private' && (
         <Marker 
-        position={[tree.location.latitude, tree.location.longitude]} 
+        position={[tree.geometry.coordinates[1], tree.geometry.coordinates[0]]} 
         icon={barLIcon}
         eventHandlers={{ click: (e) => makeActiveTree(tree) }}
         >

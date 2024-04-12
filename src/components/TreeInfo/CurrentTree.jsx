@@ -22,19 +22,19 @@ export default function CurrentTree({ activeTree }) {
     const [dateString, setDateString] = useState("");
     
     useEffect(() => {
-        const lastPickedTime = activeTree?.lastPickedTime;
+        const lastPickedDate = activeTree?.lastPickedDate;
         const currentDate = new Date();
         const janFirst = new Date(currentDate.getFullYear(), 0, 1);
         
-        if (lastPickedTime) {
-            const lastPickedTimeDt = lastPickedTime.toDate();
-            const newDateString = lastPickedTimeDt.toLocaleDateString('en-US', {
+        if (lastPickedDate) {
+            const lastPickedDateDt = lastPickedDate.toDate();
+            const newDateString = lastPickedDateDt.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric'
             });
             setDateString(newDateString); // Update dateString state
-            setPickedThisYear(lastPickedTimeDt > janFirst);
+            setPickedThisYear(lastPickedDateDt > janFirst);
         } else {
             setPickedThisYear(false);
         }
@@ -64,7 +64,7 @@ export default function CurrentTree({ activeTree }) {
     
         await updateDoc(docRef, {
             ripe: newRipeValue,
-            lastPickedTime: null
+            lastPickedDate: null
         });
     
         toast({

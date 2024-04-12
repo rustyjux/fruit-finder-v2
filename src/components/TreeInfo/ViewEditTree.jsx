@@ -36,7 +36,7 @@ const treeHeader = displayText.getAccessDisplayText(activeTree.access, true)
 
   return (
     <TreeDrawer
-    title={`${toTitleCase(activeTree.type)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
+    title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
     // label="Drag the marker to adjust tree location"
     open={isViewEditVisible}
     onOpenChange={setIsViewEditVisible}
