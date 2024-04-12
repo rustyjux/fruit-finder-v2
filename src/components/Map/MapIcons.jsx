@@ -1,5 +1,3 @@
-//NOT CURRENTLY USED
-
 import L from 'leaflet';
 // import appleIcon from '/assets/red-apple.svg'
 
@@ -23,9 +21,9 @@ export const appleLIcon = new  L.Icon({
 });
 
 export const multipleLIcon = new  L.Icon({
-    iconUrl: '/assets/plus-w-on-b3.svg',
-    iconSize: [12, 12],
-    iconAnchor: [0, 12],
+    iconUrl: '/assets/plus-straight-w-on-b-no-circle.svg',
+    iconSize: [14, 14],
+    iconAnchor: [0, 14],
 });
 
 export const lockedLIcon = new  L.Icon({
