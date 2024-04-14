@@ -36,3 +36,8 @@ export const barLIcon = new  L.Icon({
     iconSize: [14, 20],
     iconAnchor: [7, 10],
 });
+
+export const addTreeIcon = new  L.Icon({
+    iconUrl: '/assets/marker-icon-orange.png',
+    shadowUrl: 'assets/marker-shadow.png'
+});
