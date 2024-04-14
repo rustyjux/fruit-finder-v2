@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo, useCallback } from "react"
 import { Marker } from "react-leaflet"
-import { addTreeIcon } from "./MapIcons"
+// import { addTreeIcon } from "./MapIcons"
   
 export default function DraggableMarker({ draggablePosition, setDraggablePosition }) {
     const [draggable, setDraggable] = useState(true)
@@ -25,9 +25,10 @@ export default function DraggableMarker({ draggablePosition, setDraggablePositio
         setDraggable((d) => !d)
     }, [])
 
+    
     return (
         <Marker
-        icon={addTreeIcon}
+        // icon={addTreeIcon}
         draggable={draggable}
         autoPan={true}
         autoPanSpeed={3}

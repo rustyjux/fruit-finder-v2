@@ -4,7 +4,7 @@ import { collection, onSnapshot, query, limit, where, FieldPath } from 'firebase
 import { db } from "../../utils/firebase";
 
 import './Map.css';
-import { appleLIcon } from './MapIcons';
+import { appleLIcon, newDefaultIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 import DraggableMarker from "./DraggableMarker";
 
@@ -28,12 +28,18 @@ export default function Map({
   const treesCollectionRef = collection(db, firebaseCollection);
   
   const canvasRenderer = L.canvas({ tolerance: 5 })
-console.log('activeTree:',activeTree)
+  
+  delete L.Icon.Default.prototype._getIconUrl;
+  L.Icon.Default.mergeOptions(newDefaultIcon)
+
+  console.log('activeTree:',activeTree)
+  
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
-      // limit(50)
+      // limit(50),
+      where("treeType", "==", "crabapple")
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {
