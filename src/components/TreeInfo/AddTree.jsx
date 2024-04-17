@@ -30,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { useToast } from "../ui/use-toast";
 
-
+import { newDefaultIcon } from "../Map/MapIcons";
 import TreeDrawer from "./TreeDrawer";
 import { NewTreeSchema } from "@/schema";
 
@@ -135,10 +135,16 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     setSnap(null)
   }
 
+  const labelContent = (
+    <>
+        Drag the marker <img src={newDefaultIcon.iconUrl} alt="Descriptive Text" style={{ display: 'inline-block', verticalAlign: '-3px', height: '1.3em', width: 'auto', margin: 0 }} /> to adjust tree location
+    </>
+  );
+
   return (
     <TreeDrawer
     title="Add a new tree"
-    label="Drag the marker to adjust tree location"
+    label={labelContent}
     open={isAddTreeVisible}
     onOpenChange={setIsAddTreeVisible}
     snapPoints={snapPoints}
