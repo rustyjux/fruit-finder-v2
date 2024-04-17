@@ -30,7 +30,16 @@ import { useState, useEffect, useRef } from "react";
 import { updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 
-export default function EditTree({ activeTree, draggablePosition, setDraggablePosition, endAddTree }) {
+export default function EditTree({ 
+  activeTree, 
+  draggablePosition, 
+  setDraggablePosition, 
+  setIsEditTreeVisible,
+  endEditTree, 
+  setEditPosition,
+  snapPoints,
+  setSnap
+}) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
 
@@ -45,9 +54,9 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
       latitude: draggablePosition.lat,
       longitude: draggablePosition.lng,
       treeType: activeTree.treeType,
-      treeCount: activeTree.treeCount,
-      access: activeTree.access,
-      notes: activeTree.notes
+      treeCount: activeTree.treeCount ? activeTree.treeCount : 1,
+      access: activeTree.access ? activeTree.access : 'unknown',
+      notes: activeTree.notes ? activeTree.notes : ''
     }
   })
 
@@ -65,6 +74,10 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
 
   useEffect(() => {
     setDraggablePosition([activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]])
+  }, []);
+
+  useEffect(() => {
+    setEditPosition(true)
   }, []);
 
   const onSubmit = async (data) => {
@@ -85,29 +98,26 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
 
     console.log("Document written with ID: ", docRef.id);
     
-    endAddTree()
+    endEditTree()
     // await new Promise((resolve) => setTimeout(resolve, 1000))
 
     toast({
       className: cn(
           "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
-      title: "New tree added",
+      title: "Tree updated",
       // description: "Friday, February 10, 2023 at 5:57 PM",
     });
 
     // TODO: if isSubmitSuccessful is true:
     // set active tree to newly submitted tree
   }
-  var activeSnapPoint = null
-  const snapPoints = [0.65,1];
-  const [snap, setSnap] = useState(0.6);
 
   // open the full drawer when user interacts with form
-  useEffect(() => {
-    if ('type' in dirtyFields) {
-      setSnap(1)
-    }
-  }, [formState]);
+  // useEffect(() => {
+  //   if ('treeType' in dirtyFields) {
+  //     setSnap(1)
+  //   }
+  // }, [formState]);
 
   useEffect(() => {
     // Watch for changes in draggablePosition and update form values accordingly
@@ -123,18 +133,30 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
     }
   }, [formState, reset]);
 
-  async function cancelAddTree(e) {
+  async function cancelEditTree(e) {
     e.preventDefault();
     setKey(+new Date())
     reset(undefined)
-    endAddTree()
+    endEditTree()
+    setIsEditTreeVisible(false)
     setSnap(null)
   }
 
-  return (
+  var activeSnapPoint = null
 
+  function shrinkDrawer() {
+    setSnap(snapPoints[0])
+  }
+
+  return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-4 pt-0">
+        <div className="button-row flex space-x-4">
+          <Button className="w-full" onClick={shrinkDrawer}>Edit location</Button>
+          {/* <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button> */}
+        </div>
         <div className="space-y-2">
         <FormField
             control={form.control}
@@ -243,7 +265,7 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
         </div>
         <div className="button-row flex space-x-4">
           <Button variant="outline" className="w-full"
-          onClick={cancelAddTree}
+          onClick={cancelEditTree}
             >
               Cancel</Button>
           <Button type="submit" className="w-full" disabled={isSubmitting}>

@@ -20,7 +20,8 @@ export default function Map({
   mapSize, 
   setMapCenter,
   draggablePosition,
-  setDraggablePosition
+  setDraggablePosition,
+  editPosition
   }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
@@ -28,18 +29,16 @@ export default function Map({
   const treesCollectionRef = collection(db, firebaseCollection);
   
   const canvasRenderer = L.canvas({ tolerance: 5 })
-  
+    
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions(newDefaultIcon)
-
-  console.log('activeTree:',activeTree)
   
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
       // limit(50),
-      where("treeType", "==", "crabapple")
+      where("treeType", "in", ['crabapple', 'cherry'])
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {
@@ -119,9 +118,13 @@ export default function Map({
         <TreeMarker key={tree.id} tree={tree} makeActiveTree={makeActiveTree} activeTree={activeTree} />
       ))}      
       {/* {activeTree=="new-tree" ? <Marker position={map.getCenter()}/> : null} */}
-      {activeTree=="new-tree" ? 
+      {activeTree=="new-tree" || editPosition ? 
         <DraggableMarker 
-          startPosition={map.getCenter()}
+          // TODO: remove - startPosition doesn't do
+          // startPosition={activeTree=="new-tree" ? map.getCenter():
+          // [activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]]
+          // // activeTree.geometry
+          // }
           draggablePosition={draggablePosition}
           setDraggablePosition={setDraggablePosition}
         /> : null}

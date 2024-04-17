@@ -32,16 +32,18 @@ function App() {
     setActiveTree(null)
     setAddTreeEnded(true)
   }
+  const endEditTree = () => {
+      console.log('exit edit tree')
+      setEditPosition(false)
+  }
   
   const [isViewEditVisible, setIsViewEditVisible] = useState(false);
-
   const [activeTree, setActiveTree] = useState(null);
+  const [editPosition, setEditPosition] = useState(false);
 
   // Use for setting active tree from Map/TreeMarker
   const makeActiveTree = (activeTreeToBe) => {
-    console.log('makeActiveTree - activeTree:', activeTree)
-    if (activeTree != 'new-tree'){
-      console.log('setActiveTree')
+    if (activeTree != 'new-tree' && !editPosition){
       setIsViewEditVisible(true)
       setActiveTree(activeTreeToBe);
     } else {
@@ -50,17 +52,21 @@ function App() {
   }
   
   const removeActiveTree = () => {
-    console.log('remove active')
     setActiveTree(null);
   }
 
-  useEffect(() => {
-    if (!isViewEditVisible && activeTree != 'new-tree') {
-    // if (!isViewEditVisible) {
-      console.log('remove active via effect')
-      // removeActiveTree();
-    }
-  }, [isViewEditVisible]);
+  function handleRemoveActiveTreeWithDelay() {
+    setTimeout(() => {
+        removeActiveTree();
+    }, 150); 
+  }
+
+  // useEffect(() => {
+  //   if (!isViewEditVisible && activeTree != 'new-tree') {
+  //   // if (!isViewEditVisible) {
+  //     handleRemoveActiveTreeWithDelay();
+  //   }
+  // }, [isViewEditVisible]);
 
   const initialMapCenter = [49.076,-117.802]
   const [mapCenter, setMapCenter] = useState({ lat: initialMapCenter[0], lng: initialMapCenter[1] });
@@ -84,6 +90,7 @@ function App() {
             setMapCenter={setMapCenter}
             draggablePosition={draggablePosition}
             setDraggablePosition={setDraggablePosition}
+            editPosition={editPosition}
           />
         </div>
         {activeTree && activeTree!=='new-tree' && (
@@ -92,6 +99,10 @@ function App() {
             removeActiveTree={removeActiveTree}
             isViewEditVisible={isViewEditVisible}
             setIsViewEditVisible={setIsViewEditVisible}
+            draggablePosition={draggablePosition}
+            setDraggablePosition={setDraggablePosition}
+            setEditPosition={setEditPosition}
+            endEditTree={endEditTree}
           />
         )}
         <AddTreeButton 

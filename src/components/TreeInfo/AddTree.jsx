@@ -63,9 +63,6 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     formState: { isDirty, dirtyFields, isSubmitting, isSubmitSuccessful }
   } = form;
 
-  // console.log('is dirty', isDirty)
-  // console.log('touched fields', touchedFields)
-
   const firebaseCollection = process.env.FIREBASE_COLLECTION
   const treesCollectionRef = collection(db, firebaseCollection);
 
@@ -102,12 +99,12 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   }
   var activeSnapPoint = null
   const snapPoints = [0.65,1];
-  const [snap, setSnap] = useState(0.6);
+  const [snap, setSnap] = useState(0.65);
 
   // open the full drawer when user interacts with form
   useEffect(() => {
-    if ('type' in dirtyFields) {
-      // console.log('dirty now')
+    if ('treeType' in dirtyFields) {
+      console.log('dirty now')
       // setIsAddTreeVisible(true)
       setSnap(1)
     }

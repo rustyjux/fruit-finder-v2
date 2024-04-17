@@ -12,10 +12,11 @@ import React, { Children, useState } from 'react'
 import { Button } from "../ui/button"
 import { X } from "lucide-react"
 
-export default function TreeDrawer({ label, title, open, onOpenChange, snapPoints, activeSnapPoint, setActiveSnapPoint, closeButtonAction, children }) {
+export default function TreeDrawer({ label, title, open, onOpenChange, snapPoints, activeSnapPoint, setActiveSnapPoint, closeButtonAction, children, dismissible, modal }) {
   return (
     <Drawer open={open} onOpenChange={onOpenChange} 
-    modal={false} 
+    modal={modal ? modal : false}
+    dismissible={dismissible}
     // disablePreventScroll={true}
     snapPoints={snapPoints ? snapPoints : [1]}
     activeSnapPoint={activeSnapPoint}
