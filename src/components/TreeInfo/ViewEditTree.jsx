@@ -69,6 +69,7 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
     dismissible={true}
     // open={isDrawerVisible}
     open={isViewEditVisible}
+    onOpenChange={setIsViewEditVisible}
     // onOpenChange={handleDrawerOpenChange}
     activeSnapPoint={snap}
     snapPoints={snapPoints}

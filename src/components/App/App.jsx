@@ -69,12 +69,13 @@ function App() {
     }, 150); 
   }
 
-  // useEffect(() => {
-  //   if (!isViewEditVisible && activeTree != 'new-tree') {
-  //   // if (!isViewEditVisible) {
-  //     handleRemoveActiveTreeWithDelay();
-  //   }
-  // }, [isViewEditVisible]);
+  useEffect(() => {
+    if (!isViewEditVisible && activeTree != 'new-tree') {
+    console.log('remove active via useEffect')
+    // if (!isViewEditVisible) {
+      handleRemoveActiveTreeWithDelay();
+    }
+  }, [isViewEditVisible]);
 
   const initialMapCenter = [49.076,-117.802]
   const [mapCenter, setMapCenter] = useState({ lat: initialMapCenter[0], lng: initialMapCenter[1] });
