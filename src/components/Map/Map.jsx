@@ -45,10 +45,8 @@ export default function Map({
       let firestoreTrees = [];
       snapshot.forEach((doc) => {
         firestoreTrees.push({...doc.data(), id: doc.id });
-        // console.log('record update fetched')
       })
       setTrees(firestoreTrees);
-      // console.log('state updated')
     });
 
     return () => unsubscribe();

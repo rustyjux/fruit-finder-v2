@@ -6,14 +6,13 @@ import { useState } from "react";
 import { toTitleCase } from "../../utils/helpers";
 import * as displayText from "../../utils/displayText";
 
-export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditVisible, setIsViewEditVisible, draggablePosition, setDraggablePosition, setEditPosition, endEditTree }) {
+export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditVisible, setIsViewEditVisible, draggablePosition, setDraggablePosition, setEditPosition, endEditPosition }) {
 
   const [isEditTreeVisible, setIsEditTreeVisible] = useState(false);
 
   const treeHeader = displayText.getAccessDisplayText(activeTree.access, true)
-  console.log('active- ', activeTree)
+
   function handleRemoveActiveTreeWithDelay() {
-    console.log('viewedit - remove active tree')
     setEditPosition(false)
     setTimeout(() => {
         removeActiveTree();
@@ -56,10 +55,11 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
         draggablePosition={draggablePosition}
         setDraggablePosition={setDraggablePosition}
         setIsEditTreeVisible={setIsEditTreeVisible}
-        endEditTree={endEditTree}
+        endEditPosition={endEditPosition}
         setEditPosition={setEditPosition}
         snapPoints={snapPoints}
         setSnap={setSnap}
+        handleRemoveActiveTreeWithDelay={handleRemoveActiveTreeWithDelay}
       />}
     </TreeDrawer> 
   )

@@ -105,7 +105,6 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   // open the full drawer when user interacts with form
   useEffect(() => {
     if (dirtyFields.hasOwnProperty('treeType')) { 
-      console.log('treeType is dirty now');
       setSnap(1);
     }
   }, [dirtyFields]);

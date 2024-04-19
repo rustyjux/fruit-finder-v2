@@ -39,9 +39,9 @@ function App() {
     setActiveTree(null)
     setAddTreeEnded(true)
   }
-  const endEditTree = () => {
-      console.log('exit edit tree')
+  const endEditPosition = () => {
       setEditPosition(false)
+      removeActiveTree()
   }
   
   const [isViewEditVisible, setIsViewEditVisible] = useState(false);
@@ -53,14 +53,11 @@ function App() {
     if (activeTree != 'new-tree' && !editPosition){
       setIsViewEditVisible(true)
       setActiveTree(activeTreeToBe);
-    } else {
-      console.log('active tree is new tree - will not setActiveTree')
-    }
+    } 
   }
   
   const removeActiveTree = () => {
     setActiveTree(null);
-    console.log('app - removeActiveTree')
   }
 
   function handleRemoveActiveTreeWithDelay() {
@@ -71,8 +68,6 @@ function App() {
 
   useEffect(() => {
     if (!isViewEditVisible && activeTree != 'new-tree') {
-    console.log('remove active via useEffect')
-    // if (!isViewEditVisible) {
       handleRemoveActiveTreeWithDelay();
     }
   }, [isViewEditVisible]);
@@ -111,7 +106,7 @@ function App() {
             draggablePosition={draggablePosition}
             setDraggablePosition={setDraggablePosition}
             setEditPosition={setEditPosition}
-            endEditTree={endEditTree}
+            endEditPosition={endEditPosition}
           />
         )}
         <AddTreeButton 

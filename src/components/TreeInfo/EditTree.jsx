@@ -36,10 +36,11 @@ export default function EditTree({
   draggablePosition, 
   setDraggablePosition, 
   setIsEditTreeVisible,
-  endEditTree, 
+  endEditPosition, 
   setEditPosition,
   snapPoints,
-  setSnap
+  setSnap,
+  handleRemoveActiveTreeWithDelay
 }) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
@@ -70,9 +71,6 @@ export default function EditTree({
     formState: { isDirty, dirtyFields, isSubmitting, isSubmitSuccessful }
   } = form;
 
-  // console.log('is dirty', isDirty)
-  // console.log('touched fields', touchedFields)
-
   useEffect(() => {
     setDraggablePosition([activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]])
   }, []);
@@ -99,7 +97,7 @@ export default function EditTree({
 
     console.log("Document written with ID: ", docRef.id);
     
-    endEditTree()
+    endEditPosition()
     // await new Promise((resolve) => setTimeout(resolve, 1000))
 
     toast({
@@ -128,12 +126,12 @@ export default function EditTree({
   }, [formState, reset]);
 
   async function cancelEditTree(e) {
-    e.preventDefault();
-    setKey(+new Date())
-    reset(undefined)
-    endEditTree()
+    // e.preventDefault();
+    // setKey(+new Date())
+    // reset(undefined)
     setIsEditTreeVisible(false)
-    setSnap(null)
+    endEditPosition()
+    // setSnap(null)
   }
 
   function shrinkDrawer() {
