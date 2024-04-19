@@ -113,13 +113,6 @@ export default function EditTree({
     // set active tree to newly submitted tree
   }
 
-  // open the full drawer when user interacts with form
-  // useEffect(() => {
-  //   if ('treeType' in dirtyFields) {
-  //     setSnap(1)
-  //   }
-  // }, [formState]);
-
   useEffect(() => {
     // Watch for changes in draggablePosition and update form values accordingly
     setValue('latitude', draggablePosition.lat);
@@ -142,8 +135,6 @@ export default function EditTree({
     setIsEditTreeVisible(false)
     setSnap(null)
   }
-
-  var activeSnapPoint = null
 
   function shrinkDrawer() {
     setSnap(snapPoints[0])
