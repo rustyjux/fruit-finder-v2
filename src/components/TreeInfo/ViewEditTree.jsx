@@ -59,21 +59,32 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
 
 
   const [snap, setSnap] = useState(1);
-  const snapPoints = [0.5,1]
+  const snapPoints = [0.4,1]
+
+  const getConditionalProps = (isVisible) => {
+    if (isVisible) {
+      return {
+        activeSnapPoint: snap,
+        snapPoints: snapPoints,
+        setActiveSnapPoint: setSnap
+      }};
+    return {};
+  }
 
   return (
     <TreeDrawer
     title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
     // label="Drag the marker to adjust tree location"
     modal={false}
-    dismissible={true}
-    // open={isDrawerVisible}
+    dismissible={isEditTreeVisible ? false : true}
     open={isViewEditVisible}
     onOpenChange={setIsViewEditVisible}
+    // open={isDrawerVisible}
     // onOpenChange={handleDrawerOpenChange}
-    activeSnapPoint={snap}
-    snapPoints={snapPoints}
-    setActiveSnapPoint={setSnap}
+    // activeSnapPoint={snap}
+    // snapPoints={snapPoints}
+    // setActiveSnapPoint={setSnap}
+    {...getConditionalProps(isEditTreeVisible)}
     closeButtonAction={handleRemoveActiveTreeWithDelay}
     >
       {activeTree && activeTree!=='new-tree' && !isEditTreeVisible && 
