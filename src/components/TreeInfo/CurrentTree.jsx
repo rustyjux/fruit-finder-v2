@@ -90,17 +90,17 @@ export default function CurrentTree({ activeTree, setIsEditTreeVisible }) {
             {/* BUTTONS */}
             {/* <div className="p-2 grid grid-cols-4 gap-x-3"> */}
             <div className="p-2 space-x-2 overflow-x-auto whitespace-nowrap">
-                <Button variant="" size="sm" onClick={() => onPick()}>
+                <Button className='rounded-2xl' variant="outline" size="sm" onClick={() => onPick()}>
                     <FaHandSparkles className="mr-2 h-4 w-4"/> Picked
-                </Button>
-                <Button size="sm" onClick={() => onEdit()}>
-                    <FaPencil className="mr-2 h-4 w-4"/> Edit
                 </Button>
                 {/* <Button size="sm" onClick={() => handleButtonClick('Adopt')}>
                     <FaHeart className="mr-2 h-4 w-4"/> Adopt
                 </Button> */}
-                <Button size="sm" onClick={() => onRipe()}>
+                <Button className='rounded-2xl' variant="outline" size="sm" onClick={() => onRipe()}>
                     <FaRegStar className="mr-2 h-4 w-4"/> It's ripe!
+                </Button>
+                <Button className='rounded-2xl' variant="outline" size="sm" onClick={() => onEdit()}>
+                    <FaPencil className="mr-2 h-4 w-4"/> Edit
                 </Button>
                 {/* <Button size="sm" onClick={() => handleButtonClick('Share')}>
                     <FaShareNodes className="mr-2 h-4 w-4"/> Share

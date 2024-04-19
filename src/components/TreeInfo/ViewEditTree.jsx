@@ -37,20 +37,23 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
   const [isDrawerVisible, setIsDrawerVisible] = useState(isViewEditVisible); // Initial state based on isViewEditVisible
 
   const treeHeader = displayText.getAccessDisplayText(activeTree.access, true)
-
+  console.log('active- ', activeTree)
   function handleRemoveActiveTreeWithDelay() {
+    console.log('viewedit - remove active tree')
     setEditPosition(false)
-    setTimeout(() => {
-        removeActiveTree();
-    }, 150); 
+    // setTimeout(() => {
+    //     removeActiveTree();
+    // }, 150); 
+    removeActiveTree()
   }
 
   const handleDrawerOpenChange = (isOpen) => {
-    console.log('change')
+    console.log('drawer change')
     setIsDrawerVisible(isOpen);
     if (!isOpen) {
       setIsViewEditVisible(false)
-      handleRemoveActiveTreeWithDelay();
+      console.log('set ViewEdit not visible')
+      // handleRemoveActiveTreeWithDelay();
     }
   }
 
@@ -63,9 +66,10 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
     title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
     // label="Drag the marker to adjust tree location"
     modal={false}
-    dismissible={false}
-    open={isDrawerVisible}
-    onOpenChange={handleDrawerOpenChange}
+    dismissible={true}
+    // open={isDrawerVisible}
+    open={isViewEditVisible}
+    // onOpenChange={handleDrawerOpenChange}
     activeSnapPoint={snap}
     snapPoints={snapPoints}
     setActiveSnapPoint={setSnap}

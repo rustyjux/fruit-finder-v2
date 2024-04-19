@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { useToast } from "../ui/use-toast";
+import { FaMinus, FaPlus } from 'react-icons/fa6';
 
 import { NewTreeSchema } from "@/schema";
 
@@ -152,7 +153,7 @@ export default function EditTree({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-4 pt-0">
         <div className="button-row flex space-x-4">
-          <Button className="w-full" onClick={shrinkDrawer}>Edit location</Button>
+          <Button type="button" className="w-full" onClick={shrinkDrawer}>Edit location</Button>
           {/* <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button> */}
@@ -218,12 +219,36 @@ export default function EditTree({
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel>Number of trees</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" placeholder="" />
-                </FormControl>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-2xl h-8 w-8 p-0"
+                    onClick={() => {
+                      const newValue = Math.max((field.value) - 1, 1);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <FaMinus />
+                  </Button>
+                  <div className="text-center min-w-6">
+                    {field.value || 0} {/* Display the current value */}
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-2xl h-8 w-8 p-0"
+                    onClick={() => {
+                      const newValue = (parseInt(field.value, 10) + 1);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <FaPlus />
+                  </Button>
+                </div>
                 <FormMessage />
-              <FormDescription>
-              </FormDescription>
+                <FormDescription>
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -264,12 +289,17 @@ export default function EditTree({
           />
         </div>
         <div className="button-row flex space-x-4">
-          <Button variant="outline" className="w-full"
-          onClick={cancelEditTree}
-            >
-              Cancel</Button>
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
+          <Button type="button" variant="outline" className="w-full"
+            onClick={cancelEditTree}
+          >
+              Cancel</Button>
+          <Button type="button" variant="destructive" className=""
+            onClick={cancelEditTree} //TODO: removeTree
+          >
+            Remove
           </Button>
         </div>
       </form>

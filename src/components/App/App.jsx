@@ -20,12 +20,19 @@ function App() {
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
   const [addTreeEnded, setAddTreeEnded] = useState('initial');
   const showAddTree = () => {
-    setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    // on/off/off functionality
+    // setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    
+    // on/off
+    if (!isAddTreeVisible){setIsAddTreeVisible(true)}
+    
     setActiveTree("new-tree")
     if (addTreeEnded === true || addTreeEnded === 'initial') {
       setDraggablePosition(mapCenter);
     }
     setAddTreeEnded(false)
+
+    if (isAddTreeVisible){endAddTree()}
   };
   const endAddTree = () => {
     setIsAddTreeVisible(false);
@@ -53,6 +60,7 @@ function App() {
   
   const removeActiveTree = () => {
     setActiveTree(null);
+    console.log('app - removeActiveTree')
   }
 
   function handleRemoveActiveTreeWithDelay() {
@@ -109,12 +117,14 @@ function App() {
           activeTree={activeTree} 
           onClick={(event) => showAddTree(event)} 
         />
+        {activeTree && activeTree=='new-tree' && (
         <AddTree 
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}
           endAddTree={endAddTree}
         />
+        )}
         <Toaster />
     </div>
   );
