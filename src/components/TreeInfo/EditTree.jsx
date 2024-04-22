@@ -30,6 +30,7 @@ import { NewTreeSchema } from "@/schema";
 import { useState, useEffect, useRef } from "react";
 import { updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
+import { labelContent } from "./AddTree";
 
 export default function EditTree({ 
   activeTree, 
@@ -72,7 +73,10 @@ export default function EditTree({
   } = form;
 
   useEffect(() => {
-    setDraggablePosition([activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]])
+    setDraggablePosition({
+      lat: activeTree.geometry.coordinates[1],
+      lng: activeTree.geometry.coordinates[0]
+    })
   }, []);
 
   useEffect(() => {
@@ -80,6 +84,7 @@ export default function EditTree({
   }, []);
 
   const onSubmit = async (data) => {
+    console.log(data)
     await updateDoc(docRef, {
       geometry: {
         type: "Point",
@@ -92,7 +97,8 @@ export default function EditTree({
       createdDate: serverTimestamp(),
       createByName: auth.currentUser ? auth.currentUser.displayName : null,
       createdByEmail: auth.currentUser ? auth.currentUser.email : null,
-      type: "Feature"
+      type: "Feature",
+      removed: false
     });
 
     console.log("Document written with ID: ", docRef.id);
@@ -109,6 +115,36 @@ export default function EditTree({
 
     // TODO: if isSubmitSuccessful is true:
     // set active tree to newly submitted tree
+
+  }
+
+  const onRemove = async (data) => {
+    await updateDoc(docRef, {
+      removed: true
+      // geometry: {
+      //   type: "Point",
+      //   coordinates: [data.longitude, data.latitude]
+      // },
+      // treeType: data.treeType,
+      // treeCount: data.treeCount,
+      // access: data.access,
+      // notes: data.notes,
+      // createdDate: serverTimestamp(),
+      // createByName: auth.currentUser ? auth.currentUser.displayName : null,
+      // createdByEmail: auth.currentUser ? auth.currentUser.email : null,
+      // type: "Feature"
+    });
+
+    console.log("Document written with ID: ", docRef.id), '- removed';
+    
+    endEditPosition()
+
+    toast({
+      className: cn(
+          "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
+      title: "Tree removed",
+      // description: "Friday, February 10, 2023 at 5:57 PM",
+    });
   }
 
   useEffect(() => {
@@ -278,7 +314,9 @@ export default function EditTree({
           />
         </div>
         <div className="button-row flex space-x-4">
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full" disabled={isSubmitting}
+            // onClick={onSubmit}
+          >
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
           <Button type="button" variant="outline" className="w-full"
@@ -286,7 +324,7 @@ export default function EditTree({
           >
               Cancel</Button>
           <Button type="button" variant="destructive" className=""
-            onClick={cancelEditTree} //TODO: removeTree
+            onClick={onRemove} //TODO: removeTree
           >
             Remove
           </Button>

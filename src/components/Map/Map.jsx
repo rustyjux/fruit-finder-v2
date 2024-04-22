@@ -38,7 +38,8 @@ export default function Map({
     const queryTrees = query(
       treesCollectionRef,
       // limit(50),
-      where("treeType", "in", ['crabapple'])
+      where("treeType", "in", ['crabapple']),
+      where("removed", "!=", true)
       );
     // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {

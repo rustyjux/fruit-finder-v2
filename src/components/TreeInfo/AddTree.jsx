@@ -39,6 +39,12 @@ import { useState, useEffect, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 
+export const labelContent = (
+  <>
+      Drag the marker <img src={newDefaultIcon.iconUrl} alt="Descriptive Text" style={{ display: 'inline-block', verticalAlign: '-3px', height: '1.3em', width: 'auto', margin: 0 }} /> to adjust tree location
+  </>
+);
+
 export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition, endAddTree }) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
@@ -80,7 +86,8 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
       createdDate: serverTimestamp(),
       createByName: auth.currentUser ? auth.currentUser.displayName : null,
       createdByEmail: auth.currentUser ? auth.currentUser.email : null,
-      type: "Feature"
+      type: "Feature",
+      removed: false
     });
 
     console.log("Document written with ID: ", docRef.id);
@@ -130,12 +137,6 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     endAddTree()
     setSnap(null)
   }
-
-  const labelContent = (
-    <>
-        Drag the marker <img src={newDefaultIcon.iconUrl} alt="Descriptive Text" style={{ display: 'inline-block', verticalAlign: '-3px', height: '1.3em', width: 'auto', margin: 0 }} /> to adjust tree location
-    </>
-  );
 
   return (
     <TreeDrawer
