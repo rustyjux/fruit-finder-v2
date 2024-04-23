@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { useToast } from "../ui/use-toast";
-import { FaMinus, FaPlus } from 'react-icons/fa6';
+import { FaMinus, FaPlus, FaLocationDot } from 'react-icons/fa6';
 
 import { NewTreeSchema } from "@/schema";
 
@@ -31,6 +31,7 @@ import { useState, useEffect, useRef } from "react";
 import { updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 import { labelContent } from "./AddTree";
+import RemoveConfirmation from "./RemoveConfirmation";
 
 export default function EditTree({ 
   activeTree, 
@@ -41,7 +42,9 @@ export default function EditTree({
   setEditPosition,
   snapPoints,
   setSnap,
-  handleRemoveActiveTreeWithDelay
+  handleRemoveActiveTreeWithDelay,
+  editingLocation,
+  setEditingLocation
 }) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
@@ -84,7 +87,7 @@ export default function EditTree({
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log('updating!')
     await updateDoc(docRef, {
       geometry: {
         type: "Point",
@@ -110,7 +113,6 @@ export default function EditTree({
       className: cn(
           "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
       title: "Tree updated",
-      // description: "Friday, February 10, 2023 at 5:57 PM",
     });
 
     // TODO: if isSubmitSuccessful is true:
@@ -118,32 +120,21 @@ export default function EditTree({
 
   }
 
-  const onRemove = async (data) => {
+  const onRemove = async (reason) => {
     await updateDoc(docRef, {
-      removed: true
-      // geometry: {
-      //   type: "Point",
-      //   coordinates: [data.longitude, data.latitude]
-      // },
-      // treeType: data.treeType,
-      // treeCount: data.treeCount,
-      // access: data.access,
-      // notes: data.notes,
-      // createdDate: serverTimestamp(),
-      // createByName: auth.currentUser ? auth.currentUser.displayName : null,
-      // createdByEmail: auth.currentUser ? auth.currentUser.email : null,
-      // type: "Feature"
+      removed: true,
+      removeReason: reason,
+      removedDate: serverTimestamp(),
+      removedByName: auth.currentUser ? auth.currentUser.displayName : null,
+      removedByEmail: auth.currentUser ? auth.currentUser.email : null,
     });
-
-    console.log("Document written with ID: ", docRef.id), '- removed';
-    
+        
     endEditPosition()
 
     toast({
       className: cn(
           "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
       title: "Tree removed",
-      // description: "Friday, February 10, 2023 at 5:57 PM",
     });
   }
 
@@ -170,15 +161,23 @@ export default function EditTree({
     // setSnap(null)
   }
 
-  function shrinkDrawer() {
-    setSnap(snapPoints[0])
+  function modifyDrawerForEditLocation() {
+    setSnap(editingLocation ? snapPoints[1] : snapPoints[0])
+    setEditingLocation(!editingLocation)
   }
 
   return (
+    <>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-4 pt-0">
-        <div className="button-row flex space-x-4">
-          <Button type="button" className="w-full" onClick={shrinkDrawer}>Edit location</Button>
+        <div className="button-row flex space-x-4 justify-center">
+          <Button type="button" className="w-50" 
+            variant={editingLocation ? '' : 'outline'}
+            onClick={modifyDrawerForEditLocation}
+          >
+            {!editingLocation && FaLocationDot && <FaLocationDot className="mr-2 h-4 w-4"/>}
+            {editingLocation ? 'Done' : 'Edit location'}
+          </Button>
           {/* <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button> */}
@@ -323,14 +322,11 @@ export default function EditTree({
             onClick={cancelEditTree}
           >
               Cancel</Button>
-          <Button type="button" variant="destructive" className=""
-            onClick={onRemove} //TODO: removeTree
-          >
-            Remove
-          </Button>
+          <RemoveConfirmation type="button" onRemove={onRemove} />
         </div>
       </form>
     </Form>
+          </>
     
   )
 }

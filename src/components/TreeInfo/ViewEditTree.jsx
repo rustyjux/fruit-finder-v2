@@ -5,10 +5,12 @@ import TreeDrawer from "./TreeDrawer";
 import { useState } from "react";
 import { toTitleCase } from "../../utils/helpers";
 import * as displayText from "../../utils/displayText";
+import { labelContent } from "./AddTree";
 
 export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditVisible, setIsViewEditVisible, draggablePosition, setDraggablePosition, setEditPosition, endEditPosition }) {
 
   const [isEditTreeVisible, setIsEditTreeVisible] = useState(false);
+  const [editingLocation, setEditingLocation] = useState(false)
 
   const treeHeader = displayText.getAccessDisplayText(activeTree.access, true)
 
@@ -22,7 +24,7 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
   const [snap, setSnap] = useState(1);
   const snapPoints = [0.4,1]
 
-  const getConditionalProps = (isVisible) => {
+  const getEditProps = (isVisible) => {
     if (isVisible) {
       return {
         activeSnapPoint: snap,
@@ -32,15 +34,23 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
     return {};
   }
 
+  const getEditingLocationLabel = (isVisible) => {
+    if (isVisible) {
+      return {
+        label: labelContent
+      }};
+    return {};
+  }
+
   return (
     <TreeDrawer
     title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
-    // label="Drag the marker to adjust tree location"
+    {...getEditingLocationLabel(editingLocation)}
     modal={false}
     dismissible={isEditTreeVisible ? false : true}
     open={isViewEditVisible}
     onOpenChange={setIsViewEditVisible}
-    {...getConditionalProps(isEditTreeVisible)}
+    {...getEditProps(isEditTreeVisible)}
     closeButtonAction={handleRemoveActiveTreeWithDelay}
     >
       {activeTree && activeTree!=='new-tree' && !isEditTreeVisible && 
@@ -60,6 +70,8 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
         snapPoints={snapPoints}
         setSnap={setSnap}
         handleRemoveActiveTreeWithDelay={handleRemoveActiveTreeWithDelay}
+        editingLocation={editingLocation}
+        setEditingLocation={setEditingLocation}
       />}
     </TreeDrawer> 
   )
