@@ -29,14 +29,21 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { useToast } from "../ui/use-toast";
+import { FaMinus, FaPlus } from 'react-icons/fa6';
 
-
+import { newDefaultIcon } from "../Map/MapIcons";
 import TreeDrawer from "./TreeDrawer";
 import { NewTreeSchema } from "@/schema";
 
 import { useState, useEffect, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
+
+export const labelContent = (
+  <>
+      Drag the marker <img src={newDefaultIcon.iconUrl} alt="Descriptive Text" style={{ display: 'inline-block', verticalAlign: '-3px', height: '1.3em', width: 'auto', margin: 0 }} /> to adjust tree location
+  </>
+);
 
 export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition, endAddTree }) {
   const [key, setKey] = useState(+new Date())
@@ -63,9 +70,6 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     formState: { isDirty, dirtyFields, isSubmitting, isSubmitSuccessful }
   } = form;
 
-  // console.log('is dirty', isDirty)
-  // console.log('touched fields', touchedFields)
-
   const firebaseCollection = process.env.FIREBASE_COLLECTION
   const treesCollectionRef = collection(db, firebaseCollection);
 
@@ -82,7 +86,8 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
       createdDate: serverTimestamp(),
       createByName: auth.currentUser ? auth.currentUser.displayName : null,
       createdByEmail: auth.currentUser ? auth.currentUser.email : null,
-      type: "Feature"
+      type: "Feature",
+      removed: false
     });
 
     console.log("Document written with ID: ", docRef.id);
@@ -101,17 +106,15 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
     // set active tree to newly submitted tree
   }
   var activeSnapPoint = null
-  const snapPoints = [0.65,1];
-  const [snap, setSnap] = useState(0.6);
+  const snapPoints = [0.5, 0.65, 1];
+  const [snap, setSnap] = useState(0.65);
 
   // open the full drawer when user interacts with form
   useEffect(() => {
-    if ('type' in dirtyFields) {
-      // console.log('dirty now')
-      // setIsAddTreeVisible(true)
-      setSnap(1)
+    if (dirtyFields.hasOwnProperty('treeType')) { 
+      setSnap(1);
     }
-  }, [formState]);
+  }, [dirtyFields]);
 
   useEffect(() => {
     // Watch for changes in draggablePosition and update form values accordingly
@@ -138,9 +141,9 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   return (
     <TreeDrawer
     title="Add a new tree"
-    label="Drag the marker to adjust tree location"
+    label={labelContent}
     open={isAddTreeVisible}
-    onOpenChange={setIsAddTreeVisible}
+    // onOpenChange={setIsAddTreeVisible}
     snapPoints={snapPoints}
     activeSnapPoint={snap}
     setActiveSnapPoint={setSnap}
@@ -209,12 +212,36 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel>Number of trees</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" placeholder="" />
-                </FormControl>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-2xl h-8 w-8 p-0"
+                    onClick={() => {
+                      const newValue = Math.max((field.value) - 1, 1);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <FaMinus />
+                  </Button>
+                  <div className="text-center min-w-6">
+                    {field.value || 0} {/* Display the current value */}
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-2xl h-8 w-8 p-0"
+                    onClick={() => {
+                      const newValue = (parseInt(field.value, 10) + 1);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <FaPlus />
+                  </Button>
+                </div>
                 <FormMessage />
-              <FormDescription>
-              </FormDescription>
+                <FormDescription>
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -261,13 +288,13 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
           />
         </div>
         <div className="button-row flex space-x-4">
+          <Button type="submit" className="w-full" disabled={isSubmitting || !isDirty}>
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </Button>
           <Button variant="outline" className="w-full"
           onClick={cancelAddTree}
             >
               Cancel</Button>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </Button>
         </div>
       </form>
     </Form>

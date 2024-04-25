@@ -19,3 +19,9 @@ export const NewTreeSchema = z.object({
     access: z.string(),
     notes: z.string().optional()
 })
+
+export const RemoveTreeSchema = z.object({
+    reason: z.string({
+        required_error: "Please provide a reason for removal"
+    }),
+})

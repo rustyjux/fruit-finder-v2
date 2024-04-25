@@ -11,12 +11,12 @@ import { FaHandSparkles, FaPencil, FaHeart, FaRegStar, FaShareNodes } from 'reac
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 
-export default function CurrentTree({ activeTree }) {
+export default function CurrentTree({ activeTree, setIsEditTreeVisible }) {
     const { toast } = useToast()
     const firebaseCollection = process.env.FIREBASE_COLLECTION
     const treeId = activeTree.id
     const docRef = doc(db, firebaseCollection, treeId)
-
+    
     // check if picked in last year
     const [pickedThisYear, setPickedThisYear] = useState(false)
     const [dateString, setDateString] = useState("");
@@ -59,6 +59,10 @@ export default function CurrentTree({ activeTree }) {
         });  
     };
 
+    const onEdit = () => {
+        setIsEditTreeVisible(true)
+    };
+
     const onRipe = async () => {
         const newRipeValue = !activeTree.ripe;
     
@@ -74,25 +78,6 @@ export default function CurrentTree({ activeTree }) {
         });    
     };
 
-    // Function to handle button clicks
-    const handleButtonClick = (action) => {
-        // Perform action based on button clicked
-        switch (action) {
-
-            case 'Edit':
-                // Handle Edit action
-                break;
-            case 'Adopt':
-                // Handle Adopt action
-                break;
-            case 'Share':
-                // Handle Share action
-                break;
-            default:
-                break;
-        }
-    };
-
     return (
         <>
             <div className="space-y-0 p-2 pb-0 pt-0 flex flex-wrap items-start">
@@ -105,23 +90,22 @@ export default function CurrentTree({ activeTree }) {
             {/* BUTTONS */}
             {/* <div className="p-2 grid grid-cols-4 gap-x-3"> */}
             <div className="p-2 space-x-2 overflow-x-auto whitespace-nowrap">
-                <Button variant="" size="sm" onClick={() => onPick()}>
+                <Button className='rounded-2xl' variant="outline" size="sm" onClick={() => onPick()}>
                     <FaHandSparkles className="mr-2 h-4 w-4"/> Picked
-                </Button>
-                <Button size="sm" onClick={() => handleButtonClick('Edit')}>
-                    <FaPencil className="mr-2 h-4 w-4"/> Edit
                 </Button>
                 {/* <Button size="sm" onClick={() => handleButtonClick('Adopt')}>
                     <FaHeart className="mr-2 h-4 w-4"/> Adopt
                 </Button> */}
-                <Button size="sm" onClick={() => onRipe()}>
+                <Button className='rounded-2xl' variant="outline" size="sm" onClick={() => onRipe()}>
                     <FaRegStar className="mr-2 h-4 w-4"/> It's ripe!
+                </Button>
+                <Button className='rounded-2xl' variant="outline" size="sm" onClick={() => onEdit()}>
+                    <FaPencil className="mr-2 h-4 w-4"/> Edit
                 </Button>
                 {/* <Button size="sm" onClick={() => handleButtonClick('Share')}>
                     <FaShareNodes className="mr-2 h-4 w-4"/> Share
                 </Button> */}
             </div>
-
         </>
     );
 };

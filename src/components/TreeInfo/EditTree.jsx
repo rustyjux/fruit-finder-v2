@@ -23,20 +23,36 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { useToast } from "../ui/use-toast";
+import { FaMinus, FaPlus, FaLocationDot } from 'react-icons/fa6';
 
 import { NewTreeSchema } from "@/schema";
 
 import { useState, useEffect, useRef } from "react";
-import { updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
+import { getDoc, updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
+import RemoveConfirmation from "./RemoveConfirmation";
 
-export default function EditTree({ activeTree, draggablePosition, setDraggablePosition, endAddTree }) {
+export default function EditTree({ 
+  activeTree, 
+  draggablePosition, 
+  setDraggablePosition, 
+  setIsEditTreeVisible,
+  endEditPosition, 
+  setEditPosition,
+  snapPoints,
+  setSnap,
+  handleRemoveActiveTreeWithDelay,
+  editingLocation,
+  setEditingLocation,
+  editingLocationStarted,
+  startEditingLocation,
+  endEditingLocation
+}) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
 
   const treeId = activeTree.id
   const firebaseCollection = process.env.FIREBASE_COLLECTION
-  // const treesCollectionRef = collection(db, firebaseCollection);
   const docRef = doc(db, firebaseCollection, treeId)
 
   const form = useForm({
@@ -45,9 +61,9 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
       latitude: draggablePosition.lat,
       longitude: draggablePosition.lng,
       treeType: activeTree.treeType,
-      treeCount: activeTree.treeCount,
-      access: activeTree.access,
-      notes: activeTree.notes
+      treeCount: activeTree.treeCount ? activeTree.treeCount : 1,
+      access: activeTree.access ? activeTree.access : 'unknown',
+      notes: activeTree.notes ? activeTree.notes : ''
     }
   })
 
@@ -60,14 +76,46 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
     formState: { isDirty, dirtyFields, isSubmitting, isSubmitSuccessful }
   } = form;
 
-  // console.log('is dirty', isDirty)
-  // console.log('touched fields', touchedFields)
+  useEffect(() => {
+    setDraggablePosition({
+      lat: activeTree.geometry.coordinates[1],
+      lng: activeTree.geometry.coordinates[0]
+    })
+  }, []);
 
   useEffect(() => {
-    setDraggablePosition([activeTree.geometry.coordinates[1],activeTree.geometry.coordinates[0]])
+    setEditPosition(true)
   }, []);
 
   const onSubmit = async (data) => {
+    console.log('updating!')
+  
+    // Fetch current data
+    const docSnapshot = await getDoc(docRef);
+    const currentData = docSnapshot.data();
+  
+    // Determine the version number for previous values
+    let version = 1;
+    if (currentData.previousValuesVersion) {
+      version = parseInt(currentData.previousValuesVersion || 1) + 1;
+    }
+  
+    // Store previous values in an attribute
+    const backupDataKey = `previousValuesV${version}`;
+    const backupData = {
+      geometry: currentData.geometry,
+      treeType: currentData.treeType,
+      treeCount: currentData.treeCount,
+      access: currentData.access,
+      notes: currentData.notes,
+      editedDate: currentData.createdDate,
+      editedByName: currentData.createByName,
+      editedByEmail: currentData.createdByEmail,
+      // type: currentData.type,
+      // removed: currentData.removed
+    };
+  
+    // Update feature with new values and previous values
     await updateDoc(docRef, {
       geometry: {
         type: "Point",
@@ -77,37 +125,45 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
       treeCount: data.treeCount,
       access: data.access,
       notes: data.notes,
-      createdDate: serverTimestamp(),
-      createByName: auth.currentUser ? auth.currentUser.displayName : null,
-      createdByEmail: auth.currentUser ? auth.currentUser.email : null,
-      type: "Feature"
+      editedDate: serverTimestamp(),
+      editedByName: auth.currentUser ? auth.currentUser.displayName : null,
+      editedByEmail: auth.currentUser ? auth.currentUser.email : null,
+      type: "Feature",
+      removed: false,
+      [backupDataKey]: backupData, // Store previous values in an attribute
+      previousValuesVersion: version // Update previous values version
     });
-
+  
     console.log("Document written with ID: ", docRef.id);
     
-    endAddTree()
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
+    endEditPosition()
+  
+    toast({
+      className: cn(
+          "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
+      title: "Tree updated",
+    });
+    // TODO: if isSubmitSuccessful is true:
+    // set active tree to newly submitted tree
+  };
+  
+  const onRemove = async (reason) => {
+    await updateDoc(docRef, {
+      removed: true,
+      removeReason: reason,
+      removedDate: serverTimestamp(),
+      removedByName: auth.currentUser ? auth.currentUser.displayName : null,
+      removedByEmail: auth.currentUser ? auth.currentUser.email : null,
+    });
+        
+    endEditPosition()
 
     toast({
       className: cn(
           "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
-      title: "New tree added",
-      // description: "Friday, February 10, 2023 at 5:57 PM",
+      title: "Tree removed",
     });
-
-    // TODO: if isSubmitSuccessful is true:
-    // set active tree to newly submitted tree
   }
-  var activeSnapPoint = null
-  const snapPoints = [0.65,1];
-  const [snap, setSnap] = useState(0.6);
-
-  // open the full drawer when user interacts with form
-  useEffect(() => {
-    if ('type' in dirtyFields) {
-      setSnap(1)
-    }
-  }, [formState]);
 
   useEffect(() => {
     // Watch for changes in draggablePosition and update form values accordingly
@@ -123,18 +179,30 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
     }
   }, [formState, reset]);
 
-  async function cancelAddTree(e) {
-    e.preventDefault();
-    setKey(+new Date())
-    reset(undefined)
-    endAddTree()
-    setSnap(null)
+  async function cancelEditTree(e) {
+    setIsEditTreeVisible(false)
+    endEditPosition()
+  }
+
+  function modifyDrawerForEditLocation(e) {
+    setSnap(editingLocation ? snapPoints[1] : snapPoints[0])
+    startEditingLocation()
+    setEditingLocation(!editingLocation)
   }
 
   return (
-
+    <>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4 pb-4 pt-0">
+        <div className="button-row flex space-x-4 justify-center">
+          <Button type="button" className="w-50" 
+            variant={editingLocation ? '' : 'outline'}
+            onClick={modifyDrawerForEditLocation}
+          >
+            {!editingLocation && FaLocationDot && <FaLocationDot className="mr-2 h-4 w-4"/>}
+            {editingLocation ? 'Done' : 'Edit location'}
+          </Button>
+        </div>
         <div className="space-y-2">
         <FormField
             control={form.control}
@@ -196,12 +264,36 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel>Number of trees</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" placeholder="" />
-                </FormControl>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-2xl h-8 w-8 p-0"
+                    onClick={() => {
+                      const newValue = Math.max((field.value) - 1, 1);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <FaMinus />
+                  </Button>
+                  <div className="text-center min-w-6">
+                    {field.value || 0}
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-2xl h-8 w-8 p-0"
+                    onClick={() => {
+                      const newValue = (parseInt(field.value, 10) + 1);
+                      field.onChange(newValue);
+                    }}
+                  >
+                    <FaPlus />
+                  </Button>
+                </div>
                 <FormMessage />
-              <FormDescription>
-              </FormDescription>
+                <FormDescription>
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -242,16 +334,18 @@ export default function EditTree({ activeTree, draggablePosition, setDraggablePo
           />
         </div>
         <div className="button-row flex space-x-4">
-          <Button variant="outline" className="w-full"
-          onClick={cancelAddTree}
-            >
-              Cancel</Button>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full" disabled={isSubmitting} >
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
+          <Button type="button" variant="outline" className="w-full"
+            onClick={cancelEditTree}
+          >
+              Cancel</Button>
+          <RemoveConfirmation type="button" onRemove={onRemove} />
         </div>
       </form>
     </Form>
+          </>
     
   )
 }

@@ -20,45 +20,55 @@ function App() {
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
   const [addTreeEnded, setAddTreeEnded] = useState('initial');
   const showAddTree = () => {
-    setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    // on/off/off functionality
+    // setIsAddTreeVisible((prevIsAddTreeVisible) => !prevIsAddTreeVisible);
+    
+    // on/off
+    if (!isAddTreeVisible){setIsAddTreeVisible(true)}
+    
     setActiveTree("new-tree")
     if (addTreeEnded === true || addTreeEnded === 'initial') {
       setDraggablePosition(mapCenter);
     }
     setAddTreeEnded(false)
+
+    if (isAddTreeVisible){endAddTree()}
   };
   const endAddTree = () => {
     setIsAddTreeVisible(false);
     setActiveTree(null)
     setAddTreeEnded(true)
   }
+  const endEditPosition = () => {
+      setEditPosition(false)
+      removeActiveTree()
+  }
   
   const [isViewEditVisible, setIsViewEditVisible] = useState(false);
-
   const [activeTree, setActiveTree] = useState(null);
+  const [editPosition, setEditPosition] = useState(false);
 
   // Use for setting active tree from Map/TreeMarker
   const makeActiveTree = (activeTreeToBe) => {
-    console.log('makeActiveTree - activeTree:', activeTree)
-    if (activeTree != 'new-tree'){
-      console.log('setActiveTree')
+    if (activeTree != 'new-tree' && !editPosition){
       setIsViewEditVisible(true)
       setActiveTree(activeTreeToBe);
-    } else {
-      console.log('active tree is new tree - will not setActiveTree')
-    }
+    } 
   }
   
   const removeActiveTree = () => {
-    console.log('remove active')
     setActiveTree(null);
+  }
+
+  function handleRemoveActiveTreeWithDelay() {
+    setTimeout(() => {
+        removeActiveTree();
+    }, 150); 
   }
 
   useEffect(() => {
     if (!isViewEditVisible && activeTree != 'new-tree') {
-    // if (!isViewEditVisible) {
-      console.log('remove active via effect')
-      // removeActiveTree();
+      handleRemoveActiveTreeWithDelay();
     }
   }, [isViewEditVisible]);
 
@@ -84,6 +94,7 @@ function App() {
             setMapCenter={setMapCenter}
             draggablePosition={draggablePosition}
             setDraggablePosition={setDraggablePosition}
+            editPosition={editPosition}
           />
         </div>
         {activeTree && activeTree!=='new-tree' && (
@@ -92,18 +103,24 @@ function App() {
             removeActiveTree={removeActiveTree}
             isViewEditVisible={isViewEditVisible}
             setIsViewEditVisible={setIsViewEditVisible}
+            draggablePosition={draggablePosition}
+            setDraggablePosition={setDraggablePosition}
+            setEditPosition={setEditPosition}
+            endEditPosition={endEditPosition}
           />
         )}
         <AddTreeButton 
           activeTree={activeTree} 
           onClick={(event) => showAddTree(event)} 
         />
+        {activeTree && activeTree=='new-tree' && (
         <AddTree 
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}
           endAddTree={endAddTree}
         />
+        )}
         <Toaster />
     </div>
   );
