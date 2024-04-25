@@ -28,7 +28,7 @@ import { FaMinus, FaPlus, FaLocationDot } from 'react-icons/fa6';
 import { NewTreeSchema } from "@/schema";
 
 import { useState, useEffect, useRef } from "react";
-import { updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
+import { getDoc, updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 import RemoveConfirmation from "./RemoveConfirmation";
 
@@ -89,6 +89,33 @@ export default function EditTree({
 
   const onSubmit = async (data) => {
     console.log('updating!')
+  
+    // Fetch current data
+    const docSnapshot = await getDoc(docRef);
+    const currentData = docSnapshot.data();
+  
+    // Determine the version number for previous values
+    let version = 1;
+    if (currentData.previousValuesVersion) {
+      version = parseInt(currentData.previousValuesVersion || 1) + 1;
+    }
+  
+    // Store previous values in an attribute
+    const backupDataKey = `previousValuesV${version}`;
+    const backupData = {
+      geometry: currentData.geometry,
+      treeType: currentData.treeType,
+      treeCount: currentData.treeCount,
+      access: currentData.access,
+      notes: currentData.notes,
+      editedDate: currentData.createdDate,
+      editedByName: currentData.createByName,
+      editedByEmail: currentData.createdByEmail,
+      // type: currentData.type,
+      // removed: currentData.removed
+    };
+  
+    // Update feature with new values and previous values
     await updateDoc(docRef, {
       geometry: {
         type: "Point",
@@ -98,28 +125,28 @@ export default function EditTree({
       treeCount: data.treeCount,
       access: data.access,
       notes: data.notes,
-      createdDate: serverTimestamp(),
-      createByName: auth.currentUser ? auth.currentUser.displayName : null,
-      createdByEmail: auth.currentUser ? auth.currentUser.email : null,
+      editedDate: serverTimestamp(),
+      editedByName: auth.currentUser ? auth.currentUser.displayName : null,
+      editedByEmail: auth.currentUser ? auth.currentUser.email : null,
       type: "Feature",
-      removed: false
+      removed: false,
+      [backupDataKey]: backupData, // Store previous values in an attribute
+      previousValuesVersion: version // Update previous values version
     });
-
+  
     console.log("Document written with ID: ", docRef.id);
     
     endEditPosition()
-
+  
     toast({
       className: cn(
           "fixed top-4 left-[50%] z-[100] flex max-h-screen w-3/5 translate-x-[-50%] flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]"),
       title: "Tree updated",
     });
-
     // TODO: if isSubmitSuccessful is true:
     // set active tree to newly submitted tree
-
-  }
-
+  };
+  
   const onRemove = async (reason) => {
     await updateDoc(docRef, {
       removed: true,
