@@ -11,6 +11,14 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
 
   const [isEditTreeVisible, setIsEditTreeVisible] = useState(false);
   const [editingLocation, setEditingLocation] = useState(false)
+  
+  const [editingLocationStarted, setEditingLocationStarted] = useState(false)
+  const startEditingLocation = () => {
+    setEditingLocationStarted(true)
+  }
+  const endEditingLocation = () => {
+    setEditingLocationStarted(false)
+  }
 
   const treeHeader = displayText.getAccessDisplayText(activeTree.access, true)
 
@@ -34,22 +42,14 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
     return {};
   }
 
-  const getEditingLocationLabel = (isVisible) => {
-    if (isVisible) {
-      return {
-        label: labelContent
-      }};
-    return {};
-  }
-
   return (
     <TreeDrawer
     title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
-    {...getEditingLocationLabel(editingLocation)}
+    label={editingLocation ? labelContent : null}
     modal={false}
     dismissible={isEditTreeVisible ? false : true}
     open={isViewEditVisible}
-    onOpenChange={setIsViewEditVisible}
+    onOpenChange={editingLocationStarted ? null : setIsViewEditVisible}
     {...getEditProps(isEditTreeVisible)}
     closeButtonAction={handleRemoveActiveTreeWithDelay}
     >
@@ -72,6 +72,9 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
         handleRemoveActiveTreeWithDelay={handleRemoveActiveTreeWithDelay}
         editingLocation={editingLocation}
         setEditingLocation={setEditingLocation}
+        editingLocationStarted={editingLocationStarted}
+        startEditingLocation={startEditingLocation}
+        endEditingLocation={endEditingLocation}
       />}
     </TreeDrawer> 
   )

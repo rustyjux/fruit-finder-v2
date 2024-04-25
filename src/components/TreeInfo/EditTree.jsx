@@ -30,7 +30,6 @@ import { NewTreeSchema } from "@/schema";
 import { useState, useEffect, useRef } from "react";
 import { updateDoc, doc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
-import { labelContent } from "./AddTree";
 import RemoveConfirmation from "./RemoveConfirmation";
 
 export default function EditTree({ 
@@ -44,14 +43,16 @@ export default function EditTree({
   setSnap,
   handleRemoveActiveTreeWithDelay,
   editingLocation,
-  setEditingLocation
+  setEditingLocation,
+  editingLocationStarted,
+  startEditingLocation,
+  endEditingLocation
 }) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
 
   const treeId = activeTree.id
   const firebaseCollection = process.env.FIREBASE_COLLECTION
-  // const treesCollectionRef = collection(db, firebaseCollection);
   const docRef = doc(db, firebaseCollection, treeId)
 
   const form = useForm({
@@ -107,7 +108,6 @@ export default function EditTree({
     console.log("Document written with ID: ", docRef.id);
     
     endEditPosition()
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
 
     toast({
       className: cn(
@@ -153,16 +153,13 @@ export default function EditTree({
   }, [formState, reset]);
 
   async function cancelEditTree(e) {
-    // e.preventDefault();
-    // setKey(+new Date())
-    // reset(undefined)
     setIsEditTreeVisible(false)
     endEditPosition()
-    // setSnap(null)
   }
 
-  function modifyDrawerForEditLocation() {
+  function modifyDrawerForEditLocation(e) {
     setSnap(editingLocation ? snapPoints[1] : snapPoints[0])
+    startEditingLocation()
     setEditingLocation(!editingLocation)
   }
 
@@ -178,9 +175,6 @@ export default function EditTree({
             {!editingLocation && FaLocationDot && <FaLocationDot className="mr-2 h-4 w-4"/>}
             {editingLocation ? 'Done' : 'Edit location'}
           </Button>
-          {/* <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </Button> */}
         </div>
         <div className="space-y-2">
         <FormField
@@ -256,7 +250,7 @@ export default function EditTree({
                     <FaMinus />
                   </Button>
                   <div className="text-center min-w-6">
-                    {field.value || 0} {/* Display the current value */}
+                    {field.value || 0}
                   </div>
                   <Button
                     type="button"
@@ -313,9 +307,7 @@ export default function EditTree({
           />
         </div>
         <div className="button-row flex space-x-4">
-          <Button type="submit" className="w-full" disabled={isSubmitting}
-            // onClick={onSubmit}
-          >
+          <Button type="submit" className="w-full" disabled={isSubmitting} >
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
           <Button type="button" variant="outline" className="w-full"
