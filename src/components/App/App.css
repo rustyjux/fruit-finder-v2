@@ -5,6 +5,16 @@
   text-align: center;
 } */
 
+body {
+  min-height: 100svh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

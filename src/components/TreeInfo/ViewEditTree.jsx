@@ -30,7 +30,7 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
   }
 
   const [snap, setSnap] = useState(1);
-  const snapPoints = [0.4,1]
+  const snapPoints = [0.45,1]
 
   const getEditProps = (isVisible) => {
     if (isVisible) {

@@ -108,9 +108,9 @@ export default function EditTree({
       treeCount: currentData.treeCount,
       access: currentData.access,
       notes: currentData.notes,
-      editedDate: currentData.createdDate,
-      editedByName: currentData.createByName,
-      editedByEmail: currentData.createdByEmail,
+      editedDate: currentData.createdDate ? currentData.createdDate : null,
+      editedByName: currentData.createByName ? currentData.createByName : null,
+      editedByEmail: currentData.createdByEmail ? currentData.createdByEmail : null,
       // type: currentData.type,
       // removed: currentData.removed
     };
