@@ -21,10 +21,12 @@ export default function Map({
   setMapCenter,
   draggablePosition,
   setDraggablePosition,
-  editPosition
+  editPosition,
+  selectedFilters
   }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
+  const [filteredTrees, setFilteredTrees] = useState([])
   const firebaseCollection = process.env.FIREBASE_COLLECTION
   const treesCollectionRef = collection(db, firebaseCollection);
   
@@ -32,16 +34,14 @@ export default function Map({
     
   delete L.Icon.Default.prototype._getIconUrl;
   L.Icon.Default.mergeOptions(newDefaultIcon)
-  
+
   // Retrieve trees from Firestore
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
       // limit(50),
-      where("treeType", "in", ['crabapple']),
       where("removed", "!=", true)
       );
-    // const queryTrees = query(treesCollectionRef, where("userDisplayName", "==", "Russell Vinegar"));
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {
       let firestoreTrees = [];
       snapshot.forEach((doc) => {
@@ -52,6 +52,28 @@ export default function Map({
 
     return () => unsubscribe();
   }, [])
+
+  useEffect(() => {
+    const filterTrees = () => {
+      const filtered = trees.filter(tree => {
+        const accessFilters = selectedFilters.access;
+        const accessMatch = Object.keys(accessFilters).some(
+          key => accessFilters[key] && tree.access === key
+        );
+  
+        const treeTypeFilters = selectedFilters.treeTypes;
+        const treeTypeMatch = Object.keys(treeTypeFilters).some(
+          key => treeTypeFilters[key] && tree.treeType === key
+        );
+  
+        return accessMatch && treeTypeMatch;
+      });
+  
+      setFilteredTrees(filtered);
+    };
+  
+    filterTrees();
+  }, [trees, selectedFilters]);
 
   // Zoom to current location
   // useEffect(() => {
@@ -113,7 +135,7 @@ export default function Map({
         </BaseLayer>
       </LayersControl>
 
-      {trees.map(tree => (
+      {filteredTrees.map(tree => (
         <TreeMarker key={tree.id} tree={tree} makeActiveTree={makeActiveTree} activeTree={activeTree} />
       ))}      
       {/* {activeTree=="new-tree" ? <Marker position={map.getCenter()}/> : null} */}

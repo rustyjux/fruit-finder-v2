@@ -8,6 +8,9 @@ import UserIcon from './UserIcon';
 import AddTreeButton from './AddTreeButton'
 import AddTree from '../TreeInfo/AddTree';
 import ViewEditTree from '../TreeInfo/ViewEditTree';
+import Legend from '../Legend/Legend';
+import { treeTypes } from "@/utils/displayText";
+import { accessMap } from "@/utils/displayText";
 
 function App() {
   // const { isAuth } = useAuth();
@@ -17,6 +20,20 @@ function App() {
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
   };
  
+  const [isLegendVisible, setIsLegendVisible] = useState(true);
+  const [selectedFilters, setSelectedFilters] = useState({
+    treeTypes: Object.fromEntries(
+      Object.entries(treeTypes).map(([key]) => [key, true])
+    ),
+    access: Object.fromEntries(
+      Object.entries(accessMap).map(([key]) => [key, true])
+    ),
+  });
+
+  const handleSelectedFiltersChange = (updatedFilters) => {
+    setSelectedFilters(updatedFilters);
+  };
+
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
   const [addTreeEnded, setAddTreeEnded] = useState('initial');
   const showAddTree = () => {
@@ -95,8 +112,19 @@ function App() {
             draggablePosition={draggablePosition}
             setDraggablePosition={setDraggablePosition}
             editPosition={editPosition}
+            selectedFilters={selectedFilters}
           />
         </div>
+        <AddTreeButton 
+          activeTree={activeTree} 
+          onClick={(event) => showAddTree(event)} 
+        />
+        {isLegendVisible && 
+          <Legend
+            onSelectedFiltersChange={handleSelectedFiltersChange}
+            appSelectedFilters={selectedFilters}
+          />
+        }
         {activeTree && activeTree!=='new-tree' && (
           <ViewEditTree 
             activeTree={activeTree}

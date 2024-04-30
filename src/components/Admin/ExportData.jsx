@@ -13,7 +13,6 @@ export default function ExportGeoJSON() {
     function exportData() {
         // firestoreExport(firebaseCollection)
         // .then(data=>console.log(data))
-        console.log('hi')
     }
 
     const exportDataAsGeoJSON = async () => {
