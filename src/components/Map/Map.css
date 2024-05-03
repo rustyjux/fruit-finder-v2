@@ -27,3 +27,35 @@
   height: 30vh;
 }
 
+.leaflet-control-layers {
+  background: none;
+  border: none !important;
+  padding-left: 4px;
+  padding-top: 4px;
+}
+
+.leaflet-control-layers-expanded {
+  background-color: white;
+}
+
+.leaflet-control-layers-toggle {
+  background-image: none !important;
+  background-color: #343f4f;
+  height: 40px !important;
+  width: 40px !important;
+  border: none;
+  border-radius: 100px;
+  padding: 5px 10px;
+  filter: drop-shadow(rgba(0, 0, 0, 0.07) 0px 4px 3px) drop-shadow(rgba(0, 0, 0, 0.06) 0px 2px 2px);
+}
+
+.leaflet-control-layers-toggle::before {
+  content: ''; /* Remove default content */
+  background-image: url('/assets/map-white.png');
+  background-position: center;
+  background-size: cover;
+  display: inline-block;
+  margin-top:5px;
+  width: 20px;
+  height: 18px;
+}

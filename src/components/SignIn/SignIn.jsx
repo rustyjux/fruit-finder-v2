@@ -58,8 +58,8 @@ export default function SignIn({ isSignInVisible, setIsSignInVisible }) {
         <DialogHeader>
           <DialogTitle>Account</DialogTitle>
           <DialogDescription>
-            {user && <p>Current user {user.email}</p>}
-            {user && <Button onClick={signOutUser}>Sign out</Button>}
+            {user && <p>Current user: {user.email}</p>}
+            {user && <Button className='mt-2' onClick={signOutUser}>Sign out</Button>}
             {showFirebaseUI && !user && <FirebaseUI auth={auth} config={UIConfig} />}     
             {/* <br/>Redirect URL: {redirectUrl} */}
           </DialogDescription>

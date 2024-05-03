@@ -16,7 +16,7 @@ export const treeTypes = {
   };
 
 export const accessMap = {
-    'unknown': { text: 'Unknown access', icon: FaUserSecret },
+    'unknown': { text: 'Unknown access', shorttext: 'Unknown', icon: FaUserSecret },
     'public': { text: 'Public', icon: PiTree },
     'private-shared': { text: 'Private (Shared)', icon: FaBuilding },
     'private': { text: 'Private', icon: FaUserLock }

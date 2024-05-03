@@ -66,7 +66,10 @@ export default function Map({
           key => treeTypeFilters[key] && tree.treeType === key
         );
   
-        return accessMatch && treeTypeMatch;
+        const ripeOnly = selectedFilters.ripe?.ripeOnly;
+        const ripeMatch = !ripeOnly || (ripeOnly && tree.ripe);
+  
+        return accessMatch && treeTypeMatch && ripeMatch;
       });
   
       setFilteredTrees(filtered);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Toaster } from "../ui/toaster";
+import { Button } from "@/components/ui/button"
 import './App.css';
 import SignIn from "../SignIn/SignIn"
 import Map from "../Map/Map"
@@ -11,6 +12,7 @@ import ViewEditTree from '../TreeInfo/ViewEditTree';
 import Legend from '../Legend/Legend';
 import { treeTypes } from "@/utils/displayText";
 import { accessMap } from "@/utils/displayText";
+import LegendButton from './LegendButton';
 
 function App() {
   // const { isAuth } = useAuth();
@@ -20,7 +22,11 @@ function App() {
     setIsSignInVisible((prevIsSignInVisible) => !prevIsSignInVisible);
   };
  
-  const [isLegendVisible, setIsLegendVisible] = useState(true);
+  const [isLegendVisible, setIsLegendVisible] = useState(false);
+  const toggleLegendVisible = () => {
+    setIsLegendVisible(!isLegendVisible);
+  };
+
   const [selectedFilters, setSelectedFilters] = useState({
     treeTypes: Object.fromEntries(
       Object.entries(treeTypes).map(([key]) => [key, true])
@@ -28,10 +34,36 @@ function App() {
     access: Object.fromEntries(
       Object.entries(accessMap).map(([key]) => [key, true])
     ),
+    ripe: {'ripeOnly':false}
   });
+
+  const resetFilters = {
+      treeTypes: Object.fromEntries(
+        Object.entries(treeTypes).map(([key]) => [key, true])
+      ),
+      access: Object.fromEntries(
+        Object.entries(accessMap).map(([key]) => [key, true])
+      ),
+      ripe: {'ripeOnly':false}
+    }
+
+  useEffect(() => {
+    const storedFilters = localStorage.getItem('selectedFilters');
+    if (storedFilters) {
+      try {
+        console.log('loading filters')
+        const parsedFilters = JSON.parse(storedFilters);
+        setSelectedFilters(parsedFilters);
+      } catch (error) {
+        console.error('Error parsing stored selectedFilters:', error);
+        // Handle potential errors during parsing (optional)
+      }
+    }
+  }, []);
 
   const handleSelectedFiltersChange = (updatedFilters) => {
     setSelectedFilters(updatedFilters);
+    localStorage.setItem('selectedFilters', JSON.stringify(updatedFilters));
   };
 
   const [isAddTreeVisible, setIsAddTreeVisible] = useState(false);
@@ -119,10 +151,17 @@ function App() {
           activeTree={activeTree} 
           onClick={(event) => showAddTree(event)} 
         />
+        <LegendButton
+          isLegendVisible={isLegendVisible}
+          onClick={toggleLegendVisible}
+        />
         {isLegendVisible && 
           <Legend
             onSelectedFiltersChange={handleSelectedFiltersChange}
             appSelectedFilters={selectedFilters}
+            resetFilters={resetFilters}
+            isLegendVisible={isLegendVisible}
+            setIsLegendVisible={setIsLegendVisible}
           />
         }
         {activeTree && activeTree!=='new-tree' && (
