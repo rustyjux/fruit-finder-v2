@@ -3,6 +3,7 @@ import { Toaster } from "../ui/toaster";
 import { Button } from "@/components/ui/button"
 import './App.css';
 import SignIn from "../SignIn/SignIn"
+import Welcome from '../Info/Welcome';
 import Map from "../Map/Map"
 // import { useAuth } from '../SignIn/AuthContext';
 import UserIcon from './UserIcon';
@@ -15,6 +16,8 @@ import { accessMap } from "@/utils/displayText";
 import LegendButton from './LegendButton';
 
 function App() {
+  const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
+
   // const { isAuth } = useAuth();
   const [isSignInVisible, setIsSignInVisible] = useState(false);
   const showSignIn = (event) => {
@@ -128,6 +131,7 @@ function App() {
 
   return (
     <div className="app-container">
+        <Welcome isWelcomeVisible={isWelcomeVisible} setIsWelcomeVisible={setIsWelcomeVisible} />
         <UserIcon onClick={(event) => showSignIn(event)} />
         <SignIn 
           isSignInVisible={isSignInVisible} 

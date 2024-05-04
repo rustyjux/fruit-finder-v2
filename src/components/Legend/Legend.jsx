@@ -49,7 +49,7 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
       {/* DrawerTrigger and DrawerContent */}
       <DrawerContent className="h-screen top-0 right-[-2px] left-auto mt-0 w-[120px] z-[2000] no-handle" >
         <div className="">        
-          <DrawerTitle className='pt-2 pb-1 text-center '>Tree type</DrawerTitle>
+          <DrawerTitle className='pt-3 pb-1 text-center '>Tree type</DrawerTitle>
           {Object.entries(treeTypes).map(([key, value]) => (
             <Button
             size='sm'
