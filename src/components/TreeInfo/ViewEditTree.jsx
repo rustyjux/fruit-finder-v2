@@ -6,6 +6,9 @@ import { useState } from "react";
 import { toTitleCase } from "../../utils/helpers";
 import * as displayText from "../../utils/displayText";
 import { getLabelContent } from "./AddTree";
+import { treeTypes } from "../../utils/displayText";
+import { colorToHex } from "../../utils/helpers";
+import { MdOutlineDoNotDisturbOn } from "react-icons/md";
 
 export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditVisible, setIsViewEditVisible, draggablePosition, setDraggablePosition, setEditPosition, endEditPosition, zoomToLocationRequest, setZoomToLocationRequest }) {
 
@@ -19,8 +22,6 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
   const endEditingLocation = () => {
     setEditingLocationStarted(false)
   }
-
-  const treeHeader = displayText.getAccessDisplayText(activeTree.access, true)
 
   function handleRemoveActiveTreeWithDelay() {
     setEditPosition(false)
@@ -42,9 +43,29 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
     return {};
   }
 
+  const treeTypeColor = treeTypes[activeTree.treeType]?.color || 'black';
+  const treeTypeColorHex = colorToHex(treeTypeColor, 0.4);
+
+  const accessText = displayText.getAccessDisplayText(activeTree.access);
+  const accessIcon = displayText.getAccessIcon(activeTree.access);
+  
+  const treeDrawerTitle = (
+    <div className="flex items-center justify-center">
+      <div
+        className="w-5 h-5 rounded-full mr-2 border-[3px]"
+        style={{ backgroundColor: treeTypeColorHex, borderColor: treeTypeColor }}
+      ></div>
+      <div className="flex items-center">
+        {`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · `}
+        {accessIcon && <span className="mx-1">{accessIcon}</span>}
+        {accessText}
+      </div>
+    </div>
+  );
+  
   return (
     <TreeDrawer
-    title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
+    title={treeDrawerTitle}
     label={editingLocation ? getLabelContent(zoomToLocationRequest, setZoomToLocationRequest) : null}
     modal={false}
     dismissible={isEditTreeVisible ? false : true}

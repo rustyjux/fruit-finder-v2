@@ -1,9 +1,4 @@
-import { FaTree, FaBuilding, FaUserLock, FaUserSecret } from 'react-icons/fa';
-import { PiTree } from "react-icons/pi";
-
-export const getDisplayText = (value, map) => {
-    return map[value] || 'UNKNOWN VALUE'; // Default if the value is not found in the map
-};
+import { MdOutlineDoNotDisturbOn } from "react-icons/md";
 
 export const treeTypes = {
     apple: { color: 'green', label: 'Apple' },
@@ -16,30 +11,18 @@ export const treeTypes = {
   };
 
 export const accessMap = {
-    'unknown': { text: 'Unknown access', shorttext: 'Unknown', icon: FaUserSecret },
-    'public': { text: 'Public', icon: PiTree },
-    'private-shared': { text: 'Private (Shared)', icon: FaBuilding },
-    'private': { text: 'Private', icon: FaUserLock }
+    'unknown': { text: 'Unknown access', shorttext: 'Unknown'},
+    'public': { text: 'Public'},
+    'private-shared': { text: 'Private (Shared)'},
+    'private': { text: 'Private', icon: MdOutlineDoNotDisturbOn }
   };
   
-export function getAccessDisplayText(accessValue, withIcon = false) {
-    const { text, icon: Icon } = accessMap[accessValue] || { text: 'Unknown access', icon: FaUserSecret };
-
-    if (withIcon && Icon) {
-        return (
-        <>
-            <Icon /> {text}
-        </>
-        );
-    }
-
+export function getAccessDisplayText(accessValue) {
+    const { text } = accessMap[accessValue] || { text: 'Unknown access', icon: FaUserSecret };
     return text;
 }
 
-// export const adoptionStatusMap = {
-//     yes: 'Yes',
-//     no: 'No'
-// };
-// export const getAdoptionStatusDisplayText(statusValue) {
-// return getDisplayText(statusValue, adoptionStatusMap);
-// };
+export function getAccessIcon(accessValue) {
+    const { icon: Icon } = accessMap[accessValue] || { icon: FaUserSecret };
+    return Icon ? <Icon /> : null;
+}
