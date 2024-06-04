@@ -24,7 +24,9 @@ export default function Map({
   editPosition,
   selectedFilters,
   zoomToLocationRequest,
-  setZoomToLocationRequest
+  setZoomToLocationRequest,
+  zoomToHomeRequest,
+  setZoomToHomeRequest
   }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
@@ -141,6 +143,16 @@ export default function Map({
   function handleOnLocationError(error) {
     alert(`Unable to determine location: ${error.message}`);
   }
+
+    // Zoom to home location
+    useEffect(() => {
+      if (map && zoomToHomeRequest) {
+        map.flyTo(initialMapCenter, zoomSetting)
+        setTimeout(() => {
+          setZoomToHomeRequest(false)
+        }, 200); 
+      }
+    }, [zoomToHomeRequest]);
 
   return (
     <div className={`map-container map-container--${mapSize}`}>

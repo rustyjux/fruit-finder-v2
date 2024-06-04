@@ -130,6 +130,9 @@ function App() {
   const [draggablePosition, setDraggablePosition] = useState(mapCenter)
 
   const [zoomToLocationRequest, setZoomToLocationRequest] = useState(false)
+  
+  const [zoomToHomeRequest, setZoomToHomeRequest] = useState(false)
+
 
   return (
     <div className="app-container">
@@ -153,6 +156,8 @@ function App() {
             selectedFilters={selectedFilters}
             zoomToLocationRequest={zoomToLocationRequest}
             setZoomToLocationRequest={setZoomToLocationRequest}
+            zoomToHomeRequest={zoomToHomeRequest}
+            setZoomToHomeRequest={setZoomToHomeRequest}
           />
         </div>
         <LegendButton
@@ -204,8 +209,8 @@ function App() {
         />
         <ZoomHomeButton 
           customStyle="mainStyle"
-          zoomToLocationRequest={zoomToLocationRequest}
-          setZoomToLocationRequest={setZoomToLocationRequest}
+          zoomToHomeRequest={zoomToHomeRequest}
+          setZoomToHomeRequest={setZoomToHomeRequest}
         />
         <Toaster />
     </div>
