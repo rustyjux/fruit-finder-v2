@@ -21,17 +21,24 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
   const resetFiltersHandle = () => {
     setSelectedFilters(resetFilters);
     onSelectedFiltersChange(resetFilters);
+    localStorage.removeItem('selectedFilters')
   }
   
   const handleSelectionChange = (type, key) => {
     setSelectedFilters((prevFilters) => {
-      const updatedFilters = {
-        ...prevFilters,
-        [type]: {
+      let updatedFilters = { ...prevFilters };
+
+      if (!localStorage.getItem('selectedFilters') && type === "treeTypes") {
+        updatedFilters[type] = Object.keys(treeTypes).reduce((acc, treeType) => {
+          acc[treeType] = treeType === key;
+          return acc;
+        }, {});
+      } else {
+        updatedFilters[type] = {
           ...(prevFilters?.[type] || {}),
           [key]: !(prevFilters?.[type]?.[key] || false),
-        },
-      };
+        };
+      }
       onSelectedFiltersChange(updatedFilters);
       return updatedFilters;
     });
