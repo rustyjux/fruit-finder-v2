@@ -30,20 +30,23 @@
 .leaflet-control-layers {
   background: none;
   border: none !important;
-  padding-left: 4px;
-  padding-top: 4px;
+  padding-left: 2px;
+  padding-top: 2px;
 }
 
 .leaflet-control-layers-expanded {
   background-color: white;
+  font-size: 16px;
+  /* left: 40px; */
+  /* padding-left: 25px */
 }
 
 .leaflet-control-layers-toggle {
   background-image: none !important;
-  background-color: #343f4f;
-  height: 40px !important;
-  width: 40px !important;
-  border: none;
+  background-color: white;
+  height: 40px ;
+  width: 40px ;
+  border: solid #343f4f 2px;
   border-radius: 100px;
   padding: 5px 10px;
   filter: drop-shadow(rgba(0, 0, 0, 0.07) 0px 4px 3px) drop-shadow(rgba(0, 0, 0, 0.06) 0px 2px 2px);
@@ -51,7 +54,7 @@
 
 .leaflet-control-layers-toggle::before {
   content: ''; /* Remove default content */
-  background-image: url('/assets/map-white.png');
+  background-image: url('/assets/map-input-grey.png');
   background-position: center;
   background-size: cover;
   display: inline-block;

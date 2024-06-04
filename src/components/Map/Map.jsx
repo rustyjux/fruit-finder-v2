@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { MapContainer, TileLayer, LayersControl, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, LayersControl, ScaleControl, Marker, Popup, useMap } from 'react-leaflet';
 import { collection, onSnapshot, query, limit, where, FieldPath } from 'firebase/firestore';
 import { db } from "../../utils/firebase";
 
@@ -152,6 +152,7 @@ export default function Map({
         scrollWheelZoom={true} 
         ref={setMap}
       >
+      <ScaleControl position="bottomleft" updateWhenIdle={false}/>
       <LayersControl position="topleft">
         <BaseLayer checked name="Streets">
           <TileLayer

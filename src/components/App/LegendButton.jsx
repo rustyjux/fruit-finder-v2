@@ -2,14 +2,12 @@ import { FaLayerGroup } from 'react-icons/fa';
 
 export default function LegendButton({ isLegendVisible, onClick }) {
 
-  const bgColor = isLegendVisible ? 'bg-hot' : 'bg-input';
-
   return (
     <div 
-      className={`cursor-pointer absolute inset-y-[62px] left-3.5 ${bgColor} rounded-full w-10 h-10 flex justify-center items-center text-white z-50 overflow-hidden drop-shadow-md`}
+      className={`cursor-pointer absolute inset-y-[62px] left-3.5 ${isLegendVisible ? 'outline-primary text-primary':'outline-input text-input'} bg-white rounded-full w-10 h-10 flex justify-center items-center text-input outline outline-2 z-50 overflow-hidden drop-shadow-md`}
       onClick={onClick}
     >
-      <FaLayerGroup />
+      <FaLayerGroup size={17}/>
     </div>
   );
 }

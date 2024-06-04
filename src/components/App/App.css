@@ -55,18 +55,18 @@ html {
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: rgb(53, 53, 53);
+  background-color: white;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: input;
   z-index: 1001; 
   overflow: hidden;
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
-  outline: 3px solid white;
+  outline: 2px solid #343f4f;
   outline-offset: -1px;
 }
 

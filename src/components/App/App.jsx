@@ -15,6 +15,7 @@ import { treeTypes } from "@/utils/displayText";
 import { accessMap } from "@/utils/displayText";
 import LegendButton from './LegendButton';
 import ZoomToLocationButton from './ZoomToLocationButton';
+import ZoomHomeButton from './ZoomHomeButton';
 
 function App() {
   const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
@@ -197,6 +198,11 @@ function App() {
         />
         )}
         <ZoomToLocationButton 
+          customStyle="mainStyle"
+          zoomToLocationRequest={zoomToLocationRequest}
+          setZoomToLocationRequest={setZoomToLocationRequest}
+        />
+        <ZoomHomeButton 
           customStyle="mainStyle"
           zoomToLocationRequest={zoomToLocationRequest}
           setZoomToLocationRequest={setZoomToLocationRequest}
