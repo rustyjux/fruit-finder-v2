@@ -14,6 +14,7 @@ import Legend from '../Legend/Legend';
 import { treeTypes } from "@/utils/displayText";
 import { accessMap } from "@/utils/displayText";
 import LegendButton from './LegendButton';
+import ZoomToLocationButton from './ZoomToLocationButton';
 
 function App() {
   const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
@@ -54,12 +55,10 @@ function App() {
     const storedFilters = localStorage.getItem('selectedFilters');
     if (storedFilters) {
       try {
-        console.log('loading filters')
         const parsedFilters = JSON.parse(storedFilters);
         setSelectedFilters(parsedFilters);
       } catch (error) {
         console.error('Error parsing stored selectedFilters:', error);
-        // Handle potential errors during parsing (optional)
       }
     }
   }, []);
@@ -129,6 +128,8 @@ function App() {
 
   const [draggablePosition, setDraggablePosition] = useState(mapCenter)
 
+  const [zoomToLocationRequest, setZoomToLocationRequest] = useState(false)
+
   return (
     <div className="app-container">
         <Welcome isWelcomeVisible={isWelcomeVisible} setIsWelcomeVisible={setIsWelcomeVisible} />
@@ -149,12 +150,10 @@ function App() {
             setDraggablePosition={setDraggablePosition}
             editPosition={editPosition}
             selectedFilters={selectedFilters}
+            zoomToLocationRequest={zoomToLocationRequest}
+            setZoomToLocationRequest={setZoomToLocationRequest}
           />
         </div>
-        <AddTreeButton 
-          activeTree={activeTree} 
-          onClick={(event) => showAddTree(event)} 
-        />
         <LegendButton
           isLegendVisible={isLegendVisible}
           onClick={toggleLegendVisible}
@@ -178,6 +177,8 @@ function App() {
             setDraggablePosition={setDraggablePosition}
             setEditPosition={setEditPosition}
             endEditPosition={endEditPosition}
+            zoomToLocationRequest={zoomToLocationRequest}
+            setZoomToLocationRequest={setZoomToLocationRequest}
           />
         )}
         <AddTreeButton 
@@ -189,9 +190,17 @@ function App() {
           isAddTreeVisible={isAddTreeVisible}
           setIsAddTreeVisible={setIsAddTreeVisible}
           draggablePosition={draggablePosition}
+          setDraggablePosition={setDraggablePosition}
           endAddTree={endAddTree}
+          zoomToLocationRequest={zoomToLocationRequest}
+          setZoomToLocationRequest={setZoomToLocationRequest}
         />
         )}
+        <ZoomToLocationButton 
+          customStyle="mainStyle"
+          zoomToLocationRequest={zoomToLocationRequest}
+          setZoomToLocationRequest={setZoomToLocationRequest}
+        />
         <Toaster />
     </div>
   );

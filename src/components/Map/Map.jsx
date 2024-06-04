@@ -22,7 +22,9 @@ export default function Map({
   draggablePosition,
   setDraggablePosition,
   editPosition,
-  selectedFilters
+  selectedFilters,
+  zoomToLocationRequest,
+  setZoomToLocationRequest
   }) {  
   const [map, setMap] = useState(null);
   const [trees, setTrees] = useState([])
@@ -78,16 +80,6 @@ export default function Map({
     filterTrees();
   }, [trees, selectedFilters]);
 
-  // Zoom to current location
-  // useEffect(() => {
-  //   if (map) {
-  //     map.locate({
-  //         setView: true
-  //     });
-      
-  //   }
-  // }, [map]);
-
   useEffect(() => {
     const onMove = () => {
       if (map) {
@@ -108,6 +100,47 @@ export default function Map({
     //   }
     // }
   }, [map, setMapCenter])
+
+  // Zoom to current location
+  useEffect(() => {
+    if (map && zoomToLocationRequest) {
+      map.locate({
+          setView: true,
+          enableHighAccuracy: true
+      });      
+    map.on('locationfound', handleOnLocationFound);
+    map.on('locationerror', handleOnLocationError);
+
+    return () => {
+      map.off('locationfound', handleOnLocationFound);
+      map.off('locationerror', handleOnLocationError);
+    }
+
+    }
+  }, [zoomToLocationRequest]);
+  
+  function handleOnLocationFound(event) {
+    const { latlng, accuracy } = event;
+
+    const circle = L.circle(latlng, {
+      radius: accuracy,
+    });
+
+    circle.addTo(map);
+
+    if (activeTree=="new-tree" || editPosition){
+      setDraggablePosition(latlng)
+    }
+
+    setTimeout(() => {
+      map.removeLayer(circle);
+      setZoomToLocationRequest(false)
+    }, 5000); 
+  }
+
+  function handleOnLocationError(error) {
+    alert(`Unable to determine location: ${error.message}`);
+  }
 
   return (
     <div className={`map-container map-container--${mapSize}`}>

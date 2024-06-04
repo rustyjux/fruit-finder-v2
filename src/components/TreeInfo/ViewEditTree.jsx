@@ -5,9 +5,9 @@ import TreeDrawer from "./TreeDrawer";
 import { useState } from "react";
 import { toTitleCase } from "../../utils/helpers";
 import * as displayText from "../../utils/displayText";
-import { labelContent } from "./AddTree";
+import { getLabelContent } from "./AddTree";
 
-export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditVisible, setIsViewEditVisible, draggablePosition, setDraggablePosition, setEditPosition, endEditPosition }) {
+export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditVisible, setIsViewEditVisible, draggablePosition, setDraggablePosition, setEditPosition, endEditPosition, zoomToLocationRequest, setZoomToLocationRequest }) {
 
   const [isEditTreeVisible, setIsEditTreeVisible] = useState(false);
   const [editingLocation, setEditingLocation] = useState(false)
@@ -45,7 +45,7 @@ export default function ViewEditTree({ activeTree, removeActiveTree, isViewEditV
   return (
     <TreeDrawer
     title={`${toTitleCase(activeTree.treeType)} · ${activeTree.treeCount && activeTree.treeCount !== 1 ? activeTree.treeCount + ' trees' : '1 tree'} · ${displayText.getAccessDisplayText(activeTree.access, false)}`}
-    label={editingLocation ? labelContent : null}
+    label={editingLocation ? getLabelContent(zoomToLocationRequest, setZoomToLocationRequest) : null}
     modal={false}
     dismissible={isEditTreeVisible ? false : true}
     open={isViewEditVisible}

@@ -34,18 +34,34 @@ import { FaMinus, FaPlus } from 'react-icons/fa6';
 import { newDefaultIcon } from "../Map/MapIcons";
 import TreeDrawer from "./TreeDrawer";
 import { NewTreeSchema } from "@/schema";
+import ZoomToLocationButton from "../App/ZoomToLocationButton";
 
 import { useState, useEffect, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from "../../utils/firebase";
 
-export const labelContent = (
-  <>
-      Drag the marker <img src={newDefaultIcon.iconUrl} alt="Descriptive Text" style={{ display: 'inline-block', verticalAlign: '-3px', height: '1.3em', width: 'auto', margin: 0 }} /> to adjust tree location
-  </>
-);
+export function getLabelContent(zoomToLocationRequest, setZoomToLocationRequest) {
+  return (
+    <>
+      Drag the marker <img src={newDefaultIcon.iconUrl} alt="Descriptive Text" style={{ display: 'inline-block', verticalAlign: '-3px', height: '1.3em', width: 'auto', margin: 0 }} /> to adjust tree location or 
+      <ZoomToLocationButton 
+        customStyle="inLineStyle"
+        zoomToLocationRequest={zoomToLocationRequest}
+        setZoomToLocationRequest={setZoomToLocationRequest}
+      />
+    </>
+  );
+}
 
-export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggablePosition, endAddTree }) {
+export default function AddTree({ 
+  isAddTreeVisible,
+  setIsAddTreeVisible,
+  draggablePosition,
+  setDraggablePosition,
+  endAddTree,
+  zoomToLocationRequest,
+  setZoomToLocationRequest
+  }) {
   const [key, setKey] = useState(+new Date())
   const { toast } = useToast()
 
@@ -141,7 +157,7 @@ export default function AddTree({ isAddTreeVisible, setIsAddTreeVisible, draggab
   return (
     <TreeDrawer
     title="Add a new tree"
-    label={labelContent}
+    label={getLabelContent(zoomToLocationRequest, setZoomToLocationRequest)}
     open={isAddTreeVisible}
     // onOpenChange={setIsAddTreeVisible}
     snapPoints={snapPoints}
