@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 export function toTitleCase(str) {
     return str.replace(
       /\w\S*/g,
@@ -45,4 +47,20 @@ export const colorToHex = (color, opacity) => {
   }
 
   return color;
+};
+
+export const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    const handleChange = () => setMatches(mediaQuery.matches);
+
+    handleChange(); // Check the media query initially
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [query]);
+
+  return matches;
 };
