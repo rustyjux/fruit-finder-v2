@@ -41,8 +41,15 @@ export default function CurrentTree({ activeTree, setIsEditTreeVisible }) {
     }, [activeTree]); 
 
     const onPick = async () => {
-        let pickToastMsg = "Tree already marked picked"
-        if (!pickedThisYear) {
+        let pickToastMsg = ""
+        if (pickedThisYear) {
+            await updateDoc(docRef, {
+                lastPickedDate: null,
+                lastPickedByName: auth.currentUser ? auth.currentUser.displayName : null,
+                lastPickedByEmail: auth.currentUser ? auth.currentUser.email : null,
+            });
+            pickToastMsg = "Tree marked as not picked"
+        } else {
             await updateDoc(docRef, {
                 lastPickedDate: serverTimestamp(),
                 lastPickedByName: auth.currentUser ? auth.currentUser.displayName : null,
