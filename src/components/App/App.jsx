@@ -13,9 +13,11 @@ import ViewEditTree from '../TreeInfo/ViewEditTree';
 import Legend from '../Legend/Legend';
 import { treeTypes } from "@/utils/displayText";
 import { accessMap } from "@/utils/displayText";
+import InfoButton from './InfoButton';
 import LegendButton from './LegendButton';
 import ZoomToLocationButton from './ZoomToLocationButton';
 import ZoomHomeButton from './ZoomHomeButton';
+import { set } from 'react-hook-form';
 
 function App() {
   const [isWelcomeVisible, setIsWelcomeVisible] = useState(true);
@@ -136,6 +138,10 @@ function App() {
 
   return (
     <div className="app-container">
+        <InfoButton
+          isWelcomeVisible={isWelcomeVisible}
+          onClick={setIsWelcomeVisible}
+        />
         <Welcome isWelcomeVisible={isWelcomeVisible} setIsWelcomeVisible={setIsWelcomeVisible} />
         <UserIcon onClick={(event) => showSignIn(event)} />
         <SignIn 
