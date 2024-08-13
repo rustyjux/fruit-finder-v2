@@ -7,6 +7,7 @@ import './Map.css';
 import { appleLIcon, newDefaultIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 import DraggableMarker from "./DraggableMarker";
+import ZoomOnlyScaleControl from "./ZoomOnlyScaleControl";
 
 const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN
 
@@ -164,7 +165,7 @@ export default function Map({
         scrollWheelZoom={true} 
         ref={setMap}
       >
-      <ScaleControl position="bottomleft" updateWhenIdle={false}/>
+      <ZoomOnlyScaleControl position="bottomleft" updateWhenIdle={false}/>
       <LayersControl position="topleft">
         <BaseLayer checked name="Streets">
           <TileLayer

@@ -1,0 +1,13 @@
+.zoom-scale-control {
+    transition: opacity 0.5s ease-out;
+    opacity: 1;
+  }
+  
+  .zoom-scale-control.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .zoom-scale-control.fade-in {
+    opacity: 1;
+  }
