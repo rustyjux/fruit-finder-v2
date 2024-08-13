@@ -18,6 +18,11 @@ import CarouselDots from "@/components/ui/carouseldots";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMediaQuery } from "@/utils/helpers";
 import FullPageDialog from '../ui/full-page-dialog';
+import { FaAppleAlt, FaMap, FaRegCircle, FaPlus } from 'react-icons/fa';
+import { FaPerson, FaPencil } from 'react-icons/fa6';
+import { RiBearSmileFill } from "react-icons/ri";
+import AddTreeButton from '../App/AddTreeButton';
+import ButtonShell from '../ui/button-shell';
 
 export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
   const isDesktop = useMediaQuery('(min-width: 640px)');
@@ -41,7 +46,6 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
     if (hideWelcome) {
       setIsWelcomeVisible(false);
       setHideOnStart(hideWelcome);
-      console.log('second useEffect');
     }
   }, [setIsWelcomeVisible]);
 
@@ -52,19 +56,24 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
   };
 
   return (
-    <FullPageDialog open={isWelcomeVisible} onOpenChange={setIsWelcomeVisible} modal={true} className="h-full">
-        <DialogHeader>
+    <FullPageDialog open={isWelcomeVisible} onOpenChange={setIsWelcomeVisible}>
+        {/* <DialogHeader>
           <DialogTitle>Rossland Fruit Finder</DialogTitle>
-        </DialogHeader>
-        <div className="text-sm text-muted-foreground">
+        </DialogHeader> */}
+        <div className="flex items-center justify-center h-full">
           <Carousel>
-            <CarouselContent className="pb-2">
+            <CarouselContent className="pb-2 text-center flex">
               <CarouselItem>
-                Keen to pick some local fruit🍎🍏? Know where public fruit trees are around Rossland?
-                Or have a tree on your property to share?
+                <div className='text-6xl flex justify-center pb-4'>
+                  <FaAppleAlt />
+                  <FaPerson/>
+                  <RiBearSmileFill />
+                </div>
+                <b>Welcome to Fruit Finder</b>
                 <br /><br />
-                The Rossland Fruit Finder app is a collaborative tool to help make
-                the most of the abundance of local fruit and reduce human-wildlife conflicts.
+                Help make the most of local fruit and reduce human-wildlife conflicts.
+                <br /><br />
+                Continue to learn how to use the app.
                 {isDesktop ? (
                   <span>
                     <br /><br />
@@ -73,58 +82,63 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
                 ) : ""}
               </CarouselItem>
               <CarouselItem>
-                🚧 Coming soon!
+                <div className='text-6xl flex justify-center pb-4'>
+                  <FaMap />
+                </div>
+                <b>Explore the map</b> 
                 <br /><br />
-                In the meantime, feel free to contribute to the map by adding fruit trees (either public or your own private trees) to the map.
+                Pan, zoom, and jump to your location
               </CarouselItem>
               <CarouselItem>
-                <div className="flex items-center">
-                  <Button onClick={() => setIsWelcomeVisible(false)} className="mr-4">Got it!</Button>
-                  <input
-                    type="checkbox"
-                    id="hideOnStart"
-                    checked={hideOnStart}
-                    onChange={handleCheckboxChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor="hideOnStart">Hide on app start</label>
+                <div className='text-6xl flex justify-center pb-4'>
+                  <FaRegCircle className='text-[#008119] fill-[##97caa2]' />
                 </div>
+                <b>Find trees to pick</b> 
+                <br /><br />
+                Tap a tree to find out more about it
+                <br /><br />
+                Ask permission before picking trees
+                on private property
+              </CarouselItem>
+              <CarouselItem>
+                <div className='text-6xl flex justify-center pb-4'>
+                  <FaPlus />
+                </div>
+                <b>Share trees</b>
+                <br /><br />
+                Add your own trees to the map and share them with others
+              </CarouselItem>
+              <CarouselItem>
+                <div className='text-6xl flex justify-center pb-4'>
+                  <FaPencil />
+                </div>
+                <b>Improve the map</b>
+                <br /><br />
+                Edit or remove trees to correct inaccurate info                
               </CarouselItem>
             </CarouselContent>
-            <CarouselPrevious className="bottom-0" />
-            <CarouselNext />
-            <CarouselDots />
-            {/* <CarouselPrevious /> */}
-
-
-
+            <div className="flex items-center justify-center mt-auto p-4">
+              {/* <CarouselPrevious /> */}
+              {/* <CarouselNext /> */}
+              <CarouselDots />
+            </div>
           </Carousel>
+        </div>
+        <div className="absolute left-0 bottom-6 w-full px-6">
+          <div className='flex-col items-center justify-center w-full'>
+            <Button onClick={() => setIsWelcomeVisible(false)} className="flex w-full">Let's go</Button>
+            <div className="flex items-center justify-center mt-4">
+              <input
+                type="checkbox"
+                id="hideOnStart"
+                checked={hideOnStart}
+                onChange={handleCheckboxChange}
+                className="mr-2"
+                />
+              <label htmlFor="hideOnStart" className='text-sm'>Hide on app start</label>
+            </div>
+          </div>
         </div>
     </FullPageDialog>
   );
 }
-
-          {/* <Tabs defaultValue="welcome" className="pb-2 focus:outline-none">
-            <TabsList className="flex my-2">
-              <TabsTrigger value="welcome">Welcome</TabsTrigger>
-              <TabsTrigger value="tutorial">How it works</TabsTrigger>
-            </TabsList>
-            <TabsContent value="welcome" className="focus:outline-none">
-              Keen to pick some local fruit🍎🍏? Know where public fruit trees are around Rossland?
-              Or have a tree on your property to share?
-              <br /><br />
-              The Rossland Fruit Finder app is a collaborative tool to help make
-              the most of the abundance of local fruit and reduce human-wildlife conflicts.
-              {isDesktop ? (
-                <span>
-                  <br /><br />
-                  This app is designed for <b>mobile</b> devices. Jump on your phone for the best experience!
-                </span>
-              ) : ""}
-            </TabsContent>
-            <TabsContent value="tutorial">
-              🚧 Coming soon!
-              <br /><br />
-              In the meantime, feel free to contribute to the map by adding fruit trees (either public or your own private trees) to the map.
-            </TabsContent>
-          </Tabs> */}
