@@ -4,8 +4,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 const FullPageDialog = ({ children, open, onOpenChange }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-full w-screen h-screen p-0 m-0">
-        <div className="w-full h-full overflow-hidden p-6">
+      <DialogContent className="w-full h-full">
+        <div className="w-full h-full overflow-hidden">
           {children}
         </div>
       </DialogContent>

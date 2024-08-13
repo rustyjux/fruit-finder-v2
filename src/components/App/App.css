@@ -75,6 +75,11 @@ html {
   max-height: 101%;
   object-fit: cover; /* Cover the entire area */
 }
+
+.onboarding-heading {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
   
 /* .add-tree-btn{
   cursor: pointer;

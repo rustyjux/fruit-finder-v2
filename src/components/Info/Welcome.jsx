@@ -61,7 +61,7 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
           <DialogTitle>Rossland Fruit Finder</DialogTitle>
         </DialogHeader> */}
         <div className="flex items-center justify-center h-full">
-          <Carousel>
+          <Carousel className="w-full">
             <CarouselContent className="pb-2 text-center flex">
               <CarouselItem>
                 <div className='text-6xl flex justify-center pb-4'>
@@ -69,7 +69,7 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
                   <FaPerson/>
                   <RiBearSmileFill />
                 </div>
-                <b>Welcome to Fruit Finder</b>
+                <span className='onboarding-heading'>Welcome to Fruit Finder</span>
                 <br /><br />
                 Help make the most of local fruit and reduce human-wildlife conflicts.
                 <br /><br />
@@ -85,36 +85,37 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
                 <div className='text-6xl flex justify-center pb-4'>
                   <FaMap />
                 </div>
-                <b>Explore the map</b> 
+                <span className='onboarding-heading'>Explore the map</span>
                 <br /><br />
-                Pan, zoom, and jump to your location
+                Pan, zoom, and jump to your location.
               </CarouselItem>
               <CarouselItem>
                 <div className='text-6xl flex justify-center pb-4'>
-                  <FaRegCircle className='text-[#008119] fill-[##97caa2]' />
+                  {/* <FaRegCircle className='text-[#008119]' /> */}
+                  <FaRegCircle />
                 </div>
-                <b>Find trees to pick</b> 
+                <span className='onboarding-heading'>Find trees to pick</span>
                 <br /><br />
-                Tap a tree to find out more about it
+                Tap a tree to find out more about it.
                 <br /><br />
                 Ask permission before picking trees
-                on private property
+                on private property.
               </CarouselItem>
               <CarouselItem>
                 <div className='text-6xl flex justify-center pb-4'>
                   <FaPlus />
                 </div>
-                <b>Share trees</b>
+                <span className='onboarding-heading'>Share trees</span>
                 <br /><br />
-                Add your own trees to the map and share them with others
+                Add your own trees to the map and share them with others.
               </CarouselItem>
               <CarouselItem>
                 <div className='text-6xl flex justify-center pb-4'>
                   <FaPencil />
                 </div>
-                <b>Improve the map</b>
+                <span className='onboarding-heading'>Improve the map</span>
                 <br /><br />
-                Edit or remove trees to correct inaccurate info                
+                Edit or remove trees to correct inaccurate info.              
               </CarouselItem>
             </CarouselContent>
             <div className="flex items-center justify-center mt-auto p-4">
