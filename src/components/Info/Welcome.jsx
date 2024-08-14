@@ -18,7 +18,7 @@ import CarouselDots from "@/components/ui/carouseldots";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMediaQuery } from "@/utils/helpers";
 import FullPageDialog from '../ui/full-page-dialog';
-import { FaAppleAlt, FaMap, FaRegCircle, FaPlus } from 'react-icons/fa';
+import { FaAppleAlt, FaMap, FaRegCircle, FaPlus, FaInfo } from 'react-icons/fa';
 import { FaPerson, FaPencil } from 'react-icons/fa6';
 import { RiBearSmileFill } from "react-icons/ri";
 import AddTreeButton from '../App/AddTreeButton';
@@ -116,6 +116,19 @@ export default function Welcome({ isWelcomeVisible, setIsWelcomeVisible }) {
                 <span className='onboarding-heading'>Improve the map</span>
                 <br /><br />
                 Edit or remove trees to correct inaccurate info.              
+              </CarouselItem>
+              <CarouselItem>
+                <div className='text-6xl flex justify-center pb-4'>
+                  <FaInfo />
+                </div>
+                <span className='onboarding-heading'>Learn more</span>
+                <br /><br />
+                Find out more about the app and how to use it at the {' '}
+                  <a href="https://rosslandsustainability.com/rossland-fruit-finder/" 
+                    target="_blank" 
+                    className="text-blue-500 hover:text-blue-700 underline">
+                    Fruit Finder website
+                  </a>.
               </CarouselItem>
             </CarouselContent>
             <div className="flex items-center justify-center mt-auto p-4">
