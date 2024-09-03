@@ -56,6 +56,9 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
       {/* DrawerTrigger and DrawerContent */}
       <DrawerContent className="h-screen top-0 right-[-2px] left-auto mt-0 w-[120px] z-[2000] no-handle" >
         <div className="">        
+          <DrawerDescription className='pt-3 flex-column items-center justify-center text-center'>
+            Use the toggles to filter trees
+          </DrawerDescription>
           <DrawerTitle className='pt-3 pb-1 text-center '>Tree type</DrawerTitle>
           {Object.entries(treeTypes).map(([key, value]) => (
             <Button
@@ -73,7 +76,7 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
               {value.label}
             </Button>
           ))}
-          <DrawerTitle className='pt-4 pb-1 text-center'>Access</DrawerTitle>
+          <DrawerTitle className='pt-3 pb-1 text-center'>Access</DrawerTitle>
           {Object.entries(accessMap).map(([key, value]) => (
             <Button
               size='sm'
@@ -95,7 +98,7 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
           <Button
             size='sm'
             key='ripeOnly'
-            className='w-full rounded-none mt-4 text-left block'
+            className='w-full rounded-none my-2 text-left block'
             variant="toggle"
             active={selectedFilters.ripe?.ripeOnly || false}
             onClick={() => handleSelectionChange("ripe", 'ripeOnly')}
@@ -105,8 +108,6 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
           >
           Ripe trees only
           </Button>
-          <DrawerDescription className='flex-column items-center p-1'>Use the toggles to filter trees
-          </DrawerDescription>
           <DrawerFooter className='flex-column items-center p-1'>
             <Button size='sm' variant="outline" onClick={resetFiltersHandle}>
               Reset filters
