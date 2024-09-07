@@ -4,6 +4,7 @@ import { collection, onSnapshot, query, limit, where, FieldPath } from 'firebase
 import { db } from "../../utils/firebase";
 
 import './Map.css';
+import { useTrees } from "../App/TreeContext";
 import { appleLIcon, newDefaultIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 import DraggableMarker from "./DraggableMarker";
@@ -30,7 +31,7 @@ export default function Map({
   setZoomToHomeRequest
   }) {  
   const [map, setMap] = useState(null);
-  const [trees, setTrees] = useState([])
+  const { trees, setTrees } = useTrees();
   const [filteredTrees, setFilteredTrees] = useState([])
   const firebaseCollection = process.env.FIREBASE_COLLECTION
   const treesCollectionRef = collection(db, firebaseCollection);
