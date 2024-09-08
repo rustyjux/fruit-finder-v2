@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { MapContainer, TileLayer, LayersControl, ScaleControl, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, LayersControl, GeoJSON, ScaleControl, Marker, Popup, useMap } from 'react-leaflet';
 import { collection, onSnapshot, query, limit, where, FieldPath } from 'firebase/firestore';
 import { db } from "../../utils/firebase";
 
@@ -8,6 +8,7 @@ import { appleLIcon, newDefaultIcon } from './MapIcons';
 import TreeMarker from './TreeMarker';
 import DraggableMarker from "./DraggableMarker";
 import ZoomOnlyScaleControl from "./ZoomOnlyScaleControl";
+import GleaningZones from '../../data/GleaningZones.json';
 
 const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN
 
@@ -155,6 +156,24 @@ export default function Map({
       }
     }, [zoomToHomeRequest]);
 
+  // Function to add labels to GeoJSON features
+  const onEachFeature = (feature, layer) => {
+    if (feature.properties && feature.properties.Name) {
+      layer.bindTooltip(feature.properties.Name, {
+        permanent: true,
+        direction: 'center',
+        className: 'gleaning-zone-label'
+      });
+    }
+  };
+
+  // Function to style GeoJSON features
+  const styleGeoJSON = () => ({
+    color: 'grey',
+    weight: 2,
+    fillOpacity: 0,
+  });
+
   return (
     <div className={`map-container map-container--${mapSize}`}>
       <MapContainer 
@@ -199,6 +218,13 @@ export default function Map({
           draggablePosition={draggablePosition}
           setDraggablePosition={setDraggablePosition}
         /> : null}
+
+      <GeoJSON
+        data={GleaningZones}
+        style={styleGeoJSON}
+        onEachFeature={onEachFeature}
+       />
+
       </MapContainer>
 
       {/* <div className="display-position" style={{zIndex: 1001}}>
