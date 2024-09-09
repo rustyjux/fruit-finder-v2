@@ -9,8 +9,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { treeTypes } from "@/utils/displayText";
-import { accessMap } from "@/utils/displayText";
+import { accessMap, pickedMap, treeTypes } from "@/utils/displayText";
 import { Button } from "../ui/button";
 import { colorToRGBA } from "../../utils/helpers";
 import { MdOutlineDoNotDisturbOn } from "react-icons/md";
@@ -47,15 +46,22 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
   return (
     <Drawer
      open={isLegendVisible}
-    //  onOpenChange={isLegendVisible ? null : setIsLegendVisible}
      onOpenChange={setIsLegendVisible}
      modal={false}
      dismissible={true}
      direction={"right"}
     >
-      {/* DrawerTrigger and DrawerContent */}
-      <DrawerContent className="h-screen top-0 right-[-2px] left-auto mt-0 w-[120px] z-[2000] no-handle" >
-        <div className="">        
+      <DrawerContent 
+        className="h-screen top-0 right-[-2px] left-auto mt-0 w-[120px] z-[2000] no-handle flex flex-col"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        <div 
+          className="flex-grow overflow-y-auto touch-pan-y"
+          style={{ 
+            overscrollBehavior: 'contain',
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
           <DrawerDescription className='pt-3 flex-column items-center justify-center text-center'>
             Use the toggles to filter trees
           </DrawerDescription>
@@ -91,6 +97,24 @@ export default function Legend({ onSelectedFiltersChange, appSelectedFilters, re
             >
               <div className="flex items-center">
                 {key === 'private' && <MdOutlineDoNotDisturbOn className="mr-1 w-5 h-5" />}
+                {value.shorttext || value.text}
+              </div>
+            </Button>
+          ))}
+          <DrawerTitle className='pt-3 pb-1 text-center'>Picked</DrawerTitle>
+          {Object.entries(pickedMap).map(([key, value]) => (
+            <Button
+              size='sm'
+              key={key}
+              className='w-full rounded-none my-0.5 text-left block'
+              variant="toggle"
+              active={selectedFilters.picked[key] || false}
+              onClick={() => handleSelectionChange("picked", key)}
+              style={{
+                backgroundColor: selectedFilters.picked[key] ? '#abc7ed' : "transparent",
+              }}
+            >
+              <div className="flex items-center">
                 {value.shorttext || value.text}
               </div>
             </Button>

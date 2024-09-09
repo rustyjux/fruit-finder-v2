@@ -11,8 +11,7 @@ import AddTreeButton from './AddTreeButton'
 import AddTree from '../TreeInfo/AddTree';
 import ViewEditTree from '../TreeInfo/ViewEditTree';
 import Legend from '../Legend/Legend';
-import { treeTypes } from "@/utils/displayText";
-import { accessMap } from "@/utils/displayText";
+import { accessMap, pickedMap, treeTypes } from "@/utils/displayText";
 import InfoButton from './InfoButton';
 import LegendButton from './LegendButton';
 import ZoomToLocationButton from './ZoomToLocationButton';
@@ -41,7 +40,10 @@ function App() {
     access: Object.fromEntries(
       Object.entries(accessMap).map(([key]) => [key, true])
     ),
-    ripe: {'ripeOnly':false}
+    ripe: {'ripeOnly':false},
+    picked: Object.fromEntries(
+      Object.entries(pickedMap).map(([key]) => [key, true])
+    )
   });
 
   const resetFilters = {
@@ -51,8 +53,10 @@ function App() {
       access: Object.fromEntries(
         Object.entries(accessMap).map(([key]) => [key, true])
       ),
-      ripe: {'ripeOnly':false}
-    }
+      ripe: {'ripeOnly':false},
+      picked: Object.fromEntries(
+        Object.entries(pickedMap).map(([key]) => [key, true])
+      )    }
 
   useEffect(() => {
     const storedFilters = localStorage.getItem('selectedFilters');
@@ -126,7 +130,7 @@ function App() {
     }
   }, [isViewEditVisible]);
 
-  const initialMapCenter = [49.076,-117.802]
+  const initialMapCenter = [49.0776,-117.7998]
   const [mapCenter, setMapCenter] = useState({ lat: initialMapCenter[0], lng: initialMapCenter[1] });
 
   const [draggablePosition, setDraggablePosition] = useState(mapCenter)

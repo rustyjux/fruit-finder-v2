@@ -45,14 +45,19 @@ export default function Map({
   useEffect(() => {
     const queryTrees = query(
       treesCollectionRef,
-      // limit(50),
+      // limit(10),
       where("removed", "!=", true)
-      );
+    );
     const unsubscribe = onSnapshot(queryTrees, (snapshot) => {
       let firestoreTrees = [];
       snapshot.forEach((doc) => {
-        firestoreTrees.push({...doc.data(), id: doc.id });
-      })
+        const treeData = doc.data();
+        const lastPickedDate = treeData.lastPickedDate;
+        const currentDate = new Date();
+        const janFirst = new Date(currentDate.getFullYear(), 0, 1);
+        const picked = lastPickedDate && lastPickedDate.toDate() > janFirst;
+        firestoreTrees.push({...treeData, id: doc.id, picked: picked });
+      });
       setTrees(firestoreTrees);
     });
 
@@ -66,21 +71,26 @@ export default function Map({
         const accessMatch = Object.keys(accessFilters).some(
           key => accessFilters[key] && tree.access === key
         );
-  
+
         const treeTypeFilters = selectedFilters.treeTypes;
         const treeTypeMatch = Object.keys(treeTypeFilters).some(
           key => treeTypeFilters[key] && tree.treeType === key
         );
-  
+
         const ripeOnly = selectedFilters.ripe?.ripeOnly;
         const ripeMatch = !ripeOnly || (ripeOnly && tree.ripe);
-  
-        return accessMatch && treeTypeMatch && ripeMatch;
+
+        const pickedFilters = selectedFilters.picked || {};
+        const pickedMatch = 
+          (pickedFilters.picked && tree.picked === true) || 
+          (pickedFilters.unpicked && tree.picked !== true);
+
+        return accessMatch && treeTypeMatch && ripeMatch && pickedMatch;
       });
-  
+
       setFilteredTrees(filtered);
     };
-  
+
     filterTrees();
   }, [trees, selectedFilters]);
 

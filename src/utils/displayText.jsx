@@ -16,6 +16,11 @@ export const accessMap = {
     'private-shared': { text: 'Private (Shared)'},
     'private': { text: 'Private', icon: MdOutlineDoNotDisturbOn }
   };
+
+export const pickedMap = {
+  'picked': { text: 'Picked'},
+  'unpicked': { text: 'Unpicked'}
+}
   
 export function getAccessDisplayText(accessValue) {
     const { text } = accessMap[accessValue] || { text: 'Unknown access', icon: FaUserSecret };
