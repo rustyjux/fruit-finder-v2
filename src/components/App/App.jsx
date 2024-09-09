@@ -63,9 +63,32 @@ function App() {
     if (storedFilters) {
       try {
         const parsedFilters = JSON.parse(storedFilters);
-        setSelectedFilters(parsedFilters);
+        
+        // Ensure all expected filter categories exist
+        const updatedFilters = {
+          treeTypes: parsedFilters.treeTypes || Object.fromEntries(
+            Object.entries(treeTypes).map(([key]) => [key, true])
+          ),
+          access: parsedFilters.access || Object.fromEntries(
+            Object.entries(accessMap).map(([key]) => [key, true])
+          ),
+          ripe: parsedFilters.ripe || {'ripeOnly': false},
+          picked: parsedFilters.picked || Object.fromEntries(
+            Object.entries(pickedMap).map(([key]) => [key, true])
+          )
+        };
+
+        setSelectedFilters(updatedFilters);
+        
+        // If the filters were updated, save the updated version back to localStorage
+        if (JSON.stringify(updatedFilters) !== storedFilters) {
+          localStorage.setItem('selectedFilters', JSON.stringify(updatedFilters));
+        }
       } catch (error) {
         console.error('Error parsing stored selectedFilters:', error);
+        // If there's an error, reset to default filters
+        setSelectedFilters(resetFilters);
+        localStorage.setItem('selectedFilters', JSON.stringify(resetFilters));
       }
     }
   }, []);
